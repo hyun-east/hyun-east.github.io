@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HYEONDONG KIM - AI Research Enthusiast</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <img src="profile.jpg" alt="Profile photo of HYEONDONG KIM" class="profile-photo" />
+      <h1>HYEONDONG KIM</h1>
+      <p><strong>Undergraduate Student</strong> at DGIST</p>
+      <p>
+  Email: hdkim [at] dgist.ac.kr<br>
+  <a href="https://www.linkedin.com/in/hdkim2005" target="_blank">LinkedIn</a> |
+  <a href="https://github.com/hyun-east" target="_blank">GitHub</a> |
+  <a href="cv.pdf" download>CV</a>
+</p>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-button active" data-tab="research">Research Interests</button>
+      <button class="tab-button" data-tab="education">Education</button>
+      <button class="tab-button" data-tab="experience">Experience</button>
+      <button class="tab-button" data-tab="projects">Projects</button>
+      <button class="tab-button" data-tab="awards">Scholarships</button>
+    </nav>
+
+    <section class="tab-content active" id="research">
+      <h2>Research Interests</h2>
+      <p>My primary research interest lies in artificial intelligence, particularly in designing algorithms to solve real-world problems. At the same time, I am also interested in broadly exploring other areas of computer science.</p>
+    </section>
+
+    <section class="tab-content" id="education">
+      <h2>Education</h2>
+      <p><strong>DGIST – School of Undergraduate Studies</strong><br>
+      Feb 2024 – Present<br>
+      GPA: 4.07 / 4.3</p>
+      <p><strong>Relevant Coursework:</strong></p>
+      <ul>
+        <li>Introduction to Machine Learning</li>
+        <li>Introduction to Data Science</li>
+        <li>Data Structures</li>
+        <li>Object-Oriented Programming</li>
+        <li>Statistics with R</li>
+      </ul>
+    </section>
+
+    <section class="tab-content" id="experience">
+      <h2>Experience</h2>
+      <ul>
+        <li><strong>MIDAM Scholarship Society</strong><br>Board Member, National Council (Mar 2025 – Present)<br>Chairman, DGIST MIDAM (Aug 2024 – Present)</li>
+        <li><strong>DGIROID</strong> – Programming and Robotics Club<br>Member (Mar 2024 – Present)</li>
+        <li><strong>Black Wind</strong> – Supercomputing & Big Data Research Group<br>Junior Member (Mar 2024 – Present)</li>
+        <li><strong>DATA</strong> – Programming Club at Poongsan High School<br>Chairman (Sep 2022 – Feb 2023)</li>
+      </ul>
+    </section>
+
+    <section class="tab-content" id="projects">
+      <h2>Projects & Study Experience</h2>
+      <ul>
+        <li>Data Structure & Data Science Study on YouTube – Instructor (Apr 2025 – Jun 2025)</li>
+        <li>Python Group Study – Instructor (Sep 2024 – Dec 2024)</li>
+        <li>C++ Group Study (Apr 2024 – Jun 2024)</li>
+        <li>Development of Tools for Standardizing and Analyzing Student Record Data (Apr 2024 – Jun 2024)</li>
+        <li>AI-based Interview Question Extraction Program (Dec 2023 – Feb 2024)</li>
+      </ul>
+    </section>
+
+    <section class="tab-content" id="awards">
+      <h2>Fellowships & Scholarships</h2>
+      <ul>
+        <li>DGIST Presidential Fellowship (Jun 2025 – Present)</li>
+        <li>DGIST Peer Counselor Scholarship (Feb 2025 – Present)</li>
+        <li>KOSAF Scholarship for University Student Mentors (Sep 2024 – Present)</li>
+      </ul>
+    </section>
+  </main>
+  <script>
+    const buttons = document.querySelectorAll('.tab-button');
+    const contents = document.querySelectorAll('.tab-content');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        contents.forEach(content => content.classList.remove('active'));
+
+        button.classList.add('active');
+        document.getElementById(button.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
