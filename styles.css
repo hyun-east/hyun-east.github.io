@@ -71,6 +71,11 @@ h2 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
+.profile-photo {
+  width: 150px;
+  height: auto;
+  border-radius: 50%;
+}
 .tab-content.active {
   display: block;
 }
