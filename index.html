@@ -1,99 +1,360 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HYEONDONG KIM - AI Research Enthusiast</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HYEONDONG KIM — AI & CS</title>
+
+  <!-- SEO -->
+  <meta name="description" content="HYEONDONG KIM — AI, Computer Science, and research-driven projects at DGIST." />
+  <meta name="keywords" content="AI, Machine Learning, Robotics, DGIST, Hyeondong Kim, CS" />
+  <meta name="author" content="Hyeondong Kim" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="HYEONDONG KIM — AI & CS" />
+  <meta property="og:description" content="AI/CS 연구와 프로젝트를 소개하는 포트폴리오" />
+  <meta property="og:image" content="assets/og-cover.jpg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main>
-    <header>
-      <img src="profile.jpg" alt="Profile photo of HYEONDONG KIM" class="profile-photo" />
-      <h1>HYEONDONG KIM</h1>
-      <p><strong>Undergraduate Student</strong> at DGIST</p>
-      <p>
-  Email: hdkim [at] dgist.ac.kr<br>
-  <a href="https://www.linkedin.com/in/hdkim2005" target="_blank">LinkedIn</a> |
-  <a href="https://github.com/hyun-east" target="_blank">GitHub</a> |
-  <a href="https://youtube.com/@hyuneast?si=BYYALIeGx94WdRqH" target="_blank">YouTube</a> |
-  <a href="CV.pdf" target="_blank">CV</a>
-</p>
-    </header>
+  <!-- 고정 헤더 / 테마 토글 -->
+  <header class="site-header">
+    <a href="#home" class="brand" aria-label="Home">
+      <span class="brand-mark"></span>
+      <span class="brand-text">HYEONDONG KIM</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+    <a href="#about" class="nav-link">About</a>
+    <a href="#research" class="nav-link">Research</a>
+    <a href="#publications" class="nav-link">Publications</a> 
+    <a href="#projects" class="nav-link">Projects</a>
+    <a href="#experience" class="nav-link">Experience</a>
+    <a href="#awards" class="nav-link">Scholarships</a>
+    <a href="#contact" class="nav-link">Contact</a>
+</nav>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+      <span id="themeLabel">Light</span>
+    </button>
+  </header>
 
-    <nav class="tabs">
-      <button class="tab-button active" data-tab="research">Research Interests</button>
-      <button class="tab-button" data-tab="education">Education</button>
-      <button class="tab-button" data-tab="experience">Experience</button>
-      <button class="tab-button" data-tab="projects">Projects</button>
-      <button class="tab-button" data-tab="awards">Scholarships</button>
-    </nav>
+  <!-- 히어로 -->
+  <section id="home" class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div class="hero-left">
+        <img class="avatar" src="assets/profile@2x.jpg" alt="Portrait of Hyeondong Kim" width="240" height="240" />
+      </div>
+      <div class="hero-right">
+        <h1 class="title">Hyeondong Kim</h1>
+        <p class="subtitle">
+          <span class="accent">Undergraduate Researcher</span> @ DGIST · AI / ML · Robotics
+        </p>
+        <div class="badges">
+          <span class="badge">DGIST Presidential Fellowship</span>
+          <span class="badge">YEHS Associate Member</span>
+          <span class="badge">MIDAM Board</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn primary" href="CV.pdf" target="_blank" rel="noopener">View CV</a>
+  <a class="btn ghost small" href="mailto:hdkim@dgist.ac.kr" aria-label="Email">Email</a>
+  <a class="btn ghost small" href="https://www.linkedin.com/in/hdkim2005" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+  <a class="btn ghost small" href="https://github.com/hyun-east" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
+  <a class="btn ghost small" href="https://youtube.com/@hyuneast?si=BYYALIeGx94WdRqH" target="_blank" rel="noopener" aria-label="YouTube">YouTube</a>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section class="tab-content active" id="research">
+  <!-- About -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2>About</h2>
+      <div class="card pub-card"><p class="lead">
+        I am an undergraduate researcher at the Intelligent & Systems Laboratory (ISL) at DGIST, driven by a deep passion for artificial intelligence and its intersection with human-centered innovation. My academic and research journey has been shaped by a strong curiosity to bridge theory and practice — from understanding the core principles of AI to applying them in real-world systems.
+<br>Beyond research, I am honored to serve as the President of Midam, a volunteering club dedicated to social impact, and as a Board Member of the Midam Scholarship Foundation. I am also proud to be an Associate Member of the National Academy of Engineering of Korea Young Engineers Honor Society, engaging with talented peers across the country in advancing science and technology.
+<br><br>At DGIST, I am grateful to have been recognized as a Presidential Fellow and Peer Counselor Scholarship recipient, opportunities that continue to strengthen my sense of purpose and responsibility as both a researcher and a leader.
+<br>Every opportunity I’ve had — in the lab, in service, and in leadership — has deepened my conviction to pursue innovation that serves both technology and humanity.
+<br><br>
+Undergraduate researcher at ISL Lab @DGIST<br>
+National Academy of Engineering of Kore YEHS Associate Member<br>
+President of DGIST Midam(volunteering club)<br>
+Board member of Midam scholarship Foundation<br>
+DGIST Presidential Fellowship<br>
+DGIST Peer Counselor Scholorship
+      </p></div>
+    </div>
+  </section>
+
+  <!-- Research -->
+  <section id="research" class="section">
+    <div class="container">
       <h2>Research Interests</h2>
-      <p>My primary research interest lies in artificial intelligence, particularly in designing algorithms to solve real-world problems. At the same time, I am also interested in broadly exploring other areas of computer science.</p>
-    </section>
+      <div class="grid two">
+        <div class="card pub-card">
+          <h3>Trajectory Planning/Prediction</h3>
+          <p>Prediction and Planning Vehicles, Human pose level trajectories.</p>
+        </div>
+        <div class="card pub-card">
+          <h3>Computer Vision</h3>
+          <p>Depth prediction, Super resolution, etc,.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section class="tab-content" id="education">
-      <h2>Education</h2>
-      <p><strong>DGIST – School of Undergraduate Studies</strong><br>
-      Feb 2024 – Present<br>
-      <p><strong>Relevant Coursework:</strong></p>
-      <ul>
-        <li>Introduction to Machine Learning</li>
-        <li>Introduction to Data Science</li>
-        <li>Data Structures</li>
-        <li>Object-Oriented Programming</li>
-        <li>Statistics with R</li>
-      </ul>
-      <p><strong>UC Berkeley – Summer Session C</strong><br>
-      Jun 2025 – Aug 2025<br>
-    </section>
+  <!-- Publications -->
+  <section id="publications" class="section">
+    <div class="container">
+      <h2>Publications</h2>
+      <div class="grid one">
+        <div class="card pub-card">
+          <h3>Will be implemented with priceless papers</h3>
+          <p><strong></strong><br>
+          <em><!--
+          <p><strong></strong><br>
+          <em></em></p>
 
-    <section class="tab-content" id="experience">
-      <h2>Experience</h2>
-      <ul>
-        <li><strong>ISL-Lab @ DGIST</strong> <br>Undergraduate Intern (Sep 2025 - Present)</br></li>
-        <li><strong>MIDAM Scholarship Society</strong><br>Board Member, National Council (Mar 2025 – Present)<br>Chairman, DGIST MIDAM (Aug 2024 – Present)</li>
-        <li><strong>DGIROID</strong> – Programming and Robotics Club<br>Member (Mar 2024 – Present)</li>
-        <li><strong>Black Wind</strong> – Supercomputing & Big Data Research Group<br>Junior Member (Mar 2024 – Present)</li>
-        <li><strong>DATA</strong> – Programming Club at Poongsan High School<br>Chairman (Sep 2022 – Feb 2023)</li>
-      </ul>
-    </section>
+          <div class="pub-links">
+            <a href="" target="_blank" rel="noopener">📄 Paper</a>
+            <a href="" target="_blank" rel="noopener">💾 Code</a>
+            <a href="" target="_blank" rel="noopener">🌐 Project Page</a>
+          </div>
+        </div>
 
-    <section class="tab-content" id="projects">
-      <h2>Projects & Study Experience</h2>
-      <ul>
-        <li>Data Structure & Data Science Study on YouTube – Instructor (Apr 2025 – Jun 2025)</li>
-        <li>Python Group Study – Instructor (Sep 2024 – Dec 2024)</li>
-        <li>C++ Group Study (Apr 2024 – Jun 2024)</li>
-        <li>Development of Tools for Standardizing and Analyzing Student Record Data (Apr 2024 – Jun 2024)</li>
-        <li>AI-based Interview Question Extraction Program (Dec 2023 – Feb 2024)</li>
-      </ul>
-    </section>
 
-    <section class="tab-content" id="awards">
-      <h2>Fellowships & Scholarships</h2>
-      <ul>
-        <li>DGIST Presidential Fellowship (Jun 2025 – Present)</li>
-        <li>DGIST Peer Counselor Scholarship (Feb 2025 – Present)</li>
-        <li>KOSAF Scholarship for University Student Mentors (Sep 2024 – Present)</li>
-      </ul>
-    </section>
-  </main>
+        <Br>
+        <div class="grid one">
+        <div class="card pub-card">
+          <h3>Will be implemented</h3>
+          <p><strong></strong><br>
+          <em>Be Tune</em></p>
+          <div class="pub-links">
+            <a href="" target="_blank" rel="noopener">📄 Paper</a>
+            <a href="" target="_blank" rel="noopener">💾 Code</a>
+            <a href="" target="_blank" rel="noopener">🌐 Project Page</a>
+          </div>
+        </div>
+        
+      </div>
+
+      -->
+    </div>
+  </section>
+
+  <!-- Projects -->
+<section id="projects" class="section">
+  <div class="container">
+    <h2>Projects</h2>
+
+    <div class="filters" role="tablist" aria-label="Project filters">
+      <button class="filter active" data-filter="all" role="tab" aria-selected="true">All</button>
+      <button class="filter" data-filter="ai" role="tab">AI</button>
+      <button class="filter" data-filter="systems" role="tab">Systems</button>
+      <button class="filter" data-filter="study" role="tab">Study</button>
+    </div>
+
+    <div class="grid three" id="projectGrid">
+
+      <!-- Systems Project -->
+      <article class="project-card card" data-tags="systems">
+        <img src="assets/thumbs/school-record.jpg" alt="Student Record Tool thumbnail" width="640" height="400" loading="lazy" />
+        <div class="project-body">
+          <h3>Student Record Standardization Tool</h3>
+          <p>Built an automated toolkit and visualization dashboard that normalizes and analyzes student record data using complex natural-language rules.</p>
+          <div class="tags"><span>systems</span><span>nlp</span><span>visualization</span></div>
+        </div>
+      </article>
+
+      <!-- AI Project -->
+      <article class="project-card card" data-tags="ai">
+        <img src="assets/thumbs/Interview.png" alt="AI Interview Question Program thumbnail" width="640" height="400" loading="lazy" />
+        <div class="project-body">
+          <h3>AI-based Interview Question Extraction</h3>
+          <p>Developed an API-based NLP pipeline that extracts and organizes domain-specific interview questions from large text corpora.</p>
+          <div class="tags"><span>nlp</span><span>ai</span><span>api</span></div>
+        </div>
+      </article>
+
+      <!-- Study Project -->
+      <article class="project-card card" data-tags="study">
+        <img src="assets/thumbs/study.png" alt="Data Science Study thumbnail" width="640" height="400" loading="lazy" />
+        <div class="project-body">
+          <h3>Data Structure & Data Science Study (YouTube)</h3>
+          <p>Created a structured learning curriculum that bridges concepts, hands-on coding, and concise summaries for self-learners.</p>
+          <div class="tags"><span>study</span><span>education</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- Experience / Timeline -->
+  <section id="experience" class="section">
+  <div class="container">
+    <h2>Experience</h2>
+    <ol class="timeline">
+
+      <li>
+        <div class="time">Sep 2025 – Present</div>
+        <div class="card pub-card">
+          <h3>Teaching Assistant — CS201 (Object-Oriented Programming)</h3>
+          <p>DGIST (Daegu Gyeongbuk Institute of Science and Technology)</p>
+          <p>Supporting C++ OOP course.</p>
+        </div>
+      </li>
+
+      <li>
+        <div class="time">Sep 2025 – Present</div>
+        <div class="card pub-card">
+          <h3>Undergraduate Student Researcher — ISL Lab @ DGIST</h3>
+          <p>Conducting research in 3Ps, and other interesting AI related researche feilds under the kindness of Prof. Daehee Park and other peers.</p>
+        </div>
+      </li>
+
+
+
+      <li>
+        <div class="time">Jul 2025 – Present</div>
+        <div class="card pub-card">
+          <h3>Associate Member — Young Engineers Honor Society</h3>
+          <p>National Academy of Engineering of Korea</p>
+          <p>Recognized for excellence in engineering leadership and academic achievement.</p>
+        </div>
+      </li>
+
+      <li>
+        <div class="time">Mar 2025 – Present</div>
+        <div class="card pub-card">
+          <h3>Board Member — Midam Scholarship Foundation</h3>
+          <p>Participating in nationwide board meetings and supporting mentorship programs for scholarship recipients.</p>
+        </div>
+      </li>
+
+      <li>
+        <div class="time">Mar 2025 – Present</div>
+        <div class="card pub-card">
+          <h3>DGIST SNS Supporters</h3>
+          <p>Creating and publishing content promoting DGIST research and student life to the public.</p>
+        </div>
+      </li>
+
+      <li>
+        <div class="time">Sep 2024 – Present</div>
+        <div class="card pub-card">
+          <h3>Education Mentor — Korea Student Aid Foundation (KOSAF)</h3>
+          <p>Providing academic and emotional mentoring to university students through the national KOSAF mentor program.</p>
+        </div>
+      </li>
+
+       <li>
+        <div class="time">Sep 2024– Present</div>
+        <div class="card pub-card">
+          <h3>President — MIDAM Volunteering Club (DGIST)</h3>
+          <p>Leading community volunteering initiatives and coordinating national-level programs under the Midam Scholarship Foundation.</p>
+        </div>
+      </li>
+
+    </ol>
+  </div>
+</section>
+
+
+  <!-- Scholarships -->
+  <section id="awards" class="section">
+  <div class="container">
+    <h2>Fellowships & Scholarships</h2>
+    <div class="grid two">
+
+      <div class="card pub-card">
+        <h3>DGIST Presidential Fellowship</h3>
+        <p>Jun 2025 – Present</p>
+      </div>
+
+      <div class="card pub-card">
+        <h3>DGIST Peer Counselor Scholarship</h3>
+        <p>Feb 2025 – Present</p>
+      </div>
+
+      <div class="card pub-card">
+        <h3>KOSAF Scholarship (Mentors)</h3>
+        <p>Sep 2024 – Present</p>
+      </div>
+
+           
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>Contact</h2>
+      <p>Email: HDKIM [AT] DGIST.AC.KR</p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Hyeondong Kim. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <!-- JS: 테마/필터/스파이 -->
   <script>
-    const buttons = document.querySelectorAll('.tab-button');
-    const contents = document.querySelectorAll('.tab-content');
+    // 현재 연도
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        buttons.forEach(btn => btn.classList.remove('active'));
-        contents.forEach(content => content.classList.remove('active'));
+    // 테마 토글 (기본 Light)
+    const themeToggle = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+    const savedTheme = localStorage.getItem('theme');
+    const initialTheme = (savedTheme === 'dark' || savedTheme === 'light') ? savedTheme : 'light';
+    document.documentElement.dataset.theme = initialTheme;
+    themeLabel.textContent = initialTheme === 'dark' ? 'Dark' : 'Light';
 
-        button.classList.add('active');
-        document.getElementById(button.dataset.tab).classList.add('active');
+    themeToggle.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem('theme', next);
+      themeLabel.textContent = next === 'dark' ? 'Dark' : 'Light';
+    });
+
+    // 프로젝트 필터
+    const filterButtons = document.querySelectorAll('.filter');
+    const cards = document.querySelectorAll('.project-card');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tag = btn.dataset.filter;
+        cards.forEach(c => {
+          c.style.display = (tag === 'all' || c.dataset.tags.includes(tag)) ? '' : 'none';
+        });
       });
     });
+
+    // 스크롤 스파이 (네비 활성화)
+    const sections = [...document.querySelectorAll('section.section, section.hero')];
+    const navLinks = [...document.querySelectorAll('.site-nav .nav-link')];
+    const onScroll = () => {
+      const pos = window.scrollY + 120;
+      let current = '#home';
+      sections.forEach(sec => {
+        if (pos >= sec.offsetTop) current = '#' + sec.id;
+      });
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === current));
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   </script>
 </body>
 </html>
