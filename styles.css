@@ -186,3 +186,16 @@ html[data-theme="dark"] .nav-link.active { background: rgba(255,255,255,.10); }
   font-size: 1.1rem;   /* 기본보다 살짝 큼 (보통 16px → 약 17.6px) */
   line-height: 1.7;    /* 줄 간격도 여유 있게 */
 }
+
+.site-nav {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;                /* 가로 스크롤 가능 */
+  -webkit-overflow-scrolling: touch; /* iOS에서 부드럽게 */
+  white-space: nowrap;             /* 줄바꿈 방지 */
+  scrollbar-width: none;           /* Firefox에서 스크롤바 숨김 */
+}
+
+.site-nav::-webkit-scrollbar {
+  display: none; /* Safari/Chrome에서 스크롤바 숨김 */
+}
