@@ -143,15 +143,19 @@ function assignGroupsAndProblems(numPeople, startProblem, endProblem, excludedSe
   const groupedProblems = chunkByCounts(shuffledProblems, problemCounts);
 
   const groups = [];
+  
   for (let i = 0; i < numGroups; i++) {
-    groups.push({
-      groupName: `${i + 1}조`,
-      members: groupedPeople[i],
-      problems: groupedProblems[i],
-      memberCount: groupedPeople[i].length,
-      problemCount: groupedProblems[i].length
-    });
-  }
+  const sortedMembers = [...groupedPeople[i]].sort((a, b) => Number(a) - Number(b));
+  const sortedProblems = [...groupedProblems[i]].sort((a, b) => a - b);
+
+  groups.push({
+    groupName: `${i + 1}조`,
+    members: sortedMembers,
+    problems: sortedProblems,
+    memberCount: sortedMembers.length,
+    problemCount: sortedProblems.length
+  });
+}
 
   return {
     errors: [],
