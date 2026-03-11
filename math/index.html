@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>랜덤 조 배치 & 문제 배정</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <h1>랜덤 조 배치 & 문제 배정</h1>
+      <p class="subtitle">
+        인원 수, 문제 범위, 제외 문제, 조 개수를 입력하면
+        조를 나누고 문제를 공정하게 배정합니다.
+      </p>
+      <p class="desc">
+        원칙:
+        <strong>문제 수가 딱 나누어떨어지면 모든 조에 동일한 문제 수를 배정</strong>하고,
+        <strong>딱 안 나누어떨어질 때만 인원이 많은 조부터 1문제씩 더 배정</strong>합니다.
+        또한 <strong>조원과 문제 모두 랜덤 셔플</strong>됩니다.
+      </p>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>입력</h2>
+
+        <div class="grid">
+          <div class="field">
+            <label for="numPeople">인원 수</label>
+            <input type="number" id="numPeople" min="1" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="numGroups">조 개수</label>
+            <input type="number" id="numGroups" min="1" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="startProblem">문제 시작 번호</label>
+            <input type="number" id="startProblem" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="endProblem">문제 끝 번호</label>
+            <input type="number" id="endProblem" value="0" />
+          </div>
+
+          <div class="field field-full">
+            <label for="excludedProblems">제외할 문제 번호</label>
+            <textarea
+              id="excludedProblems"
+              placeholder="예: 3, 5, 7 9 11,12"
+            ></textarea>
+            <div class="hint">
+              쉼표와 공백을 섞어 써도 됩니다. 예: <code>3, 5 7, 10</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="assignBtn" class="primary-btn">조 배치 실행</button>
+          <button id="reshuffleBtn" class="secondary-btn">다시 섞기</button>
+          <button id="copyBtn" class="secondary-btn">결과 복사</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>결과</h2>
+        <div id="message"></div>
+        <div id="result"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
