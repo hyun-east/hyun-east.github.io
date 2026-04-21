@@ -312,7 +312,6 @@
         setText('affiliation', data.profile?.affiliation || '');
         setText('aboutText', data.about?.text || '');
         setText('contactEmail', data.contact?.email || '');
-        setText('yamlNote', data.site?.yaml_note || 'Edit site.yaml to update the contents of this page.');
         setText('footerText', data.footer?.text || '');
 
         renderPortrait(data.profile || {});
