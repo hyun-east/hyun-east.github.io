@@ -6,12 +6,10 @@ profile:
   subtitle: "Undergraduate Researcher · AI / ML · Robotics"
   affiliation: "Intelligent Systems and Learning (ISL) Lab, DGIST"
   portrait:
-    src: "assets/profile.jpg"
+    src: "assets/profile@2x.jpg"
     alt: "Portrait of Hyeondong Kim"
   badges:
     - "DGIST Presidential Fellowship"
-    - "YEHS Associate Member"
-    - "MIDAM Board"
   links:
     - label: "CV"
       url: "CV.pdf"
