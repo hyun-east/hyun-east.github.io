@@ -1,0 +1,106 @@
+site:
+  title: "Hyeondong Kim"
+  yaml_note: "Edit site.yaml to update this homepage."
+profile:
+  name: "Hyeondong Kim"
+  subtitle: "Undergraduate Researcher · AI / ML · Robotics"
+  affiliation: "Intelligent Systems and Learning (ISL) Lab, DGIST"
+  portrait:
+    src: "assets/profile.jpg"
+    alt: "Portrait of Hyeondong Kim"
+  badges:
+    - "DGIST Presidential Fellowship"
+    - "YEHS Associate Member"
+    - "MIDAM Board"
+  links:
+    - label: "CV"
+      url: "CV.pdf"
+    - label: "Email"
+      url: "mailto:hdkim@dgist.ac.kr"
+    - label: "LinkedIn"
+      url: "https://www.linkedin.com/in/hdkim2005"
+    - label: "GitHub"
+      url: "https://github.com/hyun-east"
+    - label: "YouTube"
+      url: "https://youtube.com/@hyuneast?si=BYYALIeGx94WdRqH"
+
+about:
+  text: >
+    I am an undergraduate researcher at the Intelligent Systems and Learning (ISL) Lab at DGIST,
+    working at the intersection of artificial intelligence, computer vision, and robotics.
+    My research focuses on human-centered intelligent systems, with interests spanning perception,
+    prediction, and learning-based decision-making. Alongside research, I have been involved in
+    academic service, mentoring, and student leadership, with a continued interest in building
+    technology that connects rigorous theory to practical impact.
+
+research:
+  - title: "Trajectory Planning / Prediction"
+    description: "Prediction and planning for vehicles, human motion, and interaction-aware trajectories."
+  - title: "Computer Vision"
+    description: "Egocentric vision, depth prediction, super-resolution, and visual representation learning."
+  - title: "Robotics & Embodied AI"
+    description: "Perception-driven systems for real-world robotic intelligence."
+
+publications:
+  - title: "EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting"
+    authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park"
+    venue: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings, 2026"
+    links: []
+
+projects:
+  - title: "Student Record Standardization Tool"
+    description: "Built an automated toolkit and visualization dashboard that normalizes and analyzes student record data using complex natural-language rules."
+    tags: ["systems", "nlp", "visualization"]
+    links: []
+  - title: "AI-based Interview Question Extraction"
+    description: "Developed an API-based NLP pipeline that extracts and organizes domain-specific interview questions from large text corpora."
+    tags: ["ai", "nlp", "api"]
+    links: []
+  - title: "Data Structure & Data Science Study (YouTube)"
+    description: "Created a structured learning curriculum that bridges concepts, hands-on coding, and concise summaries for self-learners."
+    tags: ["study", "education"]
+    links: []
+
+experience:
+  - period: "Sep 2025 – Dec 2025"
+    title: "Teaching Assistant — CS201 (Object-Oriented Programming)"
+    organization: "DGIST"
+    description: "Supported a C++ object-oriented programming course for approximately 110 students."
+  - period: "Sep 2025 – Present"
+    title: "Undergraduate Student Researcher"
+    organization: "Intelligent Systems and Learning (ISL) Lab, DGIST"
+    description: "Conducting research in AI, computer vision, and related intelligent systems under the guidance of Prof. Daehee Park."
+  - period: "Jul 2025 – Present"
+    title: "Associate Member — Young Engineers Honor Society"
+    organization: "National Academy of Engineering of Korea"
+    description: "Recognized for engineering leadership and academic achievement."
+  - period: "Mar 2025 – Feb 2026"
+    title: "Board Member — Midam Scholarship Foundation"
+    organization: ""
+    description: "Participated in nationwide board meetings and mentorship-related programs."
+  - period: "Mar 2025 – Present"
+    title: "DGIST SNS Supporters"
+    organization: ""
+    description: "Created and published content on DGIST research and student life."
+  - period: "Sep 2024 – Feb 2026"
+    title: "Education Mentor — Korea Student Aid Foundation (KOSAF)"
+    organization: ""
+    description: "Provided academic and emotional mentoring through the national KOSAF mentor program."
+  - period: "Sep 2024 – Feb 2026"
+    title: "President — MIDAM Volunteering Club (DGIST)"
+    organization: ""
+    description: "Led community volunteering initiatives and coordinated national-level programs."
+
+honors:
+  - title: "DGIST Presidential Fellowship"
+    period: "Jun 2025 – Present"
+  - title: "DGIST Peer Counselor Scholarship"
+    period: "Feb 2025 – Present"
+  - title: "KOSAF Scholarship (Mentors)"
+    period: "Sep 2024 – Present"
+
+contact:
+  email: "Email: HDKIM [AT] DGIST.AC.KR"
+
+footer:
+  text: "© 2026 Hyeondong Kim. All rights reserved."
