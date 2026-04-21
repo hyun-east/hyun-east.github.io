@@ -40,7 +40,7 @@ research:
 
 publications:
   - title: "EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting"
-    authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park† (*:Equal Contribution, †: Corresponding Author)"
+    authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park†"
     venue: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings, 2026"
     links: []
 
