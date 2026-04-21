@@ -1,6 +1,5 @@
 site:
   title: "Hyeondong Kim"
-  yaml_note: "Edit site.yaml to update this homepage."
 profile:
   name: "Hyeondong Kim"
   subtitle: "Undergraduate Researcher · AI / ML · Robotics"
@@ -41,18 +40,18 @@ research:
 
 publications:
   - title: "EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting"
-    authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park"
+    authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park† (*:Equal Contribution, †: Corresponding Author)"
     venue: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings, 2026"
     links: []
 
 projects:
   - title: "Student Record Standardization Tool"
     description: "Built an automated toolkit and visualization dashboard that normalizes and analyzes student record data using complex natural-language rules."
-    tags: ["systems", "nlp", "visualization"]
+    tags: ["nlp", "Unstructured data processing"]
     links: []
   - title: "AI-based Interview Question Extraction"
     description: "Developed an API-based NLP pipeline that extracts and organizes domain-specific interview questions from large text corpora."
-    tags: ["ai", "nlp", "api"]
+    tags: ["ai", "nlp"]
     links: []
   - title: "Data Structure & Data Science Study (YouTube)"
     description: "Created a structured learning curriculum that bridges concepts, hands-on coding, and concise summaries for self-learners."
@@ -93,9 +92,9 @@ honors:
   - title: "DGIST Presidential Fellowship"
     period: "Jun 2025 – Present"
   - title: "DGIST Peer Counselor Scholarship"
-    period: "Feb 2025 – Present"
+    period: "Feb 2025 – Feb 2026"
   - title: "KOSAF Scholarship (Mentors)"
-    period: "Sep 2024 – Present"
+    period: "Sep 2024 – Feb 2026"
 
 contact:
   email: "Email: HDKIM [AT] DGIST.AC.KR"
