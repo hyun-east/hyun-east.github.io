@@ -9,10 +9,12 @@
   <style>
     :root{
       --bg:#ffffff;
-      --text:#111111;
-      --muted:#666666;
-      --soft:#ffffff;
-      --accent:#1f4b7a;
+      --text:#111113;
+      --muted:#686872;
+      --faint:#f6f6f8;
+      --line:#e8e8ee;
+      --accent:#6d4aff;
+      --accent-soft:#f3f0ff;
       --max:960px;
     }
 
@@ -24,8 +26,9 @@
       margin:0;
       background:var(--bg);
       color:var(--text);
-      font-family: Georgia, "Times New Roman", serif;
-      line-height:1.68;
+      font-family:-apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height:1.62;
+      letter-spacing:-0.01em;
     }
 
     a{
@@ -33,20 +36,24 @@
       text-decoration:none;
     }
 
-    a:hover{text-decoration:underline;}
+    a:hover{
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
 
     .wrap{
       max-width:var(--max);
       margin:0 auto;
-      padding:0 24px;
+      padding:0 26px;
     }
 
     header{
       position:sticky;
       top:0;
       z-index:10;
-      background:rgba(255,255,255,.95);
-      backdrop-filter:saturate(180%) blur(8px);
+      background:rgba(255,255,255,.88);
+      backdrop-filter:saturate(160%) blur(12px);
+      border-bottom:1px solid var(--line);
     }
 
     .nav{
@@ -54,11 +61,12 @@
       align-items:center;
       justify-content:space-between;
       gap:24px;
-      min-height:64px;
+      min-height:58px;
     }
 
     .brand{
-      font-size:14px;
+      font-size:13px;
+      font-weight:650;
       letter-spacing:.08em;
       text-transform:uppercase;
       color:var(--text);
@@ -72,28 +80,36 @@
     }
 
     nav a{
-      font-size:14px;
+      font-size:13px;
       color:var(--muted);
+      font-weight:500;
     }
 
-    nav a:hover{color:var(--accent);}
+    nav a:hover{
+      color:var(--accent);
+      text-decoration:none;
+    }
 
-    main{padding:56px 0 80px;}
+    main{
+      padding:50px 0 72px;
+    }
 
     .hero{
       display:grid;
-      grid-template-columns:170px 1fr;
-      gap:42px;
+      grid-template-columns:168px 1fr;
+      gap:40px;
       align-items:start;
-      padding:8px 0 34px;
+      padding:4px 0 38px;
+      border-bottom:1px solid var(--line);
     }
 
     .portrait{
-      width:170px;
-      height:215px;
+      width:168px;
+      height:212px;
       object-fit:cover;
       display:block;
-      background:#f3f3f3;
+      background:var(--faint);
+      border-radius:2px;
     }
 
     .portrait.placeholder{
@@ -103,99 +119,99 @@
       color:var(--muted);
       font-size:13px;
       letter-spacing:.04em;
-      background:#f5f5f5;
+      background:var(--faint);
     }
 
     h1{
-      font-size:40px;
-      line-height:1.18;
-      margin:0 0 10px;
-      font-weight:600;
+      font-size:42px;
+      line-height:1.12;
+      margin:0 0 12px;
+      font-weight:720;
+      letter-spacing:-0.035em;
     }
 
     .subtitle{
-      font-size:18px;
-      color:#222;
-      margin:0 0 8px;
+      font-size:17px;
+      color:#24242a;
+      margin:0 0 5px;
+      font-weight:500;
     }
 
     .affiliation{
-      font-size:16px;
+      font-size:15px;
       color:var(--muted);
-      margin:0 0 18px;
+      margin:0 0 16px;
     }
 
     .links{
       display:flex;
       flex-wrap:wrap;
-      gap:12px 18px;
-      margin-top:16px;
+      gap:8px 16px;
+      margin-top:14px;
     }
 
     .links a{
       font-size:14px;
-      font-weight:500;
+      font-weight:600;
     }
 
     .chips{
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
-      margin-top:14px;
+      gap:7px;
+      margin-top:13px;
     }
 
     .chip{
-      padding:4px 10px;
+      padding:3px 9px;
       font-size:12px;
+      line-height:1.5;
       color:var(--accent);
-      background:var(--soft);
+      background:var(--accent-soft);
+      border-radius:999px;
+      font-weight:550;
     }
 
-    section{padding:34px 0;}
+    section{
+      padding:30px 0;
+    }
 
-    section + section{margin-top:10px;}
+    section + section{
+      border-top:1px solid var(--line);
+    }
 
     h2{
-      font-size:22px;
-      font-weight:600;
+      font-size:12px;
+      font-weight:750;
       margin:0 0 18px;
       color:var(--accent);
-      letter-spacing:.01em;
+      letter-spacing:.11em;
+      text-transform:uppercase;
     }
 
     h3{
-      font-size:18px;
-      margin:0 0 7px;
-      font-weight:600;
-      color:var(--text);
-    }
-
-    .pub-category{
-      margin-bottom:38px;
-    }
-
-    .pub-category:last-child{
-      margin-bottom:0;
-    }
-
-    .pub-category-title{
       font-size:17px;
+      line-height:1.42;
+      margin:0 0 6px;
+      font-weight:680;
       color:var(--text);
-      margin:0 0 18px;
-      font-weight:600;
+      letter-spacing:-0.015em;
     }
 
-    p{margin:0 0 12px;}
+    p{
+      margin:0 0 10px;
+    }
 
     .lead{
-      font-size:17px;
+      font-size:16px;
       max-width:820px;
+      color:#2d2d33;
     }
 
     .grid-2{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:30px 56px;
+      gap:22px 48px;
     }
 
     .card{
@@ -206,13 +222,29 @@
 
     .pub,
     .item{
-      margin-bottom:32px;
+      margin-bottom:24px;
       max-width:860px;
     }
 
     .pub:last-child,
     .item:last-child{
       margin-bottom:0;
+    }
+
+    .pub-category{
+      margin-bottom:30px;
+    }
+
+    .pub-category:last-child{
+      margin-bottom:0;
+    }
+
+    .pub-category-title{
+      font-size:15px;
+      color:var(--text);
+      margin:0 0 16px;
+      font-weight:720;
+      letter-spacing:-0.01em;
     }
 
     .meta{
@@ -223,43 +255,47 @@
     .tags{
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
+      gap:7px;
+      margin-top:9px;
     }
 
     .tag{
       font-size:12px;
-      color:var(--accent);
-      background:var(--soft);
+      color:#4d3bc0;
+      background:var(--accent-soft);
       padding:2px 8px;
+      border-radius:999px;
+      font-weight:520;
     }
 
     .timeline{
       display:grid;
-      gap:28px;
+      gap:22px;
     }
 
     .timeline-item{
       display:grid;
-      grid-template-columns:160px 1fr;
-      gap:32px;
+      grid-template-columns:145px 1fr;
+      gap:28px;
       align-items:start;
     }
 
     .time{
       color:var(--muted);
-      font-size:14px;
+      font-size:13px;
       padding-top:2px;
+      font-weight:520;
     }
 
     footer{
       color:var(--muted);
       font-size:13px;
-      padding:28px 0 50px;
+      padding:24px 0 42px;
+      border-top:1px solid var(--line);
     }
 
     .note{
-      margin-top:18px;
+      margin-top:12px;
       font-size:13px;
       color:var(--muted);
     }
@@ -267,32 +303,43 @@
     .hidden{display:none;}
 
     @media (max-width: 760px){
-      main{padding-top:36px;}
+      main{
+        padding-top:34px;
+      }
 
       .hero{
         grid-template-columns:1fr;
-        gap:24px;
+        gap:22px;
+        padding-bottom:32px;
       }
 
       .portrait,
       .portrait.placeholder{
         width:140px;
-        height:180px;
+        height:178px;
       }
 
       .timeline-item{
         grid-template-columns:1fr;
-        gap:6px;
+        gap:4px;
       }
 
       .grid-2{
         grid-template-columns:1fr;
-        gap:28px;
+        gap:22px;
       }
 
-      nav{display:none;}
+      nav{
+        display:none;
+      }
 
-      h1{font-size:32px;}
+      h1{
+        font-size:34px;
+      }
+
+      section{
+        padding:26px 0;
+      }
     }
   </style>
 </head>
@@ -463,10 +510,6 @@
     function renderPublications(publications = {}) {
       const root = document.getElementById('publicationsList');
 
-      // New recommended YAML structure:
-      // publications:
-      //   international:
-      //   domestic:
       if (!Array.isArray(publications)) {
         root.innerHTML = `
           ${renderPublicationCategory('International', publications.international || [])}
@@ -475,11 +518,6 @@
         return;
       }
 
-      // Backward compatibility for old YAML structure:
-      // publications:
-      //   - title:
-      //     authors:
-      //     venue:
       root.innerHTML = publications.map(renderPublicationItem).join('');
     }
 
