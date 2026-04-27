@@ -4,334 +4,329 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hyeondong Kim</title>
-  <meta name="description" content="Academic homepage of Hyeondong Kim." />
+
   <style>
     :root{
-      --bg:#fbfbfa;
-      --paper:#ffffff;
-      --text:#1c1c1c;
-      --muted:#666;
-      --line:#e6e3dd;
+      --bg:#ffffff;
+      --text:#111111;
+      --muted:#666666;
       --accent:#1f4b7a;
       --max:960px;
     }
+
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
     body{
       margin:0;
       background:var(--bg);
       color:var(--text);
       font-family: Georgia, "Times New Roman", serif;
-      line-height:1.68;
+      line-height:1.7;
     }
-    a{color:var(--accent); text-decoration:none}
-    a:hover{text-decoration:underline}
-    .wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
+
+    a{
+      color:var(--accent);
+      text-decoration:none;
+    }
+
+    a:hover{
+      text-decoration:underline;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 24px;
+    }
+
     header{
-      border-bottom:1px solid var(--line);
-      background:rgba(251,251,250,.92);
-      backdrop-filter:saturate(180%) blur(8px);
-      position:sticky; top:0; z-index:10;
+      position:sticky;
+      top:0;
+      background:rgba(255,255,255,0.95);
+      backdrop-filter: blur(6px);
     }
+
     .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:24px; min-height:64px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      min-height:64px;
     }
+
     .brand{
-      font-size:15px; letter-spacing:.08em; text-transform:uppercase; color:var(--text);
-      white-space:nowrap;
+      font-size:14px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
     }
-    nav{display:flex; flex-wrap:wrap; gap:18px}
-    nav a{font-size:14px; color:var(--muted)}
-    main{padding:40px 0 72px}
+
+    nav{
+      display:flex;
+      gap:18px;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    main{
+      padding:60px 0 80px;
+    }
+
     .hero{
-      display:grid; grid-template-columns:180px 1fr; gap:32px;
-      padding:18px 0 26px; align-items:start;
-      border-bottom:1px solid var(--line);
+      display:grid;
+      grid-template-columns:160px 1fr;
+      gap:40px;
+      padding-bottom:40px;
     }
+
     .portrait{
-      width:180px; height:220px; border:1px solid var(--line); background:#f1efe9;
-      object-fit:cover; display:block;
+      width:160px;
+      height:200px;
+      object-fit:cover;
+      background:#f3f3f3;
     }
-    .portrait.placeholder{
-      display:flex; align-items:center; justify-content:center; color:var(--muted);
-      font-size:13px; letter-spacing:.04em;
+
+    h1{
+      font-size:38px;
+      margin:0 0 10px;
+      font-weight:600;
     }
-    h1{font-size:38px; margin:0 0 8px; font-weight:600}
-    .subtitle{font-size:18px; color:#2f2f2f; margin:0 0 10px}
-    .affiliation{font-size:16px; color:var(--muted); margin:0 0 18px}
-    .links{display:flex; flex-wrap:wrap; gap:14px 18px; margin-top:18px}
-    .links a{font-size:14px}
-    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+
+    .subtitle{
+      font-size:18px;
+      margin-bottom:10px;
+    }
+
+    .affiliation{
+      color:var(--muted);
+      margin-bottom:16px;
+    }
+
+    .links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:16px;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+
     .chip{
-      border:1px solid var(--line); padding:4px 10px; font-size:12px;
-      color:#444; background:var(--paper);
+      font-size:12px;
+      background:#f5f7fa;
+      color:var(--accent);
+      padding:4px 10px;
     }
+
     section{
-      padding:34px 0;
-      border-bottom:1px solid var(--line);
+      margin-top:60px;
     }
-    section:last-of-type{border-bottom:none}
+
     h2{
-      font-size:24px; font-weight:600; margin:0 0 18px;
-      letter-spacing:.01em;
+      font-size:22px;
+      color:var(--accent);
+      margin-bottom:18px;
     }
-    h3{font-size:18px; margin:0 0 8px; font-weight:600}
-    p{margin:0 0 12px}
-    .lead{font-size:17px}
+
+    h3{
+      font-size:17px;
+      margin-bottom:6px;
+    }
+
+    p{
+      margin:0 0 12px;
+    }
+
     .grid-2{
-      display:grid; grid-template-columns:1fr 1fr; gap:18px 24px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:32px 56px;
     }
-    .card{
-      background:var(--paper);
-      border:1px solid var(--line);
-      padding:18px 18px 16px;
+
+    .item, .pub{
+      margin-bottom:30px;
     }
-    .pub, .item{margin-bottom:18px}
-    .pub:last-child, .item:last-child{margin-bottom:0}
-    .meta{color:var(--muted); font-size:14px}
-    .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+
+    .meta{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .tags{
+      margin-top:8px;
+    }
+
     .tag{
-      font-size:12px; color:#555; border:1px solid var(--line);
-      padding:2px 8px; background:#fcfcfb;
+      font-size:12px;
+      color:var(--accent);
+      background:#f5f7fa;
+      padding:2px 8px;
+      margin-right:6px;
     }
-    .timeline{display:grid; gap:14px}
+
+    .timeline{
+      display:grid;
+      gap:28px;
+    }
+
     .timeline-item{
-      display:grid; grid-template-columns:170px 1fr; gap:18px;
-      align-items:start;
+      display:grid;
+      grid-template-columns:160px 1fr;
+      gap:30px;
     }
-    .time{color:var(--muted); font-size:14px; padding-top:2px}
+
+    .time{
+      color:var(--muted);
+      font-size:14px;
+    }
+
     footer{
+      margin-top:80px;
       color:var(--muted);
       font-size:13px;
-      padding:28px 0 50px;
-      border-top:1px solid var(--line);
+      padding-bottom:40px;
     }
-    .note{
-      margin-top:14px; font-size:13px; color:var(--muted);
-    }
-    .hidden{display:none}
+
     @media (max-width: 760px){
-      .hero{grid-template-columns:1fr}
-      .portrait,.portrait.placeholder{width:140px;height:180px}
-      .timeline-item{grid-template-columns:1fr}
-      .grid-2{grid-template-columns:1fr}
-      nav{display:none}
-      h1{font-size:32px}
+      .hero{
+        grid-template-columns:1fr;
+      }
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+      nav{
+        display:none;
+      }
     }
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="wrap nav">
-      <div class="brand" id="brandName">Hyeondong Kim</div>
-      <nav aria-label="Primary navigation">
-        <a href="#about">About</a>
-        <a href="#research">Research</a>
-        <a href="#publications">Publications</a>
-        <a href="#projects">Projects</a>
-        <a href="#experience">Experience</a>
-        <a href="#honors">Scholarships</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
 
-  <main class="wrap">
-    <section class="hero" id="home">
-      <div id="portraitContainer"></div>
+<header>
+  <div class="wrap nav">
+    <div class="brand">Hyeondong Kim</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#honors">Scholarships</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <img class="portrait" src="" alt="portrait" />
+    <div>
+      <h1>Hyeondong Kim</h1>
+      <p class="subtitle">Undergraduate Researcher · AI / ML · Robotics</p>
+      <p class="affiliation">DGIST, Daegu, Republic of Korea</p>
+
+      <div class="chips">
+        <span class="chip">DGIST Presidential Fellowship</span>
+        <span class="chip">ISL Lab</span>
+      </div>
+
+      <div class="links">
+        <a href="#">CV</a>
+        <a href="#">Email</a>
+        <a href="#">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>About</h2>
+    <p>
+      I am an undergraduate researcher at DGIST focusing on artificial intelligence,
+      machine learning, and robotics. My work aims to bridge theoretical foundations
+      with real-world systems, particularly in embodied intelligence and human-centered AI.
+    </p>
+  </section>
+
+  <section id="research">
+    <h2>Research Interests</h2>
+    <div class="grid-2">
       <div>
-        <h1 id="name"></h1>
-        <p class="subtitle" id="subtitle"></p>
-        <p class="affiliation" id="affiliation"></p>
-        <div class="chips" id="badges"></div>
-        <div class="links" id="heroLinks"></div>
+        <h3>Embodied AI</h3>
+        <p>Egocentric perception and action learning for robotics.</p>
       </div>
-    </section>
-
-    <section id="about">
-      <h2>About</h2>
-      <div class="card">
-        <p class="lead" id="aboutText"></p>
+      <div>
+        <h3>Computer Vision</h3>
+        <p>3D reconstruction, pose estimation, and scene understanding.</p>
       </div>
-    </section>
-
-    <section id="research">
-      <h2>Research Interests</h2>
-      <div class="grid-2" id="researchGrid"></div>
-    </section>
-
-    <section id="publications">
-      <h2>Publications</h2>
-      <div id="publicationsList"></div>
-    </section>
-
-    <section id="projects">
-      <h2>Projects</h2>
-      <div id="projectsList"></div>
-    </section>
-
-    <section id="experience">
-      <h2>Experience</h2>
-      <div class="timeline" id="experienceList"></div>
-    </section>
-
-    <section id="honors">
-      <h2>Fellowships & Scholarships</h2>
-      <div class="grid-2" id="honorsGrid"></div>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <div class="card">
-        <p id="contactEmail"></p>
-      </div>
-    </section>
-
-    <p class="note" id="yamlNote"></p>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <span id="footerText"></span>
     </div>
-  </footer>
+  </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-  <script>
-    function escapeHtml(str='') {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
+  <section id="publications">
+    <h2>Publications</h2>
 
-    function renderLinks(items = []) {
-      return items.map(item => {
-        const label = escapeHtml(item.label || '');
-        const href = escapeHtml(item.url || '#');
-        const external = !href.startsWith('mailto:') && !href.startsWith('#');
-        const extra = external ? ' target="_blank" rel="noopener"' : '';
-        return `<a href="${href}"${extra}>${label}</a>`;
-      }).join('');
-    }
+    <div class="pub">
+      <h3>EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting</h3>
+      <p>Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park</p>
+      <p class="meta">CVPR Findings, 2026</p>
+    </div>
 
-    function renderTags(items = []) {
-      return items.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
-    }
+  </section>
 
-    function setText(id, text) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = text || '';
-    }
+  <section id="projects">
+    <h2>Projects</h2>
 
-    async function loadData() {
-      const res = await fetch('site.yaml', { cache: 'no-store' });
-      if (!res.ok) throw new Error('Failed to load site.yaml');
-      const yamlText = await res.text();
-      return jsyaml.load(yamlText);
-    }
+    <div class="item">
+      <h3>Mapless Zero-Shot Navigation</h3>
+      <p>Vision-language model based autonomous navigation without mapping.</p>
+      <div class="tags">
+        <span class="tag">VLM</span>
+        <span class="tag">Robotics</span>
+      </div>
+    </div>
 
-    function renderPortrait(profile = {}) {
-      const wrap = document.getElementById('portraitContainer');
-      if (profile.portrait && profile.portrait.src) {
-        wrap.innerHTML = `<img class="portrait" src="${escapeHtml(profile.portrait.src)}" alt="${escapeHtml(profile.portrait.alt || 'Portrait')}" />`;
-      } else {
-        wrap.innerHTML = `<div class="portrait placeholder">Portrait</div>`;
-      }
-    }
+  </section>
 
-    function renderResearch(items = []) {
-      const root = document.getElementById('researchGrid');
-      root.innerHTML = items.map(item => `
-        <div class="card">
-          <h3>${escapeHtml(item.title || '')}</h3>
-          <p>${escapeHtml(item.description || '')}</p>
+  <section id="experience">
+    <h2>Experience</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="time">2024 - Present</div>
+        <div>
+          <h3>Undergraduate Researcher</h3>
+          <p>Intelligent Systems and Learning Lab (ISL), DGIST</p>
         </div>
-      `).join('');
-    }
+      </div>
+    </div>
 
-    function renderPublications(items = []) {
-      const root = document.getElementById('publicationsList');
-      root.innerHTML = items.map(item => `
-        <div class="card pub">
-          <h3>${escapeHtml(item.title || '')}</h3>
-          <p>${escapeHtml(item.authors || '')}</p>
-          <p class="meta"><em>${escapeHtml(item.venue || '')}</em></p>
-          ${item.links && item.links.length ? `<div class="links">${renderLinks(item.links)}</div>` : ''}
-        </div>
-      `).join('');
-    }
+  </section>
 
-    function renderProjects(items = []) {
-      const root = document.getElementById('projectsList');
-      root.innerHTML = items.map(item => `
-        <div class="card item">
-          <h3>${escapeHtml(item.title || '')}</h3>
-          <p>${escapeHtml(item.description || '')}</p>
-          ${item.tags && item.tags.length ? `<div class="tags">${renderTags(item.tags)}</div>` : ''}
-          ${item.links && item.links.length ? `<div class="links">${renderLinks(item.links)}</div>` : ''}
-        </div>
-      `).join('');
-    }
+  <section id="honors">
+    <h2>Fellowships & Scholarships</h2>
 
-    function renderExperience(items = []) {
-      const root = document.getElementById('experienceList');
-      root.innerHTML = items.map(item => `
-        <div class="timeline-item">
-          <div class="time">${escapeHtml(item.period || '')}</div>
-          <div class="card">
-            <h3>${escapeHtml(item.title || '')}</h3>
-            ${item.organization ? `<p>${escapeHtml(item.organization)}</p>` : ''}
-            ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ''}
-          </div>
-        </div>
-      `).join('');
-    }
+    <div class="grid-2">
+      <div>
+        <h3>DGIST Presidential Fellowship</h3>
+        <p class="meta">2025</p>
+      </div>
+    </div>
 
-    function renderHonors(items = []) {
-      const root = document.getElementById('honorsGrid');
-      root.innerHTML = items.map(item => `
-        <div class="card">
-          <h3>${escapeHtml(item.title || '')}</h3>
-          <p class="meta">${escapeHtml(item.period || '')}</p>
-        </div>
-      `).join('');
-    }
+  </section>
 
-    async function init() {
-      try {
-        const data = await loadData();
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: your_email@dgist.ac.kr</p>
+  </section>
 
-        document.title = data.site?.title || 'Hyeondong Kim';
-        setText('brandName', data.profile?.name || '');
-        setText('name', data.profile?.name || '');
-        setText('subtitle', data.profile?.subtitle || '');
-        setText('affiliation', data.profile?.affiliation || '');
-        setText('aboutText', data.about?.text || '');
-        setText('contactEmail', data.contact?.email || '');
-        setText('footerText', data.footer?.text || '');
+</main>
 
-        renderPortrait(data.profile || {});
+<footer class="wrap">
+  © 2026 Hyeondong Kim
+</footer>
 
-        const badges = document.getElementById('badges');
-        badges.innerHTML = (data.profile?.badges || []).map(x => `<span class="chip">${escapeHtml(x)}</span>`).join('');
-        document.getElementById('heroLinks').innerHTML = renderLinks(data.profile?.links || []);
-
-        renderResearch(data.research || []);
-        renderPublications(data.publications || []);
-        renderProjects(data.projects || []);
-        renderExperience(data.experience || []);
-        renderHonors(data.honors || []);
-      } catch (err) {
-        console.error(err);
-        document.body.innerHTML = '<main class="wrap" style="padding:48px 24px;"><h1>Failed to load site.yaml</h1><p>Make sure <code>site.yaml</code> exists in the same folder as <code>index.html</code>.</p></main>';
-      }
-    }
-
-    init();
-  </script>
 </body>
 </html>
