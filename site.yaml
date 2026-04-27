@@ -1,5 +1,6 @@
 site:
   title: "Hyeondong Kim"
+
 profile:
   name: "Hyeondong Kim"
   subtitle: "Undergraduate Researcher · AI / ML · Robotics"
@@ -38,18 +39,22 @@ research:
     description: "Perception-driven systems for real-world robotic intelligence."
 
 publications:
-  - title: "EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting"
-    authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park†"
-    venue: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings, 2026"
-    links: []
-  - title: "Mapless Zero-Shot Autonomous Driving with Vision-Language Models"
-    authors: "Hyeondong Kim, Jaewon Jang, Jihoo Kim, Sunghoon Yuk, Joon-Hyuk Park, Giseop Kim†"
-    venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026 (submitted)"
-    links: []
-  - title: "A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism"
-    authors: " Sunghoon Yuk, Jihoo Kim, Jaewon Jang, Hyeondong Kim, Giseop Kim, Joon-Hyuk Park†"
-    venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026 (submitted)"
-    links: []
+  international:
+    - title: "EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting"
+      authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park†"
+      venue: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings, 2026"
+      links: []
+
+  domestic:
+    - title: "Mapless Zero-Shot Autonomous Driving with Vision-Language Models"
+      authors: "Hyeondong Kim, Jaewon Jang, Jihoo Kim, Sunghoon Yuk, Joon-Hyuk Park, Giseop Kim†"
+      venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026 (submitted)"
+      links: []
+
+    - title: "A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism"
+      authors: "Sunghoon Yuk, Jihoo Kim, Jaewon Jang, Hyeondong Kim, Giseop Kim, Joon-Hyuk Park†"
+      venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026 (submitted)"
+      links: []
 
 projects:
   - title: "Student Record Standardization Tool"
