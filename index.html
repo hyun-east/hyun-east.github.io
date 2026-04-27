@@ -18,9 +18,7 @@
 
     *{box-sizing:border-box}
 
-    html{
-      scroll-behavior:smooth;
-    }
+    html{scroll-behavior:smooth;}
 
     body{
       margin:0;
@@ -35,9 +33,7 @@
       text-decoration:none;
     }
 
-    a:hover{
-      text-decoration:underline;
-    }
+    a:hover{text-decoration:underline;}
 
     .wrap{
       max-width:var(--max);
@@ -80,13 +76,9 @@
       color:var(--muted);
     }
 
-    nav a:hover{
-      color:var(--accent);
-    }
+    nav a:hover{color:var(--accent);}
 
-    main{
-      padding:56px 0 80px;
-    }
+    main{padding:56px 0 80px;}
 
     .hero{
       display:grid;
@@ -159,13 +151,9 @@
       background:var(--soft);
     }
 
-    section{
-      padding:34px 0;
-    }
+    section{padding:34px 0;}
 
-    section + section{
-      margin-top:10px;
-    }
+    section + section{margin-top:10px;}
 
     h2{
       font-size:22px;
@@ -182,9 +170,22 @@
       color:var(--text);
     }
 
-    p{
-      margin:0 0 12px;
+    .pub-category{
+      margin-bottom:38px;
     }
+
+    .pub-category:last-child{
+      margin-bottom:0;
+    }
+
+    .pub-category-title{
+      font-size:17px;
+      color:var(--text);
+      margin:0 0 18px;
+      font-weight:600;
+    }
+
+    p{margin:0 0 12px;}
 
     .lead{
       font-size:17px;
@@ -263,14 +264,10 @@
       color:var(--muted);
     }
 
-    .hidden{
-      display:none;
-    }
+    .hidden{display:none;}
 
     @media (max-width: 760px){
-      main{
-        padding-top:36px;
-      }
+      main{padding-top:36px;}
 
       .hero{
         grid-template-columns:1fr;
@@ -293,13 +290,9 @@
         gap:28px;
       }
 
-      nav{
-        display:none;
-      }
+      nav{display:none;}
 
-      h1{
-        font-size:32px;
-      }
+      h1{font-size:32px;}
     }
   </style>
 </head>
@@ -445,17 +438,49 @@
       `).join('');
     }
 
-    function renderPublications(items = []) {
-      const root = document.getElementById('publicationsList');
-
-      root.innerHTML = items.map(item => `
+    function renderPublicationItem(item = {}) {
+      return `
         <div class="card pub">
           <h3>${escapeHtml(item.title || '')}</h3>
           <p>${escapeHtml(item.authors || '')}</p>
           <p class="meta"><em>${escapeHtml(item.venue || '')}</em></p>
           ${item.links && item.links.length ? `<div class="links">${renderLinks(item.links)}</div>` : ''}
         </div>
-      `).join('');
+      `;
+    }
+
+    function renderPublicationCategory(title, items = []) {
+      if (!items || !items.length) return '';
+
+      return `
+        <div class="pub-category">
+          <h3 class="pub-category-title">${escapeHtml(title)}</h3>
+          ${items.map(renderPublicationItem).join('')}
+        </div>
+      `;
+    }
+
+    function renderPublications(publications = {}) {
+      const root = document.getElementById('publicationsList');
+
+      // New recommended YAML structure:
+      // publications:
+      //   international:
+      //   domestic:
+      if (!Array.isArray(publications)) {
+        root.innerHTML = `
+          ${renderPublicationCategory('International', publications.international || [])}
+          ${renderPublicationCategory('Domestic', publications.domestic || [])}
+        `;
+        return;
+      }
+
+      // Backward compatibility for old YAML structure:
+      // publications:
+      //   - title:
+      //     authors:
+      //     venue:
+      root.innerHTML = publications.map(renderPublicationItem).join('');
     }
 
     function renderProjects(items = []) {
@@ -522,7 +547,7 @@
           renderLinks(data.profile?.links || []);
 
         renderResearch(data.research || []);
-        renderPublications(data.publications || []);
+        renderPublications(data.publications || {});
         renderProjects(data.projects || []);
         renderExperience(data.experience || []);
         renderHonors(data.honors || []);
