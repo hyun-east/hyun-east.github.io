@@ -403,7 +403,7 @@
         <a href="#publications">Publications</a>
         <a href="#projects">Projects</a>
         <a href="#experience">Experience</a>
-        <a href="#honors">Scholarships</a>
+        <a href="#honors">Honors</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
@@ -449,7 +449,7 @@
     </section>
 
     <section id="honors">
-      <h2>Fellowships & Scholarships</h2>
+      <h2>Honors</h2>
       <div class="grid-2" id="honorsGrid"></div>
     </section>
 
@@ -543,11 +543,23 @@
       `).join('');
     }
 
+    const myNames = ['Hyeondong Kim', 'H. Kim'];
+    
+    function highlightName(authors = '') {
+      let result = authors;
+      myNames.forEach(name => {
+        const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`\\b${escaped}\\b`, 'g');
+        result = result.replace(regex, `<strong>${name}</strong>`);
+      });
+      return result;
+    }
+
     function renderPublicationItem(item = {}) {
       return `
         <div class="card pub">
           <h3>${escapeHtml(item.title || '')}</h3>
-          <p>${escapeHtml(item.authors || '')}</p>
+          <p>${highlightName(escapeHtml(item.authors || ''))}</p>
           <p class="meta"><em>${escapeHtml(item.venue || '')}</em></p>
           ${item.links && item.links.length ? `<div class="links">${renderLinks(item.links)}</div>` : ''}
         </div>
