@@ -472,6 +472,14 @@
   <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
 
   <script>
+    window.addEventListener('load', () => {
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+      }
+    });
+  </script>
+
+  <script>
     function escapeHtml(str='') {
       return String(str)
         .replace(/&/g, '&amp;')
