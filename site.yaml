@@ -3,7 +3,7 @@ site:
 
 profile:
   name: "Hyeondong Kim"
-  subtitle: "Undergraduate Researcher · AI / ML · Robotics"
+  subtitle: "Undergraduate Researcher · Physical AI · Robotics"
   affiliation: "Intelligent Systems and Learning (ISL) Lab, DGIST"
   portrait:
     src: "assets/profile@2x.jpg"
@@ -40,30 +40,29 @@ research:
 
 publications:
   international:
-    - title: "EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting"
+    - title: "[c1] EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting"
       authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park†"
       venue: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings, 2026"
       links: []
 
   domestic:
-    - title: "Mapless Zero-Shot Autonomous Driving with Vision-Language Models"
-      authors: "Hyeondong Kim, Jaewon Jang, Jihoo Kim, Sunghoon Yuk, Joon-Hyuk Park, Giseop Kim†"
+    - title: "[c2] A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism"
+      authors: "Sunghoon Yuk, Jihoo Kim, Jaewon Jang, Hyeondong Kim, Giseop Kim, Joon-Hyuk Park†"
       venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026 (submitted)"
       links: []
-
-    - title: "A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism"
-      authors: "Sunghoon Yuk, Jihoo Kim, Jaewon Jang, Hyeondong Kim, Giseop Kim, Joon-Hyuk Park†"
+    - title: "[c1] Mapless Zero-Shot Autonomous Driving with Vision-Language Models"
+      authors: "Hyeondong Kim, Jaewon Jang, Jihoo Kim, Sunghoon Yuk, Joon-Hyuk Park, Giseop Kim†"
       venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026 (submitted)"
       links: []
 
 projects:
   - title: "Student Record Standardization Tool"
-    description: "Built an automated toolkit and visualization dashboard that normalizes and analyzes student record data using complex natural-language rules."
-    tags: ["nlp", "Unstructured data processing"]
+    description: "Built an automated toolkit and visualization dashboard that normalizes and analyzes student record data using complex natural-language rules. It is utilized at Poongsan High School, an autonomous private high school."
+    tags: ["nlp", "Unstructured data processing", "Automation"]
     links: []
   - title: "AI-based Interview Question Extraction"
     description: "Developed an API-based NLP pipeline that extracts and organizes domain-specific interview questions from large text corpora."
-    tags: ["ai", "nlp"]
+    tags: ["ai", "Automation"]
     links: []
   - title: "Data Structure & Data Science Study (YouTube)"
     description: "Created a structured learning curriculum that bridges concepts, hands-on coding, and concise summaries for self-learners."
@@ -71,10 +70,6 @@ projects:
     links: []
 
 experience:
-  - period: "Sep 2025 – Dec 2025"
-    title: "Teaching Assistant — CS201 (Object-Oriented Programming)"
-    organization: "DGIST"
-    description: "Supported a C++ object-oriented programming course for approximately 110 students."
   - period: "Sep 2025 – Present"
     title: "Undergraduate Student Researcher"
     organization: "Intelligent Systems and Learning (ISL) Lab, DGIST"
@@ -83,11 +78,15 @@ experience:
     title: "Associate Member — Young Engineers Honor Society"
     organization: "National Academy of Engineering of Korea"
     description: "Recognized for engineering leadership and academic achievement."
+  - period: "Sep 2025 – Dec 2025"
+    title: "Teaching Assistant — CS201 (Object-Oriented Programming)"
+    organization: "DGIST"
+    description: "Supported a C++ object-oriented programming course for approximately 110 students."
   - period: "Mar 2025 – Feb 2026"
     title: "Board Member — Midam Scholarship Foundation"
     organization: ""
     description: "Participated in nationwide board meetings and mentorship-related programs."
-  - period: "Mar 2025 – Present"
+  - period: "Mar 2025 – Nov 2025"
     title: "DGIST SNS Supporters"
     organization: ""
     description: "Created and published content on DGIST research and student life."
