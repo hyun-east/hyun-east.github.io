@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conference Deadline Board</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #ffffff;
+      --bg-soft: #f8fafc;
+      --surface: #ffffff;
+      --surface-strong: #f8fafc;
+      --surface-contrast: #111827;
+      --ink: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --line-strong: #d1d5db;
+      --green: #206746;
+      --green-soft: #e4f2ea;
+      --amber: #9b5a07;
+      --amber-soft: #fff1dc;
+      --blue: #2858bf;
+      --blue-soft: #e7efff;
+      --red: #bc4b39;
+      --red-soft: #ffe7e0;
+      --slate: #707b8d;
+      --slate-soft: #eef1f5;
+      --shadow: 0 10px 24px rgba(17, 24, 39, 0.05);
+      --radius-xl: 20px;
+      --radius-lg: 16px;
+      --radius: 12px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Pretendard Variable", "Inter Variable", "Inter", "Segoe UI", sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    code {
+      padding: 0.1em 0.45em;
+      border-radius: 999px;
+      background: var(--bg-soft);
+      font-family: "SFMono-Regular", "SF Mono", Consolas, monospace;
+      font-size: 0.9em;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .page {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 52px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 28px;
+      align-items: start;
+      margin-bottom: 34px;
+    }
+
+    .intro,
+    .clock {
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    .intro {
+      padding: 0;
+      background: transparent;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      font-weight: 650;
+    }
+
+    .clock {
+      display: grid;
+      gap: 8px;
+      justify-items: end;
+      align-self: start;
+      padding: 0;
+      background: transparent;
+      color: var(--ink);
+      text-align: right;
+    }
+
+    .clock-label {
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .clock strong {
+      display: block;
+      font-size: 1.12rem;
+      font-weight: 600;
+      line-height: 1.35;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .clock small {
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 28px;
+      align-items: start;
+      margin-bottom: 34px;
+    }
+
+    .hero-card,
+    .hero-count-card,
+    .controls,
+    .summary-card,
+    .timeline-item,
+    .card {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .hero-card {
+      padding: 0;
+    }
+
+    .hero-main {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 10px;
+    }
+
+    .hero-head h2 {
+      margin: 10px 0 0;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      font-weight: 650;
+    }
+
+    .hero-meta {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .hero-stage-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 28px;
+      margin-top: 22px;
+    }
+
+    .stage-tile {
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .hero-side,
+    .card-actions {
+      display: grid;
+      gap: 8px;
+      justify-items: end;
+    }
+
+    .stage-tile-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .stage-name {
+      font-size: 0.85rem;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+
+    .stage-date {
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .stage-date.missing {
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .hero-count-card {
+      display: grid;
+      gap: 16px;
+      padding: 20px 22px;
+      background: var(--surface-strong);
+      color: var(--ink);
+      border-radius: var(--radius-lg);
+    }
+
+    .hero-count-meta span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-count-meta strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 0;
+      margin-bottom: 18px;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search {
+      width: 100%;
+      height: 50px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink);
+      padding: 0 18px;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: rgba(40, 88, 191, 0.48);
+      box-shadow: 0 0 0 4px rgba(40, 88, 191, 0.08);
+    }
+
+    .filters {
+      display: inline-grid;
+      grid-auto-flow: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      padding: 0 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 160ms ease;
+    }
+
+    .filter:hover {
+      border-color: var(--line-strong);
+      color: var(--ink);
+      transform: translateY(-1px);
+    }
+
+    .filter[aria-pressed="true"] {
+      border-color: transparent;
+      background: var(--surface-contrast);
+      color: #fff;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      margin-bottom: 40px;
+    }
+
+    .summary-card {
+      padding: 0 18px;
+    }
+
+    .summary-card:first-child {
+      padding-left: 0;
+    }
+
+    .summary-card + .summary-card {
+      border-left: 1px solid var(--line);
+    }
+
+    .summary-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 1.65rem;
+      font-weight: 600;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .section {
+      margin-top: 36px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 1.28rem;
+      line-height: 1.16;
+      letter-spacing: -0.02em;
+      font-weight: 650;
+    }
+
+    .section-head span {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 650;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(220px, 0.9fr) auto;
+      gap: 22px;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline-topline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .timeline-item h3,
+    .card h3 {
+      margin: 10px 0 0;
+      font-size: 1.08rem;
+      line-height: 1.25;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .timeline-meta {
+      margin: 9px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .timeline-date {
+      margin-top: 8px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .timeline-side {
+      display: grid;
+      gap: 12px;
+      justify-items: end;
+      min-width: 128px;
+    }
+
+    .priority-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 14px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .priority-chip.urgent {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .priority-chip.warning {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .priority-chip.steady {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .priority-chip.closed {
+      background: var(--slate-soft);
+      color: var(--slate);
+    }
+
+    .stage-pill,
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 0 11px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .stage-pill.submission {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .stage-pill.review_release {
+      background: var(--slate-soft);
+      color: var(--surface-contrast);
+    }
+
+    .stage-pill.rebuttal {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .stage-pill.decision {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .stage-pill.closed {
+      background: var(--slate-soft);
+      color: var(--slate);
+    }
+
+    .status-pill {
+      min-height: auto;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      font-size: 0.78rem;
+      font-weight: 600;
+      justify-content: flex-end;
+    }
+
+    .status-pill.next {
+      color: var(--surface-contrast);
+    }
+
+    .status-pill.upcoming {
+      color: var(--blue);
+    }
+
+    .status-pill.past {
+      color: var(--green);
+    }
+
+    .status-pill.missing {
+      color: var(--slate);
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .count-unit {
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      text-align: center;
+    }
+
+    .countdown.compact .count-unit {
+      background: transparent;
+    }
+
+    .count-unit strong {
+      display: block;
+      font-size: 1.45rem;
+      font-weight: 600;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown.compact .count-unit strong {
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+
+    .count-unit span {
+      display: block;
+      margin-top: 4px;
+      color: inherit;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.74;
+    }
+
+    .countdown-empty {
+      display: grid;
+      place-items: center;
+      min-height: 80px;
+      border: 0;
+      border-radius: 0;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+      background: transparent;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px 26px;
+    }
+
+    .card {
+      display: grid;
+      gap: 16px;
+      padding: 22px 22px 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card.submission {
+      border-top: 3px solid rgba(32, 103, 70, 0.28);
+    }
+
+    .card.review_release {
+      border-top: 3px solid rgba(17, 24, 39, 0.18);
+    }
+
+    .card.rebuttal {
+      border-top: 3px solid rgba(155, 90, 7, 0.28);
+    }
+
+    .card.decision {
+      border-top: 3px solid rgba(40, 88, 191, 0.24);
+    }
+
+    .card.closed {
+      border-top: 3px solid rgba(112, 123, 141, 0.2);
+      opacity: 0.88;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .card-meta {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .priority-panel {
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+    }
+
+    .priority-panel span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .priority-panel strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .priority-panel p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .milestones {
+      display: grid;
+      gap: 0;
+      padding-top: 4px;
+    }
+
+    .milestone-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .milestone-row:last-child {
+      border-bottom: 0;
+    }
+
+    .milestone-label {
+      font-weight: 650;
+    }
+
+    .milestone-date {
+      min-width: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 15px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: 160ms ease;
+    }
+
+    .pin-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 160ms ease;
+    }
+
+    .pin-button:hover {
+      border-color: var(--line-strong);
+      color: var(--ink);
+    }
+
+    .pin-button[data-pinned="true"] {
+      border-color: rgba(40, 88, 191, 0.28);
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .pin-button.small {
+      min-height: 36px;
+      padding: 0 13px;
+    }
+
+    .link-button:hover {
+      border-color: var(--line-strong);
+      transform: translateY(-1px);
+    }
+
+    .link-button.disabled {
+      border-style: dashed;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .empty,
+    .error {
+      padding: 14px 0 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .error {
+      border-color: rgba(188, 75, 57, 0.35);
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    @media (max-width: 1040px) {
+      .masthead,
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .clock {
+        justify-items: start;
+        text-align: left;
+      }
+
+      .hero {
+        gap: 18px;
+      }
+
+      .summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .summary-card:nth-child(3) {
+        border-left: 0;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-side {
+        justify-items: start;
+      }
+
+      .board {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 20px, 1280px);
+        padding-top: 18px;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        grid-auto-flow: row;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero-main,
+      .card-top,
+      .section-head {
+        display: grid;
+      }
+
+      .hero-side,
+      .card-actions,
+      .timeline-side {
+        justify-items: start;
+      }
+
+      .hero-stage-grid,
+      .countdown {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .summary,
+      .hero-stage-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-count-card {
+        padding: 0;
+        background: transparent;
+        border-radius: 0;
+      }
+
+      .summary-card {
+        padding: 0 0 14px;
+      }
+
+      .summary-card + .summary-card {
+        padding-top: 14px;
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .milestone-row {
+        grid-template-columns: 1fr;
+      }
+
+      .card-footer {
+        align-items: stretch;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <section class="intro">
+        <h1>Conference Deadline Board</h1>
+      </section>
+      <aside class="clock" aria-live="polite">
+        <div>
+          <span class="clock-label">현재 시각</span>
+          <strong id="currentTime">--</strong>
+        </div>
+      </aside>
+    </header>
+
+    <div id="heroSection"></div>
+
+    <section class="controls" aria-label="Search and filters">
+      <div class="search-wrap">
+        <label class="sr-only" for="searchInput">검색</label>
+        <input id="searchInput" class="search" type="search" placeholder="학회명, 분야, 지역 검색" autocomplete="off">
+      </div>
+      <div class="filters" aria-label="Status filter">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">전체</button>
+        <button class="filter" type="button" data-filter="submission" aria-pressed="false">제출</button>
+        <button class="filter" type="button" data-filter="review_release" aria-pressed="false">리뷰 공개</button>
+        <button class="filter" type="button" data-filter="rebuttal" aria-pressed="false">리버탈</button>
+        <button class="filter" type="button" data-filter="decision" aria-pressed="false">결과</button>
+      </div>
+    </section>
+
+    <section class="summary" aria-label="Deadline summary">
+      <article class="summary-card">
+        <span>표시 중 학회</span>
+        <strong id="countVisible">0</strong>
+      </article>
+      <article class="summary-card">
+        <span>진행 중 일정</span>
+        <strong id="countActive">0</strong>
+      </article>
+      <article class="summary-card">
+        <span>7일 이내</span>
+        <strong id="countNextWeek">0</strong>
+      </article>
+      <article class="summary-card">
+        <span>일정 완료</span>
+        <strong id="countClosed">0</strong>
+      </article>
+    </section>
+
+    <div id="message"></div>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>날짜순 일정</h2>
+        </div>
+        <span id="labelTimeline">0건</span>
+      </div>
+      <div id="timelineContainer" class="timeline"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>학회별 상세 보드</h2>
+        </div>
+        <span id="labelBoard">0건</span>
+      </div>
+      <div id="cardsContainer" class="board"></div>
+    </section>
+  </main>
+
+  <script>
+    const DAY = 86400000;
+    const HOUR = 3600000;
+    const MINUTE = 60000;
+    const PIN_STORAGE_KEY = "deadlinePinnedConferences";
+
+    const STAGES = [
+      { id: "submission", label: "제출" },
+      { id: "review_release", label: "리뷰 공개" },
+      { id: "rebuttal", label: "리버탈" },
+      { id: "decision", label: "결과" }
+    ];
+
+    const state = {
+      conferences: [],
+      filter: "all",
+      query: "",
+      pinned: null
+    };
+
+    const formatters = {
+      full: new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZoneName: "short"
+      }),
+      short: new Intl.DateTimeFormat("ko-KR", {
+        year: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      }),
+      clock: new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        timeZoneName: "short"
+      })
+    };
+
+    const counts = {
+      visible: document.getElementById("countVisible"),
+      active: document.getElementById("countActive"),
+      nextWeek: document.getElementById("countNextWeek"),
+      closed: document.getElementById("countClosed")
+    };
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function isValidDate(date) {
+      return date instanceof Date && !Number.isNaN(date.getTime());
+    }
+
+    function parseDeadline(value) {
+      if (!value) return null;
+      if (value instanceof Date) return isValidDate(value) ? value : null;
+
+      const text = String(value).trim();
+      if (!text) return null;
+
+      let normalized = text;
+      const hasTimezone = /([zZ]|[+-]\d{2}:?\d{2})$/.test(text);
+      const hasTime = text.includes("T");
+
+      if (!hasTimezone && hasTime) {
+        normalized = `${text}-12:00`;
+      } else if (!hasTimezone && /^\d{4}-\d{2}-\d{2}$/.test(text)) {
+        normalized = `${text}T23:59:59-12:00`;
+      }
+
+      const parsed = new Date(normalized);
+      return isValidDate(parsed) ? parsed : null;
+    }
+
+    function normalizeConference(raw, index) {
+      const conf = raw && typeof raw === "object" ? raw : {};
+
+      return {
+        id: index + 1,
+        pinKey: conf.url ? `${conf.name || `Conference ${index + 1}`}::${conf.url}` : (conf.name || `Conference ${index + 1}`),
+        name: conf.name || `Conference ${index + 1}`,
+        url: conf.url || "",
+        venue: conf.venue || "",
+        location: conf.location || "",
+        stages: STAGES.map(stage => ({
+          ...stage,
+          date: parseDeadline(conf[stage.id])
+        }))
+      };
+    }
+
+    function getUrgency(diffMs) {
+      if (diffMs <= 3 * DAY) return "urgent";
+      if (diffMs <= 10 * DAY) return "warning";
+      return "steady";
+    }
+
+    function formatDate(date, variant = "full") {
+      if (!isValidDate(date)) return "미정";
+      return formatters[variant].format(date);
+    }
+
+    function getDiffParts(target, now) {
+      const diff = Math.max(0, target - now);
+      return {
+        days: Math.floor(diff / DAY),
+        hours: Math.floor((diff % DAY) / HOUR),
+        minutes: Math.floor((diff % HOUR) / MINUTE),
+        seconds: Math.floor((diff % MINUTE) / 1000)
+      };
+    }
+
+    function describeRemaining(target, now) {
+      if (!isValidDate(target)) return "일정 미정";
+
+      const diff = target - now;
+      if (diff <= 0) return "마감 완료";
+      if (diff < HOUR) return `${Math.ceil(diff / MINUTE)}분 남음`;
+      if (diff < DAY) return `${Math.ceil(diff / HOUR)}시간 남음`;
+      return `${Math.ceil(diff / DAY)}일 남음`;
+    }
+
+    function priorityLabel(target, now) {
+      if (!isValidDate(target)) return "미정";
+
+      const diff = target - now;
+      if (diff <= 0) return "완료";
+      if (diff < DAY) return "오늘";
+      return `D-${Math.ceil(diff / DAY)}`;
+    }
+
+    function renderCountdown(target, now, variant = "hero") {
+      if (!isValidDate(target)) {
+        return `<div class="countdown-empty">카운트다운을 표시할 날짜가 없습니다.</div>`;
+      }
+
+      const parts = getDiffParts(target, now);
+      const countdownClass = variant === "compact" ? "countdown compact" : "countdown";
+
+      return `
+        <div class="${countdownClass}">
+          <div class="count-unit"><strong>${parts.days}</strong><span>Days</span></div>
+          <div class="count-unit"><strong>${parts.hours}</strong><span>Hours</span></div>
+          <div class="count-unit"><strong>${parts.minutes}</strong><span>Minutes</span></div>
+          <div class="count-unit"><strong>${parts.seconds}</strong><span>Seconds</span></div>
+        </div>
+      `;
+    }
+
+    function deriveConference(conf, now) {
+      const isPinned = state.pinned === conf.pinKey;
+      const datedStages = conf.stages
+        .filter(stage => isValidDate(stage.date))
+        .slice()
+        .sort((a, b) => a.date - b.date);
+
+      const upcomingStages = datedStages.filter(stage => stage.date > now);
+      const nextStage = upcomingStages[0] || null;
+      const lastStage = datedStages[datedStages.length - 1] || null;
+
+      const stages = conf.stages.map(stage => {
+        const stateLabel = !isValidDate(stage.date)
+          ? "미정"
+          : nextStage && stage.id === nextStage.id
+            ? "다음"
+            : stage.date > now
+              ? "예정"
+              : "완료";
+
+        const state = !isValidDate(stage.date)
+          ? "missing"
+          : nextStage && stage.id === nextStage.id
+            ? "next"
+            : stage.date > now
+              ? "upcoming"
+              : "past";
+
+        return {
+          ...stage,
+          state,
+          stateLabel
+        };
+      });
+
+      return {
+        ...conf,
+        stages,
+        nextStage,
+        lastStage,
+        target: nextStage ? nextStage.date : lastStage ? lastStage.date : null,
+        status: nextStage ? nextStage.id : "closed",
+        isActive: Boolean(nextStage),
+        urgency: nextStage ? getUrgency(nextStage.date - now) : "closed",
+        isPinned
+      };
+    }
+
+    function sortConferences(list) {
+      return list.slice().sort((a, b) => {
+        if (a.isPinned !== b.isPinned) {
+          return a.isPinned ? -1 : 1;
+        }
+
+        if (a.isActive !== b.isActive) {
+          return a.isActive ? -1 : 1;
+        }
+
+        const aTime = isValidDate(a.target) ? a.target.getTime() : (a.isActive ? Infinity : -Infinity);
+        const bTime = isValidDate(b.target) ? b.target.getTime() : (b.isActive ? Infinity : -Infinity);
+
+        if (a.isActive) {
+          if (aTime !== bTime) return aTime - bTime;
+        } else if (aTime !== bTime) {
+          return bTime - aTime;
+        }
+
+        return a.name.localeCompare(b.name, "ko-KR");
+      });
+    }
+
+    function searchText(conf) {
+      return [
+        conf.name,
+        conf.venue,
+        conf.location,
+        ...conf.stages.map(stage => `${stage.label} ${formatDate(stage.date, "short")}`)
+      ].filter(Boolean).join(" ").toLowerCase();
+    }
+
+    function getVisibleConferences(now) {
+      const derived = state.conferences.map(conf => deriveConference(conf, now));
+
+      const filtered = derived.filter(conf => {
+        const filterMatch = state.filter === "all" || conf.status === state.filter;
+        const queryMatch = !state.query || searchText(conf).includes(state.query);
+        return filterMatch && queryMatch;
+      });
+
+      return sortConferences(filtered);
+    }
+
+    function renderLink(url, label = "공식 페이지") {
+      if (!url) {
+        return `<span class="link-button disabled">URL 없음</span>`;
+      }
+
+      return `<a class="link-button" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+    }
+
+    function renderPinButton(conf, variant = "") {
+      const buttonClass = variant ? `pin-button ${variant}` : "pin-button";
+      return `
+        <button
+          class="${buttonClass}"
+          type="button"
+          data-pin-toggle="${escapeHtml(conf.pinKey)}"
+          data-pinned="${conf.isPinned ? "true" : "false"}"
+          aria-pressed="${conf.isPinned ? "true" : "false"}"
+        >${conf.isPinned ? "고정됨" : "고정"}</button>
+      `;
+    }
+
+    function loadPins() {
+      try {
+        const raw = localStorage.getItem(PIN_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : null;
+
+        if (typeof parsed === "string") {
+          return parsed;
+        }
+
+        if (Array.isArray(parsed)) {
+          return parsed.find(value => typeof value === "string") || null;
+        }
+
+        return null;
+      } catch {
+        return null;
+      }
+    }
+
+    function savePins() {
+      try {
+        localStorage.setItem(PIN_STORAGE_KEY, JSON.stringify(state.pinned));
+      } catch {
+        // Ignore storage failures and keep UI functional.
+      }
+    }
+
+    function togglePin(pinKey) {
+      if (!pinKey) return;
+
+      state.pinned = state.pinned === pinKey ? null : pinKey;
+
+      savePins();
+    }
+
+    function getPinnedConference(now) {
+      if (!state.pinned) return null;
+
+      const pinned = state.conferences.find(conf => conf.pinKey === state.pinned);
+      return pinned ? deriveConference(pinned, now) : null;
+    }
+
+    function renderHeroSection(visible, now) {
+      const heroSection = document.getElementById("heroSection");
+      const pinned = getPinnedConference(now);
+      const active = visible.filter(conf => conf.isActive);
+
+      if ((!pinned || !pinned.isActive) && active.length === 0) {
+        heroSection.innerHTML = `
+          <section class="hero">
+            <div class="hero-card">
+              <h2>현재 예정된 다음 일정이 없습니다.</h2>
+            </div>
+            <div class="hero-count-card">
+              <div class="hero-count-meta">
+                <span>카운트다운</span>
+                <strong>활성 일정 없음</strong>
+              </div>
+              <div class="countdown-empty">-</div>
+            </div>
+          </section>
+        `;
+        return;
+      }
+
+      const spotlight = pinned && pinned.isActive ? pinned : active[0];
+      const venue = spotlight.venue || "분야 미입력";
+      const location = spotlight.location || "지역 미입력";
+      const label = spotlight.nextStage ? spotlight.nextStage.label : "종료";
+
+      heroSection.innerHTML = `
+        <section class="hero">
+          <article class="hero-card">
+            <div class="hero-main">
+              <div class="hero-head">
+                <span class="stage-pill ${spotlight.status}">${label}</span>
+                <h2>${escapeHtml(spotlight.name)}</h2>
+                <p class="hero-meta"><strong>${escapeHtml(venue)}</strong> · ${escapeHtml(location)}<br>${label} 예정 시각: <strong>${formatDate(spotlight.target)}</strong></p>
+              </div>
+              <div class="hero-side">
+                <span class="priority-chip ${spotlight.urgency}">${priorityLabel(spotlight.target, now)}</span>
+                ${renderPinButton(spotlight)}
+              </div>
+            </div>
+            <div class="hero-stage-grid">
+              ${spotlight.stages.map(stage => `
+                <div class="stage-tile ${stage.id}">
+                  <div class="stage-tile-head">
+                    <span class="stage-name">${stage.label}</span>
+                    <span class="status-pill ${stage.state}">${stage.stateLabel}</span>
+                  </div>
+                  <div class="stage-date ${stage.state === "missing" ? "missing" : ""}">${formatDate(stage.date)}</div>
+                </div>
+              `).join("")}
+            </div>
+          </article>
+          <aside class="hero-count-card">
+            <div class="hero-count-meta">
+              <span>카운트다운</span>
+              <strong>${escapeHtml(spotlight.name)} · ${label}</strong>
+            </div>
+            ${renderCountdown(spotlight.target, now)}
+            ${renderLink(spotlight.url)}
+          </aside>
+        </section>
+      `;
+    }
+
+    function renderSummary(visible, now) {
+      const active = visible.filter(conf => conf.isActive);
+      const nextWeek = active.filter(conf => isValidDate(conf.target) && (conf.target - now) <= 7 * DAY);
+      const closed = visible.filter(conf => !conf.isActive);
+
+      counts.visible.textContent = visible.length;
+      counts.active.textContent = active.length;
+      counts.nextWeek.textContent = nextWeek.length;
+      counts.closed.textContent = closed.length;
+    }
+
+    function renderTimeline(visible, now) {
+      const active = visible.filter(conf => conf.isActive);
+      const timeline = document.getElementById("timelineContainer");
+      document.getElementById("labelTimeline").textContent = `${active.length}건`;
+
+      if (active.length === 0) {
+        timeline.innerHTML = `<div class="empty">표시할 진행 중 일정이 없습니다.</div>`;
+        return;
+      }
+
+      timeline.innerHTML = active.map(conf => `
+        <article class="timeline-item ${conf.urgency}">
+          <div>
+            <div class="timeline-topline">
+              <span class="stage-pill ${conf.status}">${conf.nextStage.label}</span>
+            </div>
+            <h3>${escapeHtml(conf.name)}</h3>
+            <p class="timeline-meta"><strong>${escapeHtml(conf.venue || "분야 미입력")}</strong> · ${escapeHtml(conf.location || "지역 미입력")}</p>
+            <div class="timeline-date">${conf.nextStage.label} · ${formatDate(conf.target)}</div>
+          </div>
+          ${renderCountdown(conf.target, now, "compact")}
+          <div class="timeline-side">
+            <span class="priority-chip ${conf.urgency}">${priorityLabel(conf.target, now)}</span>
+            ${renderPinButton(conf, "small")}
+            ${renderLink(conf.url)}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderCards(visible, now) {
+      const cardsContainer = document.getElementById("cardsContainer");
+      document.getElementById("labelBoard").textContent = `${visible.length}건`;
+
+      if (visible.length === 0) {
+        cardsContainer.innerHTML = `<div class="empty">검색 결과가 없습니다. 학회명, 분야, 지역 기준으로 다시 검색해 보세요.</div>`;
+        return;
+      }
+
+      cardsContainer.innerHTML = visible.map(conf => {
+        const headline = conf.isActive
+          ? `${conf.nextStage.label}`
+          : conf.lastStage
+            ? `${conf.lastStage.label} 종료`
+            : "일정 없음";
+
+        const subline = conf.isActive
+          ? `${formatDate(conf.target)} · ${describeRemaining(conf.target, now)}`
+          : conf.lastStage
+            ? `${formatDate(conf.lastStage.date)} 기준 마지막 일정`
+            : "등록된 날짜가 없습니다.";
+
+        return `
+          <article class="card ${conf.status}">
+            <div class="card-top">
+              <div>
+                <h3>${escapeHtml(conf.name)}</h3>
+              </div>
+              <div class="card-actions">
+                <span class="stage-pill ${conf.status}">${conf.isActive ? conf.nextStage.label : "완료"}</span>
+                ${renderPinButton(conf, "small")}
+              </div>
+            </div>
+
+            <div class="card-meta"><strong>${escapeHtml(conf.venue || "분야 미입력")}</strong> · ${escapeHtml(conf.location || "지역 미입력")}</div>
+
+            <div class="priority-panel">
+              <span>다음 일정</span>
+              <strong>${headline}</strong>
+              <p>${subline}</p>
+            </div>
+
+            <div class="milestones">
+              ${conf.stages.map(stage => `
+                <div class="milestone-row">
+                  <div class="milestone-label">${stage.label}</div>
+                  <div class="milestone-date">${formatDate(stage.date, "short")}</div>
+                  <span class="status-pill ${stage.state}">${stage.stateLabel}</span>
+                </div>
+              `).join("")}
+            </div>
+
+            <div class="card-footer">
+              ${renderLink(conf.url)}
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderClock(now) {
+      document.getElementById("currentTime").textContent = formatters.clock.format(now);
+    }
+
+    function render() {
+      const now = new Date();
+      const visible = getVisibleConferences(now);
+
+      renderClock(now);
+      renderHeroSection(visible, now);
+      renderSummary(visible, now);
+      renderTimeline(visible, now);
+      renderCards(visible, now);
+    }
+
+    function bindEvents() {
+      document.getElementById("searchInput").addEventListener("input", event => {
+        state.query = event.target.value.trim().toLowerCase();
+        render();
+      });
+
+      document.querySelectorAll(".filter").forEach(button => {
+        button.addEventListener("click", () => {
+          state.filter = button.dataset.filter;
+          document.querySelectorAll(".filter").forEach(item => {
+            item.setAttribute("aria-pressed", String(item === button));
+          });
+          render();
+        });
+      });
+
+      document.addEventListener("click", event => {
+        const pinButton = event.target.closest("[data-pin-toggle]");
+        if (!pinButton) return;
+
+        togglePin(pinButton.dataset.pinToggle);
+        render();
+      });
+    }
+
+    async function loadData() {
+      const response = await fetch("conferences.yml", { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error(`conferences.yml을 불러오지 못했습니다. (${response.status})`);
+      }
+
+      const yaml = await response.text();
+      const parsed = jsyaml.load(yaml);
+      if (!Array.isArray(parsed)) {
+        throw new Error("conferences.yml의 최상위 구조는 배열이어야 합니다.");
+      }
+
+      state.conferences = parsed.map(normalizeConference);
+      const validPinKeys = new Set(state.conferences.map(conf => conf.pinKey));
+      if (state.pinned && !validPinKeys.has(state.pinned)) {
+        state.pinned = null;
+      }
+      savePins();
+    }
+
+    async function init() {
+      state.pinned = loadPins();
+      bindEvents();
+      renderClock(new Date());
+
+      try {
+        await loadData();
+        render();
+      } catch (error) {
+        document.getElementById("message").innerHTML = `<div class="error">${escapeHtml(error.message)}</div>`;
+      }
+
+      setInterval(render, 1000);
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+
+- name: "ECCV 2026"
+  url: "https://eccv.ecva.net/Conferences/2026"
+  venue: "Computer Vision"
+  location: "Malmö, Sweden"
+  submission: "2026-03-06T07:00:00+09:00"     # 공식: 3/5 23:00 CET
+  review_release: "2026-05-02T00:00:00+09:00" # 공식: 5/2 리뷰 공개
+  rebuttal: "2026-05-11T23:59:59+09:00"       # 공식: 5/11 rebuttal 마감
+  decision: "2026-06-17T23:59:59+09:00"       # 공식: 6/17 최종 결정
+  note: "전체 일정 공식 확정. 현재 리뷰/rebuttal 단계 진행 중. 회의는 2026-09-08~12"
+
+- name: "NeurIPS 2026"
+  url: "https://neurips.cc/Conferences/2026"
+  venue: "Machine Learning"
+  location: "Sydney, Australia (+ Atlanta, Paris 보조 개최지)"
+  submission: "2026-05-07T20:59:59+09:00"     # 공식: Full Paper 5/6 23:59 AoE (Abstract: 5/4 AoE → KST 5/5 20:59)
+  review_release: "2026-07-28T00:00:00+09:00" # 공식: Author+Reviewer+AC Discussion 시작 7/27 AoE (리뷰 공개 시점)
+  rebuttal: "2026-08-04T20:59:59+09:00"        # 공식: Author+Reviewer+AC Discussion 종료 8/3 AoE
+  decision: "2026-09-25T20:59:59+09:00"        # 공식: 9/24 AoE author notification
+  note: >
+    메인 트랙 기준. 저자 참여 discussion 기간 7/27~8/3 AoE, 이후 Reviewer+AC only
+    discussion 8/3~8/10 AoE. Datasets and Benchmarks / Evaluations and Datasets /
+    Position Papers 트랙도 동일 일정. 회의는 2026-12-06~12
+
+- name: "EMNLP 2026"
+  url: "https://2026.emnlp.org"
+  venue: "NLP"
+  location: "Budapest, Hungary"
+  submission: "2026-05-26T20:59:59+09:00"     # 공식: ARR 5/25 23:59 AoE
+  review_release: null                         # ARR 리뷰 순차 공개, 단일 날짜 미고지
+  rebuttal: "2026-07-13T20:59:59+09:00"        # 공식: author response & discussion 7/7~7/13 (마감 KST 환산)
+  decision: "2026-08-20T23:59:59+09:00"        # 공식: 8/20 acceptance notification
+  note: >
+    ARR 기반. rebuttal은 author response/discussion 기간(7/7~7/13).
+    meta-review 공개 7/30, EMNLP commitment 8/2. 회의는 2026-10-24~29
+
+- name: "WACV 2027 (Round 1)"
+  url: "https://wacv.thecvf.com/Conferences/2027"
+  venue: "Computer Vision (Applications)"
+  location: "Orlando, USA"
+  submission: "2026-06-27T20:59:59+09:00"     # 공식: Round 1 paper 6/26 AoE
+  review_release: "2026-08-07T00:00:00+09:00" # 공식: Round 1 리뷰/결정 공개
+  rebuttal: "2026-08-21T23:59:59+09:00"       # 공식: Round 1 rebuttal & revision 제출
+  decision: "2026-10-09T23:59:59+09:00"       # 공식: Round 1 최종 결정
+  note: >
+    2-round 시스템의 Round 1. enrollment 6/19 AoE, supplementary 6/28 AoE.
+    회의는 2027-01-05~09
+
+- name: "WACV 2027 (Round 2)"
+  url: "https://wacv.thecvf.com/Conferences/2027"
+  venue: "Computer Vision (Applications)"
+  location: "Orlando, USA"
+  submission: "2026-08-29T20:59:59+09:00"     # 공식: Round 2 paper 8/28 AoE
+  review_release: null                         # Round 2는 별도 리뷰 공개 없이 결정으로 직행
+  rebuttal: null                               # 공식: Round 2는 rebuttal 단계 없음
+  decision: "2026-10-09T23:59:59+09:00"        # 공식: Round 2 리뷰/결정 공개
+  note: >
+    2-round 시스템의 Round 2. enrollment 8/21 AoE, supplementary 8/30 AoE.
+    Round 2 신규 제출은 rebuttal 없이 바로 최종 결정. camera-ready 11/2 AoE
+
+- name: "AAAI 2027"
+  url: "https://aaai.org/conference/aaai/aaai-27/"
+  venue: "Artificial Intelligence"
+  location: "Montréal, Canada"
+  submission: "2026-07-28T20:59:00+09:00"   # 공식(OpenReview): 7/28 11:59 UTC. Abstract 등록: 7/21 11:59 UTC (→ KST 7/21 20:59)
+  review_release: null                       # 공식 미발표
+  rebuttal: null                             # 공식 미발표
+  decision: null                             # 공식 미발표
+  note: >
+    submission 일정만 공식 확정 (OpenReview 기준, UTC+0).
+    Submission 사이트 오픈 6/24 11:59 UTC, Abstract 등록 마감 7/21 11:59 UTC (KST 7/21 20:59),
+    Full paper 마감 7/28 11:59 UTC (KST 7/28 20:59).
+    review release / rebuttal / decision은 미발표. AAAI는 Phase 1/2 리뷰 + author
+    feedback 구조 (참고로 AAAI-26은 Phase1 reject 9/15, author feedback 10/7~13,
+    final notification 11/8 AoE였음). 회의는 2027-02-16~23
