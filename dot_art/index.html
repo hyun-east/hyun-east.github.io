@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="ko" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text Dot Art</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --panel-2: #f0f2f7;
+      --text: #111827;
+      --muted: #667085;
+      --border: #d9dee8;
+      --accent: #2563eb;
+      --accent-text: #ffffff;
+      --danger: #dc2626;
+      --shadow: 0 18px 50px rgba(15, 23, 42, .10);
+      --output-bg: #ffffff;
+    }
+
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #0f1117;
+      --panel: #171a23;
+      --panel-2: #202532;
+      --text: #eef2ff;
+      --muted: #aab3c8;
+      --border: #2d3548;
+      --accent: #8ab4ff;
+      --accent-text: #08111f;
+      --danger: #ff8a8a;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .35);
+      --output-bg: #080a0f;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html[data-theme="auto"] {
+        color-scheme: dark;
+        --bg: #0f1117;
+        --panel: #171a23;
+        --panel-2: #202532;
+        --text: #eef2ff;
+        --muted: #aab3c8;
+        --border: #2d3548;
+        --accent: #8ab4ff;
+        --accent-text: #08111f;
+        --danger: #ff8a8a;
+        --shadow: 0 18px 50px rgba(0, 0, 0, .35);
+        --output-bg: #080a0f;
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .app {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 36px);
+      letter-spacing: -0.04em;
+    }
+
+    .theme {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-title {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+    }
+
+    .controls {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    input,
+    select,
+    button {
+      font: inherit;
+    }
+
+    input[type="file"],
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 10px 11px;
+      outline: none;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .range-row {
+      display: grid;
+      grid-template-columns: 1fr 68px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .check input { width: auto; }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button {
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 700;
+      background: var(--accent);
+      color: var(--accent-text);
+    }
+
+    button.secondary {
+      background: var(--panel-2);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .preview {
+      width: 100%;
+      max-height: 230px;
+      object-fit: contain;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+      display: none;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .output-card {
+      min-height: 640px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stats {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .output-shell {
+      overflow: auto;
+      background: var(--output-bg);
+    }
+
+    #output {
+      min-height: 540px;
+      margin: 0;
+      padding: 16px;
+      white-space: pre;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 8px;
+      line-height: 1;
+      letter-spacing: 0;
+      tab-size: 1;
+    }
+
+    .notice {
+      padding: 10px 14px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .error { color: var(--danger); }
+
+    canvas { display: none; }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      header { align-items: flex-start; }
+      .output-card { min-height: 520px; }
+      #output { min-height: 420px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Text Dot Art</h1>
+      <div class="theme">
+        <label>
+          Theme
+          <select id="theme">
+            <option value="auto">Auto</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <div class="card-title">Input</div>
+        <div class="controls">
+          <label>
+            Image
+            <input id="fileInput" type="file" accept="image/*" />
+          </label>
+
+          <img id="preview" class="preview" alt="" />
+
+          <label>
+            Mode
+            <select id="mode">
+              <option value="braille" selected>Braille</option>
+              <option value="ascii">ASCII</option>
+            </select>
+          </label>
+
+          <label>
+            Max width
+            <div class="range-row">
+              <input id="colsRange" type="range" min="16" max="300" step="1" value="100" />
+              <input id="cols" type="number" min="16" max="300" step="1" value="100" />
+            </div>
+          </label>
+
+          <div class="row">
+            <label>
+              Height
+              <input id="aspect" type="number" min="0.20" max="1.50" step="0.05" value="0.50" />
+            </label>
+
+            <label>
+              Font size
+              <input id="fontSize" type="number" min="4" max="24" step="1" value="8" />
+            </label>
+          </div>
+
+          <div id="asciiControls">
+            <label>
+              Palette
+              <select id="preset">
+                <option value=" .:-=+*#%@"> .:-=+*#%@</option>
+                <option value=" .:;irsXA253hMHGS#9B&@"> .:;irsXA253hMHGS#9B&@</option>
+                <option value=" .,:;i1tfLCG08@"> .,:;i1tfLCG08@</option>
+                <option value=" .:*#@"> .:*#@</option>
+                <option value=" .:░▒▓█"> .:░▒▓█</option>
+                <option value="custom">Custom</option>
+              </select>
+            </label>
+
+            <label id="customLabel" style="display:none; margin-top: 10px;">
+              Custom palette
+              <input id="chars" type="text" value=" .:-=+*#%@" />
+            </label>
+          </div>
+
+          <div id="brailleControls">
+            <label>
+              Threshold
+              <div class="range-row">
+                <input id="thresholdRange" type="range" min="1" max="254" step="1" value="128" />
+                <input id="threshold" type="number" min="1" max="254" step="1" value="128" />
+              </div>
+            </label>
+
+            <label class="check" style="margin-top: 10px;">
+              <input id="dither" type="checkbox" checked />
+              Dither
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              Contrast
+              <div class="range-row">
+                <input id="contrast" type="range" min="-100" max="100" value="0" />
+                <input id="contrastNum" type="number" min="-100" max="100" value="0" />
+              </div>
+            </label>
+
+            <label>
+              Gamma
+              <div class="range-row">
+                <input id="gamma" type="range" min="0.30" max="3.00" step="0.05" value="1.00" />
+                <input id="gammaNum" type="number" min="0.30" max="3.00" step="0.05" value="1.00" />
+              </div>
+            </label>
+          </div>
+
+          <label class="check">
+            <input id="darkDense" type="checkbox" checked />
+            Dark pixels dense
+          </label>
+
+          <label id="trimRow" class="check">
+            <input id="trimRight" type="checkbox" checked />
+            Trim right spaces
+          </label>
+
+          <div class="buttons">
+            <button id="convertBtn">Convert</button>
+            <button id="copyBtn" class="secondary" disabled>Copy</button>
+          </div>
+
+          <div class="buttons">
+            <button id="downloadBtn" class="secondary" disabled>Download</button>
+            <button id="clearBtn" class="secondary">Reset</button>
+          </div>
+
+          <p class="muted">Use a monospaced font or code block for best alignment.</p>
+        </div>
+      </section>
+
+      <section class="card output-card">
+        <div class="card-title">Output</div>
+        <div class="toolbar">
+          <span id="stats" class="stats">No image selected.</span>
+          <button id="wrapCodeBtn" class="secondary" disabled>Code block</button>
+        </div>
+        <div id="notice" class="notice">Upload an image to start.</div>
+        <div class="output-shell">
+          <pre id="output"></pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const fileInput = $("fileInput");
+    const preview = $("preview");
+    const theme = $("theme");
+    const mode = $("mode");
+
+    const colsRange = $("colsRange");
+    const colsInput = $("cols");
+    const aspectInput = $("aspect");
+    const fontSizeInput = $("fontSize");
+
+    const asciiControls = $("asciiControls");
+    const presetInput = $("preset");
+    const charsInput = $("chars");
+    const customLabel = $("customLabel");
+
+    const brailleControls = $("brailleControls");
+    const thresholdRange = $("thresholdRange");
+    const thresholdInput = $("threshold");
+    const dither = $("dither");
+
+    const contrast = $("contrast");
+    const contrastNum = $("contrastNum");
+    const gamma = $("gamma");
+    const gammaNum = $("gammaNum");
+
+    const darkDense = $("darkDense");
+    const trimRight = $("trimRight");
+    const trimRow = $("trimRow");
+
+    const convertBtn = $("convertBtn");
+    const copyBtn = $("copyBtn");
+    const downloadBtn = $("downloadBtn");
+    const clearBtn = $("clearBtn");
+    const wrapCodeBtn = $("wrapCodeBtn");
+
+    const output = $("output");
+    const stats = $("stats");
+    const notice = $("notice");
+    const canvas = $("canvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+    let currentImage = null;
+    let currentFilename = "dot-art";
+
+    const BRAILLE_BITS = [
+      [0x01, 0x08],
+      [0x02, 0x10],
+      [0x04, 0x20],
+      [0x40, 0x80],
+    ];
+
+    const BAYER_4X4 = [
+      [ 0,  8,  2, 10],
+      [12,  4, 14,  6],
+      [ 3, 11,  1,  9],
+      [15,  7, 13,  5],
+    ];
+
+    function initTheme() {
+      const saved = localStorage.getItem("text-dot-art-theme") || "auto";
+      theme.value = saved;
+      document.documentElement.dataset.theme = saved;
+    }
+
+    theme.addEventListener("change", () => {
+      localStorage.setItem("text-dot-art-theme", theme.value);
+      document.documentElement.dataset.theme = theme.value;
+    });
+
+    function setNotice(message, error = false) {
+      notice.textContent = message;
+      notice.classList.toggle("error", error);
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function syncPair(a, b) {
+      const syncA = () => { b.value = a.value; maybeConvert(); };
+      const syncB = () => { a.value = b.value; maybeConvert(); };
+      a.addEventListener("input", syncA);
+      b.addEventListener("input", syncB);
+      a.addEventListener("change", syncA);
+      b.addEventListener("change", syncB);
+    }
+
+    function updateUI() {
+      const isBraille = mode.value === "braille";
+      asciiControls.style.display = isBraille ? "none" : "block";
+      brailleControls.style.display = isBraille ? "block" : "none";
+      trimRow.style.display = isBraille ? "none" : "flex";
+
+      output.style.fontSize = `${fontSizeInput.value}px`;
+
+      const custom = presetInput.value === "custom";
+      customLabel.style.display = custom ? "grid" : "none";
+      if (!custom) charsInput.value = presetInput.value;
+    }
+
+    function maybeConvert() {
+      updateUI();
+      if (currentImage) convert();
+    }
+
+    syncPair(colsRange, colsInput);
+    syncPair(thresholdRange, thresholdInput);
+    syncPair(contrast, contrastNum);
+    syncPair(gamma, gammaNum);
+
+    [
+      mode,
+      aspectInput,
+      fontSizeInput,
+      presetInput,
+      charsInput,
+      dither,
+      darkDense,
+      trimRight,
+    ].forEach((el) => {
+      el.addEventListener("input", maybeConvert);
+      el.addEventListener("change", maybeConvert);
+    });
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+
+      currentFilename = (file.name || "dot-art").replace(/\.[^.]+$/, "") || "dot-art";
+
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        currentImage = img;
+        preview.src = img.src;
+        preview.style.display = "block";
+        convert();
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        currentImage = null;
+        setNotice("Could not read image.", true);
+      };
+
+      img.src = url;
+    });
+
+    convertBtn.addEventListener("click", convert);
+
+    copyBtn.addEventListener("click", async () => {
+      if (!output.textContent) return;
+
+      try {
+        await navigator.clipboard.writeText(output.textContent);
+        setNotice("Copied.");
+      } catch {
+        setNotice("Copy failed.", true);
+      }
+    });
+
+    downloadBtn.addEventListener("click", () => {
+      if (!output.textContent) return;
+
+      const blob = new Blob([output.textContent], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${currentFilename}-dot-art.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    wrapCodeBtn.addEventListener("click", () => {
+      const text = output.textContent;
+      if (!text) return;
+
+      const unwrapped = text.replace(/^```\n/, "").replace(/\n```$/, "");
+      output.textContent = "```\n" + unwrapped + "\n```";
+      setNotice("Wrapped.");
+    });
+
+    clearBtn.addEventListener("click", () => {
+      currentImage = null;
+      fileInput.value = "";
+      preview.removeAttribute("src");
+      preview.style.display = "none";
+      output.textContent = "";
+      stats.textContent = "No image selected.";
+      copyBtn.disabled = true;
+      downloadBtn.disabled = true;
+      wrapCodeBtn.disabled = true;
+      setNotice("Upload an image to start.");
+    });
+
+    function applyContrast(value, contrastValue) {
+      const factor = (259 * (contrastValue + 255)) / (255 * (259 - contrastValue));
+      return clamp(factor * (value - 128) + 128, 0, 255);
+    }
+
+    function luminance(r, g, b, a, contrastValue, gammaValue) {
+      let value = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      const alpha = a / 255;
+      value = value * alpha + 255 * (1 - alpha);
+      value = applyContrast(value, contrastValue);
+      return clamp(255 * Math.pow(value / 255, gammaValue), 0, 255);
+    }
+
+    function outputRows(cols) {
+      const aspect = clamp(parseFloat(aspectInput.value) || 0.5, 0.2, 1.5);
+      aspectInput.value = aspect.toFixed(2);
+      return Math.max(1, Math.round((currentImage.height / currentImage.width) * cols * aspect));
+    }
+
+    function convert() {
+      updateUI();
+
+      if (!currentImage) {
+        setNotice("Select an image.", true);
+        return;
+      }
+
+      const cols = clamp(parseInt(colsInput.value, 10) || 100, 16, 300);
+      colsInput.value = cols;
+      colsRange.value = cols;
+
+      const fontSize = clamp(parseInt(fontSizeInput.value, 10) || 8, 4, 24);
+      fontSizeInput.value = fontSize;
+      output.style.fontSize = `${fontSize}px`;
+
+      if (mode.value === "braille") convertBraille(cols);
+      else convertAscii(cols);
+    }
+
+    function convertAscii(cols) {
+      const chars = charsInput.value;
+
+      if (!chars || chars.length < 2) {
+        setNotice("Palette needs at least 2 characters.", true);
+        return;
+      }
+
+      const rows = outputRows(cols);
+      const c = clamp(parseFloat(contrast.value) || 0, -100, 100);
+      const g = clamp(parseFloat(gamma.value) || 1, 0.3, 3);
+
+      canvas.width = cols;
+      canvas.height = rows;
+      ctx.clearRect(0, 0, cols, rows);
+      ctx.drawImage(currentImage, 0, 0, cols, rows);
+
+      const data = ctx.getImageData(0, 0, cols, rows).data;
+      const lines = [];
+
+      for (let y = 0; y < rows; y++) {
+        let line = "";
+
+        for (let x = 0; x < cols; x++) {
+          const i = (y * cols + x) * 4;
+          const lum = luminance(data[i], data[i + 1], data[i + 2], data[i + 3], c, g);
+          const density = darkDense.checked ? 1 - lum / 255 : lum / 255;
+          const idx = clamp(Math.round(density * (chars.length - 1)), 0, chars.length - 1);
+          line += chars[idx];
+        }
+
+        lines.push(trimRight.checked ? line.replace(/\s+$/g, "") : line);
+      }
+
+      finish(lines, cols, rows, "ASCII");
+    }
+
+    function convertBraille(cols) {
+      const rows = outputRows(cols);
+      const sampleW = cols * 2;
+      const sampleH = rows * 4;
+      const c = clamp(parseFloat(contrast.value) || 0, -100, 100);
+      const g = clamp(parseFloat(gamma.value) || 1, 0.3, 3);
+      const t = clamp(parseInt(thresholdInput.value, 10) || 128, 1, 254);
+
+      thresholdInput.value = t;
+      thresholdRange.value = t;
+
+      canvas.width = sampleW;
+      canvas.height = sampleH;
+      ctx.clearRect(0, 0, sampleW, sampleH);
+      ctx.drawImage(currentImage, 0, 0, sampleW, sampleH);
+
+      const data = ctx.getImageData(0, 0, sampleW, sampleH).data;
+      const lines = [];
+
+      for (let cellY = 0; cellY < rows; cellY++) {
+        let line = "";
+
+        for (let cellX = 0; cellX < cols; cellX++) {
+          let bits = 0;
+
+          for (let dy = 0; dy < 4; dy++) {
+            for (let dx = 0; dx < 2; dx++) {
+              const px = cellX * 2 + dx;
+              const py = cellY * 4 + dy;
+              const i = (py * sampleW + px) * 4;
+
+              const lum = luminance(data[i], data[i + 1], data[i + 2], data[i + 3], c, g);
+              const density = darkDense.checked ? 255 - lum : lum;
+
+              let threshold = t;
+              if (dither.checked) threshold += (BAYER_4X4[py % 4][px % 4] - 7.5) * 8;
+
+              if (density >= threshold) bits |= BRAILLE_BITS[dy][dx];
+            }
+          }
+
+          line += String.fromCharCode(0x2800 + bits);
+        }
+
+        lines.push(line);
+      }
+
+      finish(lines, cols, rows, "Braille");
+    }
+
+    function finish(lines, cols, rows, label) {
+      const text = lines.join("\n");
+      output.textContent = text;
+
+      stats.textContent = `${label} · ${cols} × ${rows} · ${text.length.toLocaleString()} chars`;
+      copyBtn.disabled = !text;
+      downloadBtn.disabled = !text;
+      wrapCodeBtn.disabled = !text;
+      setNotice("Done.");
+    }
+
+    initTheme();
+    updateUI();
+  </script>
+</body>
+</html>
