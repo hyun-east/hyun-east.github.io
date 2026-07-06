@@ -9,6 +9,7 @@ const DISPLAY_LOCALE = "en-US";
 const DISPLAY_TIME_ZONE = "Asia/Seoul";
 const DISPLAY_TIME_ZONE_LABEL = "KST";
 const KEYWORD_RENDER_LIMIT = 320;
+const SELECTED_KEYWORD_PREVIEW_LIMIT = 8;
 
 const state = {
   papers: [],
@@ -16,6 +17,7 @@ const state = {
   keywordCounts: new Map(),
   selectedKeywords: new Set(),
   selectedKeywordQueries: new Set(),
+  selectedKeywordsExpanded: false,
   plannedIds: new Set(JSON.parse(localStorage.getItem("icml2026.plan") || "[]")),
   openIds: new Set(),
   view: "papers",
@@ -268,10 +270,19 @@ function bindEvents() {
     toggleKeyword(button.dataset.keyword);
   });
   els.selectedKeywords.addEventListener("click", (event) => {
+    const toggle = event.target.closest("[data-selected-keywords-toggle]");
+    if (toggle) {
+      state.selectedKeywordsExpanded = !state.selectedKeywordsExpanded;
+      rerender();
+      return;
+    }
     const button = event.target.closest("[data-keyword], [data-keyword-query]");
     if (!button) return;
     if (button.dataset.keyword) state.selectedKeywords.delete(button.dataset.keyword);
     if (button.dataset.keywordQuery) state.selectedKeywordQueries.delete(button.dataset.keywordQuery);
+    if (state.selectedKeywords.size + state.selectedKeywordQueries.size <= SELECTED_KEYWORD_PREVIEW_LIMIT) {
+      state.selectedKeywordsExpanded = false;
+    }
     rerender();
   });
   document.querySelectorAll("[data-keyword-mode]").forEach((button) => {
@@ -322,6 +333,7 @@ function bindEvents() {
     els.keywordSearch.value = "";
     state.selectedKeywords.clear();
     state.selectedKeywordQueries.clear();
+    state.selectedKeywordsExpanded = false;
     state.visibleLimit = 150;
     render();
   });
@@ -397,6 +409,9 @@ function addVisibleKeywordMatches() {
   const { visible } = getKeywordMatches();
   for (const [keyword] of visible) {
     state.selectedKeywords.add(keyword);
+  }
+  if (state.selectedKeywords.size + state.selectedKeywordQueries.size > SELECTED_KEYWORD_PREVIEW_LIMIT) {
+    state.selectedKeywordsExpanded = false;
   }
 }
 
@@ -525,7 +540,24 @@ function renderSelectedKeywords() {
   const keywordChips = [...state.selectedKeywords]
     .sort()
     .map((keyword) => `<button class="keyword-chip active" type="button" aria-pressed="true" data-selected="true" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)}</button>`);
-  els.selectedKeywords.innerHTML = [...queryChips, ...keywordChips].join("");
+  const chips = [...queryChips, ...keywordChips];
+  const total = chips.length;
+  if (!total) {
+    state.selectedKeywordsExpanded = false;
+    els.selectedKeywords.dataset.expanded = "false";
+    els.selectedKeywords.innerHTML = "";
+    return;
+  }
+  if (total <= SELECTED_KEYWORD_PREVIEW_LIMIT) state.selectedKeywordsExpanded = false;
+  const isCollapsed = total > SELECTED_KEYWORD_PREVIEW_LIMIT && !state.selectedKeywordsExpanded;
+  const visibleChips = isCollapsed ? chips.slice(0, SELECTED_KEYWORD_PREVIEW_LIMIT) : chips;
+  const hiddenCount = total - visibleChips.length;
+  const summary = `<span class="selected-summary">${total.toLocaleString(DISPLAY_LOCALE)} selected</span>`;
+  const toggle = total > SELECTED_KEYWORD_PREVIEW_LIMIT
+    ? `<button class="selected-toggle mini-button" type="button" data-selected-keywords-toggle="true">${isCollapsed ? `Show all (${hiddenCount.toLocaleString(DISPLAY_LOCALE)} more)` : "Show fewer"}</button>`
+    : "";
+  els.selectedKeywords.dataset.expanded = state.selectedKeywordsExpanded ? "true" : "false";
+  els.selectedKeywords.innerHTML = [summary, ...visibleChips, toggle].join("");
 }
 
 function getKeywordMatches() {
@@ -551,7 +583,8 @@ function renderKeywords() {
   } else if (needle) {
     els.keywordMatchSummary.textContent = "No keyword matches";
   } else {
-    const selectedText = selected.size ? ` · ${selected.size.toLocaleString(DISPLAY_LOCALE)} selected` : "";
+    const selectedTotal = selected.size + state.selectedKeywordQueries.size;
+    const selectedText = selectedTotal ? ` · ${selectedTotal.toLocaleString(DISPLAY_LOCALE)} selected` : "";
     els.keywordMatchSummary.textContent = `Popular keywords${selectedText}`;
   }
   els.applyKeywordSearch.disabled = !needle || state.selectedKeywordQueries.has(needle);

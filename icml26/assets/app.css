@@ -325,6 +325,32 @@ select:focus {
   gap: 6px;
 }
 
+.selected-keywords[data-expanded="true"] {
+  max-height: 172px;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.selected-summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-soft), var(--panel) 22%);
+  color: var(--accent-strong);
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.selected-toggle {
+  min-height: 27px;
+  border-radius: 999px;
+  padding: 0 10px;
+}
+
 .keyword-list {
   max-height: 228px;
   overflow: auto;
