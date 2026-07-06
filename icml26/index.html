@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ICML 2026 Papers</title>
+    <link rel="stylesheet" href="assets/app.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>ICML 2026 Papers</h1>
+          <div class="meta-line" id="dataStatus">Loading data</div>
+          <div class="profile-links" aria-label="Networking links">
+            <a href="https://www.hyeondong.kim/" target="_blank" rel="noreferrer">Website</a>
+            <a href="mailto:hdkim@dgist.ac.kr">hdkim@dgist.ac.kr</a>
+            <a href="https://www.linkedin.com/in/hdkim2005" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="https://github.com/hyun-east" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </div>
+        <div class="top-actions">
+          <div class="clock" id="clockLabel"></div>
+          <button class="icon-button" id="themeToggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+            <span class="sun">Light</span>
+            <span class="moon">Dark</span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="view-tabs" aria-label="Views">
+        <button class="tab active" type="button" data-view="papers">Papers</button>
+        <button class="tab" type="button" data-view="sessions">Sessions</button>
+        <button class="tab" type="button" data-view="plan">Plan</button>
+      </nav>
+
+      <section class="data-note" aria-label="Data note">
+        Provided as-is. Keywords were generated automatically from titles and abstracts using OpenAI-assisted labeling.
+        Verify details against the official ICML and OpenReview pages before making final plans.
+      </section>
+
+      <main class="workspace">
+        <button class="mobile-filter-toggle" id="filterToggle" type="button" aria-expanded="false" aria-controls="filtersPanel">
+          Filters and keywords
+        </button>
+        <aside class="filters" id="filtersPanel" aria-label="Filters">
+          <label class="field">
+            <span>Search</span>
+            <input id="searchInput" type="search" placeholder="Title, author, abstract" />
+          </label>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Area</span>
+              <select id="areaSelect"></select>
+            </label>
+            <label class="field">
+              <span>Topic</span>
+              <select id="topicSelect"></select>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Session</span>
+            <select id="sessionSelect"></select>
+          </label>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Badge</span>
+              <select id="badgeSelect">
+                <option value="">All</option>
+                <option value="spotlight">Spotlight</option>
+                <option value="oral">Oral</option>
+                <option value="planned">Planned</option>
+                <option value="unscheduled">Unscheduled</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Sort</span>
+              <select id="sortSelect">
+                <option value="relevance">Relevance</option>
+                <option value="session">Session time</option>
+                <option value="badge">Spotlight / oral</option>
+                <option value="title">Title A-Z</option>
+                <option value="topic">Topic</option>
+                <option value="poster">Poster position</option>
+              </select>
+            </label>
+          </div>
+
+          <section class="keyword-panel" aria-label="Keyword filters">
+            <div class="panel-title">
+              <span>Keywords</span>
+              <div class="segmented" role="group" aria-label="Keyword match mode">
+                <button class="active" type="button" data-keyword-mode="or">OR</button>
+                <button type="button" data-keyword-mode="and">AND</button>
+              </div>
+            </div>
+            <input id="keywordSearch" type="search" placeholder="Filter keywords" />
+            <div class="selected-keywords" id="selectedKeywords"></div>
+            <div class="keyword-list" id="keywordList"></div>
+          </section>
+
+          <button class="clear-button" id="clearFilters" type="button">Clear filters</button>
+        </aside>
+
+        <section class="content">
+          <div class="summary-strip">
+            <div>
+              <strong id="resultCount">0</strong>
+              <span>papers</span>
+            </div>
+            <div>
+              <strong id="plannedCount">0</strong>
+              <span>planned</span>
+            </div>
+            <div>
+              <strong id="currentSessionCount">0</strong>
+              <span>active sessions</span>
+            </div>
+          </div>
+
+          <div class="session-now" id="sessionNow"></div>
+
+          <div class="paper-list" id="paperList"></div>
+          <button class="load-more" id="loadMore" type="button">Show more</button>
+        </section>
+      </main>
+    </div>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>
