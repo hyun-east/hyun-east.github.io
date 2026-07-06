@@ -521,10 +521,10 @@ function renderClock() {
 function renderSelectedKeywords() {
   const queryChips = [...state.selectedKeywordQueries]
     .sort()
-    .map((query) => `<button class="keyword-chip active query" type="button" data-keyword-query="${escapeHtml(query)}">contains: ${escapeHtml(query)}</button>`);
+    .map((query) => `<button class="keyword-chip active query" type="button" aria-pressed="true" data-selected="true" data-keyword-query="${escapeHtml(query)}">contains: ${escapeHtml(query)}</button>`);
   const keywordChips = [...state.selectedKeywords]
     .sort()
-    .map((keyword) => `<button class="keyword-chip active" type="button" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)}</button>`);
+    .map((keyword) => `<button class="keyword-chip active" type="button" aria-pressed="true" data-selected="true" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)}</button>`);
   els.selectedKeywords.innerHTML = [...queryChips, ...keywordChips].join("");
 }
 
@@ -543,19 +543,28 @@ function getKeywordMatches() {
 function renderKeywords() {
   const { needle, all, visible } = getKeywordMatches();
   const selected = state.selectedKeywords;
+  const selectedShown = visible.filter(([keyword]) => selected.has(keyword)).length;
+  const unselectedShown = visible.length - selectedShown;
   if (needle && all.length) {
-    els.keywordMatchSummary.textContent = `${all.length.toLocaleString(DISPLAY_LOCALE)} matches · ${visible.length.toLocaleString(DISPLAY_LOCALE)} shown`;
+    const selectedText = selectedShown ? ` · ${selectedShown.toLocaleString(DISPLAY_LOCALE)} selected` : "";
+    els.keywordMatchSummary.textContent = `${all.length.toLocaleString(DISPLAY_LOCALE)} matches · ${visible.length.toLocaleString(DISPLAY_LOCALE)} shown${selectedText}`;
   } else if (needle) {
     els.keywordMatchSummary.textContent = "No keyword matches";
   } else {
-    els.keywordMatchSummary.textContent = "Popular keywords";
+    const selectedText = selected.size ? ` · ${selected.size.toLocaleString(DISPLAY_LOCALE)} selected` : "";
+    els.keywordMatchSummary.textContent = `Popular keywords${selectedText}`;
   }
-  els.applyKeywordSearch.disabled = !needle;
-  els.addKeywordMatches.disabled = !needle || !visible.length;
+  els.applyKeywordSearch.disabled = !needle || state.selectedKeywordQueries.has(needle);
+  els.applyKeywordSearch.textContent = needle && state.selectedKeywordQueries.has(needle) ? "Search applied" : "Apply search";
+  els.addKeywordMatches.disabled = !needle || !unselectedShown;
+  if (!needle) els.addKeywordMatches.textContent = "Add shown";
+  else if (unselectedShown) els.addKeywordMatches.textContent = `Add shown (${unselectedShown.toLocaleString(DISPLAY_LOCALE)})`;
+  else els.addKeywordMatches.textContent = "Shown selected";
   els.keywordList.innerHTML = visible
     .map(([keyword, count]) => {
-      const active = selected.has(keyword) ? " active" : "";
-      return `<button class="keyword-chip${active}" type="button" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)} ${count}</button>`;
+      const isSelected = selected.has(keyword);
+      const active = isSelected ? " active" : "";
+      return `<button class="keyword-chip${active}" type="button" aria-pressed="${isSelected ? "true" : "false"}" data-selected="${isSelected ? "true" : "false"}" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)} ${count}</button>`;
     })
     .join("");
 }
