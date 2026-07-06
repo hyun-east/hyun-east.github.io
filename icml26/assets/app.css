@@ -139,6 +139,7 @@ h1 {
 .clear-button,
 .load-more,
 .small-button,
+.mini-button,
 .mobile-filter-toggle {
   border: 1px solid var(--line);
   background: var(--panel-strong);
@@ -284,6 +285,38 @@ select:focus {
   font-size: 12px;
 }
 
+.keyword-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.keyword-count {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.keyword-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.mini-button {
+  min-height: 30px;
+  padding: 0 9px;
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.mini-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 .selected-keywords,
 .keyword-list,
 .chip-row {
@@ -313,6 +346,11 @@ select:focus {
   border-color: var(--accent);
   background: var(--accent-soft);
   color: var(--accent-strong);
+}
+
+.keyword-chip.query {
+  border-style: dashed;
+  background: color-mix(in srgb, var(--accent-soft), var(--panel-2) 34%);
 }
 
 .clear-button,
@@ -659,6 +697,7 @@ select:focus {
   .mobile-filter-toggle,
   .clear-button,
   .load-more,
+  .mini-button,
   .small-button {
     min-height: 42px;
   }
@@ -718,5 +757,14 @@ select:focus {
 
   .keyword-list {
     max-height: 180px;
+  }
+
+  .keyword-tools {
+    grid-template-columns: 1fr;
+  }
+
+  .keyword-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }

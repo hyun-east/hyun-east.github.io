@@ -8,12 +8,14 @@ const DATA = {
 const DISPLAY_LOCALE = "en-US";
 const DISPLAY_TIME_ZONE = "Asia/Seoul";
 const DISPLAY_TIME_ZONE_LABEL = "KST";
+const KEYWORD_RENDER_LIMIT = 320;
 
 const state = {
   papers: [],
   sessions: [],
   keywordCounts: new Map(),
   selectedKeywords: new Set(),
+  selectedKeywordQueries: new Set(),
   plannedIds: new Set(JSON.parse(localStorage.getItem("icml2026.plan") || "[]")),
   openIds: new Set(),
   view: "papers",
@@ -203,6 +205,9 @@ function bindElements() {
     "badgeSelect",
     "sortSelect",
     "keywordSearch",
+    "keywordMatchSummary",
+    "applyKeywordSearch",
+    "addKeywordMatches",
     "selectedKeywords",
     "keywordList",
     "clearFilters",
@@ -240,13 +245,22 @@ function bindEvents() {
   els.keywordSearch.addEventListener("input", renderKeywords);
   els.keywordSearch.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
+      event.preventDefault();
       const keyword = normalizeKeyword(els.keywordSearch.value);
       if (keyword) {
-        state.selectedKeywords.add(keyword);
-        els.keywordSearch.value = "";
+        if (state.keywordCounts.has(keyword)) state.selectedKeywords.add(keyword);
+        else state.selectedKeywordQueries.add(keyword);
         rerender();
       }
     }
+  });
+  els.applyKeywordSearch.addEventListener("click", () => {
+    applyKeywordSearch();
+    rerender();
+  });
+  els.addKeywordMatches.addEventListener("click", () => {
+    addVisibleKeywordMatches();
+    rerender();
   });
   els.keywordList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-keyword]");
@@ -254,9 +268,10 @@ function bindEvents() {
     toggleKeyword(button.dataset.keyword);
   });
   els.selectedKeywords.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-keyword]");
+    const button = event.target.closest("[data-keyword], [data-keyword-query]");
     if (!button) return;
-    state.selectedKeywords.delete(button.dataset.keyword);
+    if (button.dataset.keyword) state.selectedKeywords.delete(button.dataset.keyword);
+    if (button.dataset.keywordQuery) state.selectedKeywordQueries.delete(button.dataset.keywordQuery);
     rerender();
   });
   document.querySelectorAll("[data-keyword-mode]").forEach((button) => {
@@ -306,6 +321,7 @@ function bindEvents() {
     els.sortSelect.value = "relevance";
     els.keywordSearch.value = "";
     state.selectedKeywords.clear();
+    state.selectedKeywordQueries.clear();
     state.visibleLimit = 150;
     render();
   });
@@ -371,6 +387,19 @@ function toggleKeyword(keyword) {
   render();
 }
 
+function applyKeywordSearch() {
+  const query = normalizeKeyword(els.keywordSearch.value);
+  if (!query) return;
+  state.selectedKeywordQueries.add(query);
+}
+
+function addVisibleKeywordMatches() {
+  const { visible } = getKeywordMatches();
+  for (const [keyword] of visible) {
+    state.selectedKeywords.add(keyword);
+  }
+}
+
 function togglePlan(id) {
   if (state.plannedIds.has(id)) state.plannedIds.delete(id);
   else state.plannedIds.add(id);
@@ -386,6 +415,7 @@ function getFilters() {
     badge: els.badgeSelect.value,
     sort: els.sortSelect.value,
     keywords: [...state.selectedKeywords],
+    keywordQueries: [...state.selectedKeywordQueries],
   };
 }
 
@@ -402,9 +432,12 @@ function paperMatches(paper, filters) {
   if (filters.badge === "planned" && !state.plannedIds.has(paper.id)) return false;
   if (filters.badge === "unscheduled" && (paper.session || paper.starttime)) return false;
   if (state.view === "plan" && !state.plannedIds.has(paper.id)) return false;
-  if (filters.keywords.length) {
+  if (filters.keywords.length || filters.keywordQueries.length) {
     const keywordSet = new Set(paper._keywords);
-    const checks = filters.keywords.map((keyword) => keywordSet.has(keyword));
+    const checks = [
+      ...filters.keywords.map((keyword) => keywordSet.has(keyword)),
+      ...filters.keywordQueries.map((query) => paper._keywords.some((keyword) => keyword.includes(query))),
+    ];
     if (state.keywordMode === "and" && checks.some((value) => !value)) return false;
     if (state.keywordMode === "or" && checks.every((value) => !value)) return false;
   }
@@ -420,6 +453,9 @@ function scorePaper(paper, filters) {
   }
   for (const keyword of filters.keywords) {
     if (paper._keywords.includes(keyword)) score += 10;
+  }
+  for (const query of filters.keywordQueries) {
+    if (paper._keywords.some((keyword) => keyword.includes(query))) score += 6;
   }
   if (paper.has_oral) score += 3;
   if (paper.is_spotlight) score += 2;
@@ -483,20 +519,40 @@ function renderClock() {
 }
 
 function renderSelectedKeywords() {
-  els.selectedKeywords.innerHTML = [...state.selectedKeywords]
+  const queryChips = [...state.selectedKeywordQueries]
     .sort()
-    .map((keyword) => `<button class="keyword-chip active" type="button" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)}</button>`)
-    .join("");
+    .map((query) => `<button class="keyword-chip active query" type="button" data-keyword-query="${escapeHtml(query)}">contains: ${escapeHtml(query)}</button>`);
+  const keywordChips = [...state.selectedKeywords]
+    .sort()
+    .map((keyword) => `<button class="keyword-chip active" type="button" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)}</button>`);
+  els.selectedKeywords.innerHTML = [...queryChips, ...keywordChips].join("");
+}
+
+function getKeywordMatches() {
+  const needle = normalizeKeyword(els.keywordSearch.value);
+  const all = [...state.keywordCounts.entries()]
+    .filter(([keyword]) => !needle || keyword.includes(needle))
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  return {
+    needle,
+    all,
+    visible: all.slice(0, KEYWORD_RENDER_LIMIT),
+  };
 }
 
 function renderKeywords() {
-  const needle = normalizeKeyword(els.keywordSearch.value);
+  const { needle, all, visible } = getKeywordMatches();
   const selected = state.selectedKeywords;
-  const keywords = [...state.keywordCounts.entries()]
-    .filter(([keyword]) => !needle || keyword.includes(needle))
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    .slice(0, 320);
-  els.keywordList.innerHTML = keywords
+  if (needle && all.length) {
+    els.keywordMatchSummary.textContent = `${all.length.toLocaleString(DISPLAY_LOCALE)} matches · ${visible.length.toLocaleString(DISPLAY_LOCALE)} shown`;
+  } else if (needle) {
+    els.keywordMatchSummary.textContent = "No keyword matches";
+  } else {
+    els.keywordMatchSummary.textContent = "Popular keywords";
+  }
+  els.applyKeywordSearch.disabled = !needle;
+  els.addKeywordMatches.disabled = !needle || !visible.length;
+  els.keywordList.innerHTML = visible
     .map(([keyword, count]) => {
       const active = selected.has(keyword) ? " active" : "";
       return `<button class="keyword-chip${active}" type="button" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)} ${count}</button>`;
