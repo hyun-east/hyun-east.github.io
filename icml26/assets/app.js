@@ -211,6 +211,12 @@ function prepareSessions(sessions) {
   }));
 }
 
+function compareSessionsByTime(a, b) {
+  const timeA = a?._start?.getTime() ?? Number.MAX_SAFE_INTEGER;
+  const timeB = b?._start?.getTime() ?? Number.MAX_SAFE_INTEGER;
+  return timeA - timeB || String(a?.session || "").localeCompare(String(b?.session || ""), DISPLAY_LOCALE);
+}
+
 function computeSessionStatus() {
   const now = new Date();
   state.currentSessions = new Set();
