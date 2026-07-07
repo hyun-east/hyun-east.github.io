@@ -461,6 +461,21 @@ select:focus {
   background: color-mix(in srgb, var(--gold-soft) 70%, var(--panel));
 }
 
+.now-toggle-card {
+  min-height: 38px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  background: var(--panel-strong);
+  color: var(--accent-strong);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.now-toggle-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
 .timeline-mark {
   width: 10px;
   height: 44px;
@@ -533,6 +548,22 @@ select:focus {
   flex-wrap: wrap;
   gap: 8px 12px;
   margin-top: 8px;
+}
+
+.schedule-chip {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--panel-2);
+}
+
+.schedule-chip.oral-time {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 800;
+}
+
+.schedule-chip.poster-time {
+  background: color-mix(in srgb, var(--panel-2) 70%, var(--panel));
 }
 
 .badges {

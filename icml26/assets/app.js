@@ -10,6 +10,7 @@ const DISPLAY_TIME_ZONE = "Asia/Seoul";
 const DISPLAY_TIME_ZONE_LABEL = "KST";
 const KEYWORD_RENDER_LIMIT = 320;
 const SELECTED_KEYWORD_PREVIEW_LIMIT = 8;
+const SESSION_NOW_PREVIEW_LIMIT = 3;
 
 const state = {
   papers: [],
@@ -25,6 +26,8 @@ const state = {
   visibleLimit: 150,
   currentSessions: new Set(),
   nextSession: null,
+  nextSessions: [],
+  sessionNowExpanded: false,
 };
 
 const els = {};
@@ -112,8 +115,8 @@ async function loadData() {
   if (!sessionPayload) {
     sessionPayload = await loadJson(DATA.sessions);
   }
-  state.papers = preparePapers(paperPayload.papers || []);
   state.sessions = prepareSessions(sessionPayload.sessions || []);
+  state.papers = preparePapers(paperPayload.papers || [], state.sessions);
   computeSessionStatus();
   buildKeywordCounts();
 
@@ -123,7 +126,29 @@ async function loadData() {
     `${state.papers.length.toLocaleString(DISPLAY_LOCALE)} papers, ${state.sessions.length} sessions, ${sourceLabel}`;
 }
 
-function preparePapers(papers) {
+function isOralSession(session) {
+  return session?.eventtype === "Oral" || /^oral\b/i.test(String(session?.session || ""));
+}
+
+function buildOralSessionsByPaper(sessions) {
+  const sessionsByPaper = new Map();
+  for (const session of sessions.filter(isOralSession)) {
+    for (const entry of session.papers || []) {
+      if (!entry?.id) continue;
+      const matches = sessionsByPaper.get(entry.id) || [];
+      matches.push({ session, entry });
+      sessionsByPaper.set(entry.id, matches);
+    }
+  }
+  for (const matches of sessionsByPaper.values()) {
+    matches.sort((a, b) => (a.session._start?.getTime() ?? 0) - (b.session._start?.getTime() ?? 0));
+  }
+  return sessionsByPaper;
+}
+
+function preparePapers(papers, sessions = []) {
+  const oralSessionsByPaper = buildOralSessionsByPaper(sessions);
+  const sessionsByName = new Map(sessions.map((session) => [session.session, session]));
   return papers.map((paper) => {
     const keywords = [
       ...(paper.llm_keywords || []),
@@ -146,6 +171,23 @@ function preparePapers(papers) {
       sessions.join(" "),
       paper.poster_position,
     ];
+    const relatedOralSessions = (paper.related_sessions || [])
+      .filter((session) => isOralSession(session))
+      .map((talk) => ({
+        talk,
+        session: sessionsByName.get(talk.session) || {
+          session: talk.session,
+          room_name: talk.room_name,
+          starttime: talk.session_starttime || talk.starttime,
+          endtime: talk.session_endtime || talk.endtime,
+          starttime_utc: talk.session_starttime_utc || talk.starttime_utc,
+          endtime_utc: talk.session_endtime_utc || talk.endtime_utc,
+        },
+      }));
+    const fallbackOralSessions = (oralSessionsByPaper.get(paper.id) || []).map(({ session, entry }) => ({
+      talk: entry,
+      session,
+    }));
     return {
       ...paper,
       _keywords: uniqueKeywords,
@@ -155,6 +197,7 @@ function preparePapers(papers) {
       _sessions: sessions,
       _start: parseTime(paper.starttime_utc || paper.starttime),
       _end: parseTime(paper.endtime_utc || paper.endtime),
+      _oralSessions: relatedOralSessions.length ? relatedOralSessions : fallbackOralSessions,
     };
   });
 }
@@ -172,16 +215,24 @@ function computeSessionStatus() {
   const now = new Date();
   state.currentSessions = new Set();
   state.nextSession = null;
+  state.nextSessions = [];
+  let nextStart = null;
   for (const session of state.sessions) {
     if (session._start && session._end && session._start <= now && now <= session._end) {
       state.currentSessions.add(session.session);
     }
     if (session._start && session._start > now) {
-      if (!state.nextSession || session._start < state.nextSession._start) {
-        state.nextSession = session;
+      const start = session._start.getTime();
+      if (nextStart === null || start < nextStart) {
+        nextStart = start;
+        state.nextSessions = [session];
+      } else if (start === nextStart) {
+        state.nextSessions.push(session);
       }
     }
   }
+  state.nextSessions.sort(compareSessionsByTime);
+  state.nextSession = state.nextSessions[0] || null;
 }
 
 function buildKeywordCounts() {
@@ -348,6 +399,12 @@ function bindEvents() {
   els.filterToggle.addEventListener("click", () => {
     const isOpen = els.filtersPanel.classList.toggle("open");
     els.filterToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+  els.sessionNow.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-session-now-toggle]");
+    if (!button) return;
+    state.sessionNowExpanded = !state.sessionNowExpanded;
+    renderSessionNow();
   });
 }
 
@@ -603,13 +660,20 @@ function renderKeywords() {
 }
 
 function renderSessionNow() {
-  const current = state.sessions.filter((session) => state.currentSessions.has(session.session));
+  const current = state.sessions.filter((session) => state.currentSessions.has(session.session)).sort(compareSessionsByTime);
+  const next = state.nextSessions;
   const cards = [];
-  for (const session of current.slice(0, 3)) {
+  const currentVisible = state.sessionNowExpanded ? current : current.slice(0, SESSION_NOW_PREVIEW_LIMIT);
+  const nextVisible = state.sessionNowExpanded ? next : next.slice(0, SESSION_NOW_PREVIEW_LIMIT);
+  for (const session of currentVisible) {
     cards.push(nowCard(session, "current"));
   }
-  if (state.nextSession) {
-    cards.push(nowCard(state.nextSession, "next"));
+  for (const session of nextVisible) {
+    cards.push(nowCard(session, "next"));
+  }
+  const hiddenCount = current.length + next.length - currentVisible.length - nextVisible.length;
+  if (hiddenCount > 0 || state.sessionNowExpanded) {
+    cards.push(nowToggleCard(hiddenCount));
   }
   els.sessionNow.innerHTML = cards.join("");
 }
@@ -625,6 +689,16 @@ function nowCard(session, kind) {
       </div>
       <div class="session-meta">${session.count || (session.papers || []).length} papers</div>
     </div>`;
+}
+
+function nowToggleCard(hiddenCount) {
+  const label = state.sessionNowExpanded
+    ? "Show fewer sessions"
+    : `Show all concurrent sessions (${hiddenCount.toLocaleString(DISPLAY_LOCALE)} more)`;
+  return `
+    <button class="now-toggle-card" type="button" data-session-now-toggle="true" aria-expanded="${state.sessionNowExpanded ? "true" : "false"}">
+      ${escapeHtml(label)}
+    </button>`;
 }
 
 function renderPaperView(papers) {
@@ -670,7 +744,8 @@ function renderSessionsView(filtered, plannedOnly = false) {
 }
 
 function renderSessionCard(session, papers) {
-  const status = state.currentSessions.has(session.session) ? " current" : state.nextSession?.session === session.session ? " next" : "";
+  const isNext = state.nextSessions.some((nextSession) => nextSession.session === session.session);
+  const status = state.currentSessions.has(session.session) ? " current" : isNext ? " next" : "";
   return `
     <article class="session-card${status}">
       <div class="session-header">
@@ -700,6 +775,40 @@ function renderUnscheduledCard(papers) {
     </article>`;
 }
 
+function sessionRangeLabel(session) {
+  return formatRange(session.starttime_utc || session.starttime, session.endtime_utc || session.endtime);
+}
+
+function roomLabel(roomName) {
+  return roomName ? ` · ${roomName}` : "";
+}
+
+function renderPaperSchedule(paper) {
+  const oralChips = (paper._oralSessions || []).map(({ session }) => {
+    const sessionRange = session ? sessionRangeLabel(session) : "Unscheduled";
+    const label = `Oral session: ${sessionRange}${roomLabel(session?.room_name)} · ${session?.session || "Oral"}`;
+    return `<span class="schedule-chip oral-time">${escapeHtml(label)}</span>`;
+  });
+  if (oralChips.length) {
+    const posterParts = [
+      paper.session || "Poster",
+      formatRange(paper.starttime_utc || paper.starttime, paper.endtime_utc || paper.endtime),
+      paper.room_name,
+      paper.poster_position,
+    ].filter(Boolean);
+    return [
+      ...oralChips,
+      `<span class="schedule-chip poster-time">${escapeHtml(`Poster: ${posterParts.join(" · ")}`)}</span>`,
+    ].join("");
+  }
+  const chunks = [
+    `<span>${escapeHtml(paper.session || "Unscheduled")}</span>`,
+    `<span>${escapeHtml(`${formatRange(paper.starttime_utc || paper.starttime, paper.endtime_utc || paper.endtime)}${roomLabel(paper.room_name)}`)}</span>`,
+  ];
+  if (paper.poster_position) chunks.push(`<span>${escapeHtml(paper.poster_position)}</span>`);
+  return chunks.join("");
+}
+
 function renderSessionPaper(paper) {
   return `
     <div class="session-paper">
@@ -708,7 +817,7 @@ function renderSessionPaper(paper) {
       <div class="paper-submeta">
         ${renderBadges(paper)}
         <span>${escapeHtml(paper.topic || "No topic")}</span>
-        <span>${escapeHtml(paper.poster_position || "")}</span>
+        ${renderPaperSchedule(paper)}
       </div>
       <div class="card-actions">
         <button class="small-button ${state.plannedIds.has(paper.id) ? "active" : ""}" type="button" data-action="plan" data-id="${paper.id}">${state.plannedIds.has(paper.id) ? "Planned" : "Plan"}</button>
@@ -720,9 +829,8 @@ function renderSessionPaper(paper) {
 
 function renderPaperCard(paper) {
   const isOpen = state.openIds.has(paper.id);
-  const isCurrent = state.currentSessions.has(paper.session);
+  const isCurrent = paper._sessions.some((session) => state.currentSessions.has(session));
   const planned = state.plannedIds.has(paper.id);
-  const time = formatRange(paper.starttime_utc || paper.starttime, paper.endtime_utc || paper.endtime);
   const keywords = paper._keywords.slice(0, 8);
   return `
     <article class="paper-card${isOpen ? " open" : ""}${planned ? " is-planned" : ""}${isCurrent ? " is-current" : ""}">
@@ -732,9 +840,7 @@ function renderPaperCard(paper) {
           <div class="paper-meta">${escapeHtml(paper._authorsText)}</div>
           <div class="paper-submeta">
             <span>${escapeHtml(paper.topic || "No topic")}</span>
-            <span>${escapeHtml(paper.session || "Unscheduled")}</span>
-            <span>${escapeHtml(time)}</span>
-            <span>${escapeHtml(paper.poster_position || "")}</span>
+            ${renderPaperSchedule(paper)}
           </div>
         </div>
         <div class="badges">${renderBadges(paper)}</div>
@@ -772,7 +878,9 @@ async function init() {
     populateFilters();
     render();
     setInterval(() => {
+      computeSessionStatus();
       renderClock();
+      els.currentSessionCount.textContent = state.currentSessions.size.toLocaleString(DISPLAY_LOCALE);
       renderSessionNow();
     }, 30000);
   } catch (error) {
