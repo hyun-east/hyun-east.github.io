@@ -24,11 +24,8 @@ profile:
 
 about:
   text: >
-    I am an undergraduate researcher at the Intelligent Systems and Learning (ISL) Lab at DGIST, advised by Prof. Daehee Park. 
-    My research lies at the intersection of physical AI and human motion—I study how humans move and interact with the world, 
-    and how that understanding can inform robot control and embodied intelligence. 
-    My work spans human motion modeling, egocentric perception of hand–object interaction, and learning robot policies inspired by human behavior.
-    Alongside research, I serve as a teaching assistant and contribute to student leadership at DGIST.
+    I am an undergraduate student in the Interdisciplinary Studies Program, majoring in Artificial Intelligence at DGIST, and an undergraduate researcher at the Intelligent Systems and Learning (ISL) Lab under the supervision of Prof. Daehee Park. My research lies at the intersection of physical AI and human motion, spanning human motion modeling, egocentric perception of hand–object interaction, and human-inspired robot policy learning. I am a recipient of the DGIST Presidential Fellowship and the National Presidential Science Scholarship. Alongside research, I serve as a teaching assistant and contribute to student leadership at DGIST.
+
 
 research:
   - title: "Trajectory Planning / Prediction"
@@ -44,15 +41,19 @@ publications:
       authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park†"
       venue: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings, 2026"
       links: []
+    - title: "[Confidential] Intent-Based Human Motion Prediction"
+      authors: "Anonymous"
+      venue: "NeurIPS 2027, Under Review"
+      links: []
 
   domestic:
     - title: "[c2] A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism"
       authors: "Sunghoon Yuk, Jihoo Kim, Jaewon Jang, Hyeondong Kim, Giseop Kim, Joon-Hyuk Park†"
-      venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026 (submitted)"
+      venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026)"
       links: []
     - title: "[c1] Mapless Zero-Shot Autonomous Driving with Vision-Language Models"
       authors: "Hyeondong Kim, Jaewon Jang, Jihoo Kim, Sunghoon Yuk, Joon-Hyuk Park, Giseop Kim†"
-      venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026 (submitted)"
+      venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026"
       links: []
 
 projects:
@@ -100,7 +101,7 @@ experience:
     description: "Led community volunteering initiatives and coordinated national-level programs."
 
 honors:
-  - title: "👑 The President Science Scholarship"
+  - title: "👑 The National Presidential Science Scholarship"
     period: "Jun 2026 – Present"
   - title: "👑 DGIST Presidential Fellowship"
     period: "Jun 2025 – Present"
