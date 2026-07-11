@@ -61,6 +61,8 @@ const initial = await evaluate(`({
   openTrackGroups: document.querySelectorAll('.track-catalog-group[open]').length,
   generalGroups: document.querySelectorAll('.general-catalog-group').length,
   openGeneralGroups: document.querySelectorAll('.general-catalog-group[open]').length,
+  inlineGeneralGroups: [...document.querySelectorAll('[data-catalog-group^="general_"]:not(.catalog-toggle-group)')]
+    .map((item) => item.dataset.catalogGroup),
   catalogPools: document.querySelectorAll('.catalog-pool').length,
   uniqueCatalogCourses: new Set([...document.querySelectorAll('#catalogList [data-course-id]')].map((item) => item.dataset.courseId)).size,
   years: document.querySelectorAll('.year-card').length,
@@ -73,7 +75,13 @@ const initial = await evaluate(`({
   cohort: document.querySelector('#cohortSelect').value,
   degree: document.querySelector('#degreeSelect').value,
   staleSaveCopy: document.body.textContent.includes('이 브라우저에 자동 저장'),
+  deploymentCopyClean: !['이미지로 재확인해 구현', '왼쪽 패널 안에서 따로 스크롤', '브라우저 로컬 저장', '그래도 추가']
+    .some((copy) => document.body.textContent.includes(copy)),
   cacheButtonPresent: Boolean(document.querySelector('#cacheResetButton')),
+  extraYearButton: {
+    text: document.querySelector('#addExtraYearButton').textContent.trim(),
+    disabled: document.querySelector('#addExtraYearButton').disabled
+  },
   headerLinks: [...document.querySelectorAll('.profile-links a')].map((link) => {
     const rect = link.getBoundingClientRect();
     return { text: link.textContent.trim(), top: rect.top, height: rect.height };
@@ -87,8 +95,9 @@ assert.ok(initial.catalog > 20);
 assert.ok(initial.catalogGroups > 15);
 assert.equal(initial.trackGroups, 9);
 assert.equal(initial.openTrackGroups, 0);
-assert.equal(initial.generalGroups, 4);
+assert.equal(initial.generalGroups, 1);
 assert.equal(initial.openGeneralGroups, 0);
+assert.deepEqual(initial.inlineGeneralGroups.sort(), ['general_arts', 'general_english', 'general_korean']);
 assert.equal(initial.catalogPools, 4);
 assert.equal(initial.uniqueCatalogCourses, 269);
 assert.equal(initial.years, 4);
@@ -101,7 +110,9 @@ assert.equal(initial.summary, 4);
 assert.equal(initial.cohort, "2025");
 assert.equal(initial.degree, "engineering");
 assert.equal(initial.staleSaveCopy, false);
+assert.equal(initial.deploymentCopyClean, true);
 assert.equal(initial.cacheButtonPresent, false);
+assert.deepEqual(initial.extraYearButton, { text: '5학년 초과학기 추가', disabled: false });
 assert.equal(initial.versionedAssets, true);
 assert.equal(initial.headerLinks.find((item) => item.text === "제작자 웹사이트")?.height, 20);
 assert.equal(new Set(initial.headerLinks.map((item) => item.top)).size, 1);
@@ -140,6 +151,8 @@ const groupedCatalog = await evaluate(`(() => {
     allNonToggleGroupsVisible: [...document.querySelectorAll('.catalog-group:not(.catalog-toggle-group)')]
       .every((group) => group.getClientRects().length > 0),
     collapsedGeneralHidden: !document.querySelector('[data-catalog-group="general_humanities"] .catalog-card').checkVisibility(),
+    englishGeneralVisible: document.querySelector('[data-catalog-group="general_english"] .catalog-card').checkVisibility(),
+    englishGeneralIsToggle: document.querySelector('[data-catalog-group="general_english"]').matches('.catalog-toggle-group'),
     basicElectiveCount: new Set([...document.querySelectorAll('[data-course-pool="basicElective"] [data-course-id]')].map((item) => item.dataset.courseId)).size,
     advancedElectiveCount: new Set([...document.querySelectorAll('[data-course-pool="advancedElective"] [data-course-id]')].map((item) => item.dataset.courseId)).size,
     engineeringChoiceBlock: [...document.querySelectorAll('[data-catalog-group="engineering_choice"] [data-course-id]')].map((item) => item.dataset.courseId),
@@ -170,6 +183,8 @@ assert.match(groupedCatalog.physicsChoice, /트랙 선택/);
 assert.equal(groupedCatalog.allHaveRole, true);
 assert.equal(groupedCatalog.allNonToggleGroupsVisible, true);
 assert.equal(groupedCatalog.collapsedGeneralHidden, true);
+assert.equal(groupedCatalog.englishGeneralVisible, true);
+assert.equal(groupedCatalog.englishGeneralIsToggle, false);
 assert.equal(groupedCatalog.basicElectiveCount, 7);
 assert.equal(groupedCatalog.advancedElectiveCount, 10);
 assert.deepEqual(groupedCatalog.engineeringChoiceBlock.sort(), [
@@ -297,6 +312,57 @@ await evaluate("document.querySelector('[data-toggle-parity=\"2-1\"]').click(); 
 assert.match(await evaluate("document.querySelector('[data-drop-year=\"2\"][data-drop-semester=\"1\"][data-drop-session=\"regular\"] .season-chip').textContent"), /봄학기/);
 assert.match(await evaluate("document.querySelector('[data-drop-year=\"2\"][data-drop-semester=\"2\"][data-drop-session=\"regular\"] .season-chip').textContent"), /가을학기/);
 
+// Fifth and sixth years are created on demand and retain the full Z-layout.
+await evaluate("document.querySelector('#addExtraYearButton').click(); true");
+await waitFor("document.querySelectorAll('.year-card').length === 5");
+assert.match(await evaluate("document.querySelector('#addExtraYearButton').textContent"), /6학년 초과학기 추가/);
+await evaluate("document.querySelector('#addExtraYearButton').click(); true");
+await waitFor("document.querySelectorAll('.year-card').length === 6");
+const extraYears = await evaluate(`({
+  years: document.querySelectorAll('.year-card').length,
+  extraCards: document.querySelectorAll('.extra-year-card').length,
+  terms: document.querySelectorAll('.term-zone').length,
+  regularTerms: document.querySelectorAll('.regular-slot').length,
+  seasonalTerms: document.querySelectorAll('.seasonal-slot').length,
+  parityButtons: document.querySelectorAll('.parity-toggle').length,
+  targetYears: [...document.querySelector('#targetYear').options].map((option) => option.value),
+  customYears: [...document.querySelector('#customYear').options].map((option) => option.value),
+  buttonText: document.querySelector('#addExtraYearButton').textContent.trim(),
+  buttonDisabled: document.querySelector('#addExtraYearButton').disabled,
+  labels: [...document.querySelectorAll('.extra-year-card .year-title')]
+    .map((item) => item.querySelector('h2').textContent + ' ' + item.querySelector('span').textContent)
+})`);
+assert.equal(extraYears.years, 6);
+assert.equal(extraYears.extraCards, 2);
+assert.equal(extraYears.terms, 24);
+assert.equal(extraYears.regularTerms, 12);
+assert.equal(extraYears.seasonalTerms, 12);
+assert.equal(extraYears.parityButtons, 12);
+assert.deepEqual(extraYears.targetYears, ['1', '2', '3', '4', '5', '6']);
+assert.deepEqual(extraYears.customYears, ['1', '2', '3', '4', '5', '6']);
+assert.equal(extraYears.buttonText, '6학년까지 생성됨');
+assert.equal(extraYears.buttonDisabled, true);
+assert.deepEqual(extraYears.labels, ['5학년 초과학기', '6학년 초과학기']);
+
+// Courses can be moved into an added over-semester year.
+await evaluate(`(() => {
+  const card = [...document.querySelectorAll('[data-instance-id]')].find((item) => item.textContent.includes('교환학생 인정과목'));
+  const zone = document.querySelector('[data-drop-year="5"][data-drop-session="summer"]');
+  const transfer = new DataTransfer();
+  card.dispatchEvent(new DragEvent('dragstart', { bubbles: true, dataTransfer: transfer }));
+  zone.dispatchEvent(new DragEvent('dragover', { bubbles: true, cancelable: true, dataTransfer: transfer }));
+  zone.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: transfer }));
+  card.dispatchEvent(new DragEvent('dragend', { bubbles: true, dataTransfer: transfer }));
+  return true;
+})()`);
+await waitFor("document.querySelector('[data-drop-year=\"5\"][data-drop-session=\"summer\"]').textContent.includes('교환학생 인정과목')");
+
+// Added years and their assignments persist with the saved plan.
+await command("Page.reload", { ignoreCache: true });
+await waitFor("document.readyState === 'complete' && document.querySelectorAll('.year-card').length === 6");
+assert.match(await evaluate("document.querySelector('[data-drop-year=\"5\"][data-drop-session=\"summer\"]').textContent"), /교환학생 인정과목/);
+assert.equal(await evaluate("document.querySelector('#addExtraYearButton').disabled"), true);
+
 // Header usage link must activate the guide panel.
 await evaluate("document.querySelector('[data-go-view=guide]').click(); true");
 await waitFor("document.querySelector('#guideView').hidden === false");
@@ -306,7 +372,7 @@ assert.match(await evaluate("document.querySelector('#guideView').textContent"),
 await evaluate("document.querySelector('[data-view=diagnosis]').click(); true");
 await waitFor("document.querySelector('#diagnosisView').hidden === false");
 assert.ok(await evaluate("document.querySelectorAll('.audit-item').length") > 10);
-assert.equal(await evaluate("document.querySelectorAll('.plan-table tbody tr').length"), 16);
+assert.equal(await evaluate("document.querySelectorAll('.plan-table tbody tr').length"), 24);
 
 const pdf = await command("Page.printToPDF", { landscape: true, printBackground: true, paperWidth: 11.69, paperHeight: 8.27 });
 const pdfPath = "/tmp/dgist-graduation-planner-smoke.pdf";
@@ -314,5 +380,5 @@ fs.writeFileSync(pdfPath, Buffer.from(pdf.data, "base64"));
 assert.ok(fs.statSync(pdfPath).size > 10_000);
 
 assert.deepEqual(exceptions, [], `Browser exceptions: ${exceptions.join("; ")}`);
-console.log(`OK: aligned header, track/general toggles, 269 courses, strict entries, Z-layout, and PDF (${fs.statSync(pdfPath).size} bytes).`);
+console.log(`OK: public copy, humanities-only toggle, 269 courses, strict entries, 4–6 year Z-layout, and PDF (${fs.statSync(pdfPath).size} bytes).`);
 socket.close();

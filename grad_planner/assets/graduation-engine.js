@@ -359,7 +359,7 @@
       if (track && track.degree !== "either" && state.degree && track.degree !== state.degree) {
         warnings.push({
           id: "degree_track_mismatch", label: "학위 계열과 트랙 확인",
-          detail: `${track.name} 트랙의 기본 학위 계열과 선택한 ${state.degree === "science" ? "이학사" : "공학사"} 설정이 다릅니다. 실제 학위 구분을 학사팀에 확인하세요.`
+          detail: `${track.name} 트랙의 기본 학위 계열과 선택한 ${state.degree === "science" ? "이학사" : "공학사"} 설정이 다릅니다. 실제 학위 구분은 학사팀 확인이 필요합니다.`
         });
       }
     }

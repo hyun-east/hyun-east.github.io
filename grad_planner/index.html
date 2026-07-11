@@ -6,14 +6,14 @@
     <meta name="theme-color" content="#f7f9fc" />
     <meta name="description" content="DGIST 융복합대학 기초학부 교육과정표 기반 졸업 이수 시뮬레이터" />
     <title>DGIST Graduation Planner</title>
-    <link rel="stylesheet" href="assets/app.css?v=20260712-4" />
+    <link rel="stylesheet" href="assets/app.css?v=20260712-5" />
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
         <div>
           <h1>DGIST Graduation Planner</h1>
-          <div class="meta-line">융복합대학 기초학부 · 2020학번 이후 · 교육과정 2025.11.17.</div>
+          <div class="meta-line">융복합대학 기초학부 · 2020학번 이후 · 교육과정 기준일 2025.11.17.</div>
           <div class="profile-links" aria-label="참고 링크">
             <a href="#guide" data-go-view="guide">사용 안내</a>
             <a href="20251117_%EC%9C%B5%EB%B3%B5%ED%95%A9%EB%8C%80%ED%95%99%20%EA%B8%B0%EC%B4%88%ED%95%99%EB%B6%80%20%EA%B5%90%EC%9C%A1%EA%B3%BC%EC%A0%95%ED%91%9C(2020%ED%95%99%EB%B2%88%20%EC%9D%B4%ED%9B%84).pdf" target="_blank" rel="noreferrer">원본 교육과정표</a>
@@ -33,10 +33,10 @@
         <button class="tab" type="button" data-view="guide">판정 기준</button>
       </nav>
 
-      <section class="data-note" aria-label="중요 안내">
-        <strong>안내.</strong>
-        필수 지정과목과 영역별 학점을 함께 계산합니다. 최종 졸업사정은 학칙·교육과정 운영 요령 및 학사팀 확인을 따릅니다.
-        개설학기는 교육과정표의 표준 편성을 따르므로 실제 강의 개설 여부와 다를 수 있습니다.
+      <section class="data-note" aria-label="유의사항">
+        <strong>유의사항</strong>
+        본 결과는 교육과정표에 따른 이수계획 참고 자료이며 공식 졸업사정을 대체하지 않습니다.
+        실제 졸업요건과 교과목 개설 여부는 관련 규정 및 학사팀 확인을 기준으로 합니다.
       </section>
 
       <main class="workspace view-panel active" id="plannerView" data-panel="planner">
@@ -127,7 +127,7 @@
               <span class="role-badge classification advancedRequired">심화필수</span>
               <span class="role-badge classification advancedElective">심화선택</span>
             </div>
-            <p class="panel-help">트랙은 필요한 항목만 펼칠 수 있습니다. 과목 목록은 왼쪽 패널 안에서 따로 스크롤됩니다.</p>
+            <p class="panel-help">전공 트랙과 인문사회 영역은 제목을 눌러 펼칠 수 있습니다.</p>
             <div class="catalog-list" id="catalogList" aria-live="polite"></div>
             <button class="small-button primary custom-open" id="openCustomCourse" type="button">직접 입력 과목 추가</button>
           </section>
@@ -138,16 +138,17 @@
 
           <details class="requirement-overview">
             <summary><span>필수 이수 블록</span><strong id="blockProgress"></strong></summary>
-            <p class="panel-help">선택군은 블록에 표시된 수만큼 이수하면 됩니다.</p>
+            <p class="panel-help">필수 선택군은 각 블록에 표시된 기준 과목 수를 충족하면 인정됩니다.</p>
             <div class="requirement-block-list" id="requirementBlockList"></div>
           </details>
 
           <section class="planner-toolbar" aria-label="계획 도구">
             <div>
               <h2>학년별 이수 계획</h2>
-              <p>과목을 1·2학기 또는 여름·겨울 칸으로 끌어 배치할 수 있습니다.</p>
+              <p>정규학기와 계절학기별 교과목 배정</p>
             </div>
             <div class="toolbar-actions">
+              <button class="small-button" id="addExtraYearButton" type="button">5학년 초과학기 추가</button>
               <button class="small-button" id="exportButton" type="button">계획 내보내기</button>
               <label class="small-button file-button" for="importInput">계획 불러오기</label>
               <input class="sr-only" id="importInput" type="file" accept="application/json,.json" />
@@ -191,15 +192,15 @@
       <main class="single-view view-panel" id="guideView" data-panel="guide" hidden>
         <section class="guide-hero" id="guide">
           <span class="eyebrow">교육과정표</span>
-          <h2>판정 기준과 사용 안내</h2>
-          <p>아래 기준은 제공된 「융복합대학 기초학부 교육과정표(2020학번 이후)」를 이미지로 재확인해 구현했습니다.</p>
+          <h2>교육과정 및 판정 기준</h2>
+          <p>2025년 11월 17일 개정 교육과정표에 따른 학번별 이수요건과 자동 판정 범위입니다.</p>
         </section>
         <div class="guide-grid" id="guideContent"></div>
       </main>
 
       <footer class="site-footer">
         <span>DGIST Graduation Planner</span>
-        <span>데이터 기준일 2025.11.17. · 브라우저 로컬 저장</span>
+        <span>교육과정 기준일 2025.11.17.</span>
       </footer>
     </div>
 
@@ -324,15 +325,15 @@
         <p id="confirmMessage"></p>
         <div class="dialog-actions">
           <button class="small-button" type="button" data-close-dialog="confirmDialog" data-dialog-value="cancel">취소</button>
-          <button class="small-button primary" value="confirm">그래도 추가</button>
+          <button class="small-button primary" value="confirm">확인 후 추가</button>
         </div>
       </form>
     </dialog>
 
     <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
 
-    <script src="assets/curriculum-data.js?v=20260712-4"></script>
-    <script src="assets/graduation-engine.js?v=20260712-4"></script>
-    <script src="assets/app.js?v=20260712-4"></script>
+    <script src="assets/curriculum-data.js?v=20260712-5"></script>
+    <script src="assets/graduation-engine.js?v=20260712-5"></script>
+    <script src="assets/app.js?v=20260712-5"></script>
   </body>
 </html>

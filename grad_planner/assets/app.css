@@ -63,6 +63,7 @@ body {
 
 button, input, select { font: inherit; }
 button { cursor: pointer; }
+button:disabled { cursor: default; opacity: 0.56; }
 button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent) 28%, transparent);
   outline-offset: 2px;
@@ -487,6 +488,17 @@ input:disabled, select:disabled { cursor: not-allowed; opacity: 0.62; }
   background: color-mix(in srgb, var(--panel-2) 60%, var(--panel));
 }
 .year-header h2 { margin: 0; font-size: 17px; }
+.year-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.year-title > span {
+  padding: 2px 6px;
+  border: 1px solid color-mix(in srgb, var(--violet) 35%, var(--line));
+  border-radius: 4px;
+  background: var(--violet-soft);
+  color: var(--violet);
+  font-size: 9px;
+  font-weight: 760;
+}
+.extra-year-card { border-color: color-mix(in srgb, var(--violet) 38%, var(--line)); }
 .year-credit { color: var(--muted); font-size: 12px; }
 .term-grid { display: grid; grid-template-columns: 1fr 1fr; }
 .term-zone {
@@ -834,4 +846,8 @@ input:disabled, select:disabled { cursor: not-allowed; opacity: 0.62; }
   .print-plan-section h2 { font-size: 14pt; }
   .plan-table { font-size: 7.5pt; }
   .plan-table th, .plan-table td { padding: 2mm; }
+  .print-plan-table-wrap.extended-plan .plan-table { font-size: 7pt; line-height: 1.15; }
+  .print-plan-table-wrap.extended-plan .plan-table th,
+  .print-plan-table-wrap.extended-plan .plan-table td { padding: 1mm 1.5mm; }
+  .print-plan-table-wrap.extended-plan .plan-table li + li { margin-top: 0.5mm; }
 }

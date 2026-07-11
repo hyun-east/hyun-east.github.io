@@ -44,7 +44,7 @@
   let currentView = "planner";
 
   const defaultState = () => ({
-    version: 3,
+    version: 4,
     cohort: 2025,
     degree: "engineering",
     primaryTrack: "",
@@ -52,9 +52,16 @@
     secondaryTrack: "",
     foreignStudent: false,
     koreanExempt: false,
+    extraYears: 0,
     parityToggles: [],
     entries: []
   });
+
+  function normalizeExtraYears(value, entries = []) {
+    const configured = Math.min(2, Math.max(0, Math.trunc(Number(value) || 0)));
+    const latestAssignedYear = entries.reduce((latest, entry) => Math.max(latest, Number(entry.year) || 0), 4);
+    return Math.max(configured, Math.min(2, Math.max(0, latestAssignedYear - 4)));
+  }
 
   function migrateEntry(entry) {
     const oldTerm = entry.term || "spring";
@@ -74,12 +81,14 @@
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
       if (!saved || !Array.isArray(saved.entries)) return defaultState();
+      const entries = saved.entries.map(migrateEntry);
       return {
         ...defaultState(),
         ...saved,
-        version: 3,
+        version: 4,
+        extraYears: normalizeExtraYears(saved.extraYears, entries),
         parityToggles: Array.isArray(saved.parityToggles) ? saved.parityToggles : [],
-        entries: saved.entries.map(migrateEntry)
+        entries
       };
     } catch (_) {
       return defaultState();
@@ -103,6 +112,8 @@
 
   const semesterKey = (year, semester) => `${Number(year)}-${Number(semester)}`;
   const semesterIndex = (year, semester) => ((Number(year) - 1) * 2) + (Number(semester) - 1);
+  const plannerYearCount = () => 4 + normalizeExtraYears(state.extraYears, state.entries);
+  const plannerYears = () => Array.from({ length: plannerYearCount() }, (_, index) => index + 1);
   function effectiveRegularTerm(year, semester) {
     const index = semesterIndex(year, semester);
     const flips = (state.parityToggles || []).filter((key) => {
@@ -196,7 +207,7 @@
 
     updateCustomTrackField();
     const help = {
-      basicRequired: "기초필수 학점과 선택한 기초 필수영역에 반영합니다. 지정과목 대체는 공식 승인을 받은 경우에만 선택하세요.",
+      basicRequired: "기초필수 학점과 선택한 기초 필수영역에 반영됩니다. 지정과목 대체 인정은 공식 승인된 교과목에 한해 적용됩니다.",
       basicElective: "졸업 총학점에만 반영하며 기초필수 학점과 지정영역에는 반영하지 않습니다.",
       advancedRequired: "심화 총학점과 선택한 심화 필수영역에 반영합니다. 트랙을 선택한 경우 해당 트랙 학점에도 반영합니다.",
       advancedElective: "심화 총학점에 반영하지만 트랙·비트랙/융합·UGRP·인턴십 필수영역은 대신하지 않습니다. 영역별 상한을 적용합니다."
@@ -211,7 +222,21 @@
     if (!isTrack) $("#customTrack").value = "";
   }
 
+  function syncYearControls() {
+    const years = plannerYears();
+    [$("#targetYear"), $("#customYear")].forEach((select) => {
+      const previous = Number(select.value) || 1;
+      select.innerHTML = years.map((year) => `<option value="${year}">${year}학년${year > 4 ? " · 초과학기" : ""}</option>`).join("");
+      select.value = String(Math.min(previous, years.length));
+    });
+    const button = $("#addExtraYearButton");
+    const nextYear = years.length + 1;
+    button.disabled = years.length >= 6;
+    button.textContent = years.length >= 6 ? "6학년까지 생성됨" : `${nextYear}학년 초과학기 추가`;
+  }
+
   function syncControlsFromState() {
+    syncYearControls();
     $("#cohortSelect").value = String(state.cohort);
     $("#degreeSelect").value = state.degree;
     $("#primaryTrackSelect").value = state.primaryTrack;
@@ -496,8 +521,8 @@
         <span class="catalog-group-copy"><strong>${escapeHtml(group.label)}</strong><small>${escapeHtml(group.description)}</small></span>
         <b>${group.entries.length}</b>`;
       const courses = `<div class="catalog-group-courses">${group.entries.map(({ course, effective }) => paletteCourseCard(course, effective, false, { trackId: group.trackId || "" })).join("")}</div>`;
-      const generalGroup = group.id.startsWith("general_");
-      if (group.trackId || generalGroup) {
+      const collapsibleGeneralGroup = group.id === "general_humanities";
+      if (group.trackId || collapsibleGeneralGroup) {
         const selectedTrack = group.trackId === state.primaryTrack || group.trackId === state.secondaryTrack;
         const filteredGroup = searchActive || (group.trackId
           ? categoryFilter === `track:${group.trackId}`
@@ -525,7 +550,7 @@
         </header>
         <div class="catalog-pool-groups">${pool.groups.map(renderGroup).join("")}
         </div>
-      </section>`).join("") : `<div class="empty-state">조건에 맞는 과목이 없습니다.<br />필터를 지우거나 직접 입력을 사용하세요.</div>`;
+      </section>`).join("") : `<div class="empty-state">조건에 맞는 과목이 없습니다.<br />필터 조건을 조정하거나 직접 입력 교과목을 등록할 수 있습니다.</div>`;
   }
 
   function renderSummary(result) {
@@ -544,7 +569,7 @@
   }
 
   function renderBoard() {
-    $("#yearBoard").innerHTML = Array.from({ length: 4 }, (_, index) => index + 1).map((year) => {
+    $("#yearBoard").innerHTML = plannerYears().map((year) => {
       const yearEntries = state.entries.filter((entry) => Number(entry.year) === year);
       const yearCredits = yearEntries.reduce((sum, entry) => sum + (resolvedCourse(entry)?.recognizedCredits || 0), 0);
       const regularSlots = semesterOrder.map((semester) => {
@@ -585,8 +610,11 @@
           </section>`;
       });
       return `
-        <article class="year-card">
-          <header class="year-header"><h2>${year}학년</h2><span class="year-credit">${formatCredit(yearCredits)}학점</span></header>
+        <article class="year-card ${year > 4 ? "extra-year-card" : ""}" data-planner-year="${year}">
+          <header class="year-header">
+            <div class="year-title"><h2>${year}학년</h2>${year > 4 ? `<span>초과학기</span>` : ""}</div>
+            <span class="year-credit">${formatCredit(yearCredits)}학점</span>
+          </header>
           <div class="term-grid">${[...regularSlots, ...seasonalSlots].join("")}</div>
         </article>`;
     }).join("");
@@ -686,7 +714,7 @@
 
   function renderPrintTable() {
     const rows = [];
-    for (let year = 1; year <= 4; year += 1) {
+    for (const year of plannerYears()) {
       const slots = [
         ...semesterOrder.map((semester) => ({ session: "regular", semester, label: `${semester}학기 · ${termLabel(effectiveRegularTerm(year, semester))}` })),
         { session: "summer", semester: 1, label: "여름 계절학기" },
@@ -699,7 +727,7 @@
         const credits = entries.reduce((sum, entry) => sum + (resolvedCourse(entry)?.recognizedCredits || 0), 0);
         rows.push(`
           <tr>
-            <th scope="row">${year}학년</th><td>${escapeHtml(slot.label)}</td>
+            <th scope="row">${year}학년${year > 4 ? " (초과학기)" : ""}</th><td>${escapeHtml(slot.label)}</td>
             <td>${entries.length ? `<ul>${entries.map((entry) => {
               const course = resolvedCourse(entry);
               return `<li>${escapeHtml(course?.name || "알 수 없는 과목")} (${formatCredit(course?.recognizedCredits || 0)}, ${escapeHtml(classificationLabel(course?.classification))}, ${escapeHtml(termLabel(actualEntryTerm(entry)))})</li>`;
@@ -708,6 +736,7 @@
           </tr>`);
       });
     }
+    $("#printPlanTable").classList.toggle("extended-plan", plannerYearCount() > 4);
     $("#printPlanTable").innerHTML = `
       <table class="plan-table">
         <thead><tr><th>학년</th><th>학기</th><th>교과목 (학점)</th><th>소계</th></tr></thead>
@@ -728,7 +757,7 @@
         <div class="print-plan-table-wrap"><table class="rule-table"><thead><tr><th>학번</th><th>기초</th><th>심화</th><th>총학점</th><th>기초 컴공</th><th>인문사회</th></tr></thead><tbody>${cohortRows}</tbody></table></div>
       </section>
       <section class="guide-card">
-        <h3>자동 점검 항목</h3>
+        <h3>자동 판정 항목</h3>
         <ul>
           <li>영역별 최소학점뿐 아니라 공학수학Ⅰ, 다변수 미적분학, 영어 2과목 등 지정필수 과목</li>
           <li>선택 트랙에 따른 일반물리Ⅱ·일반화학Ⅱ·일반생물학Ⅱ 추가 조건</li>
@@ -753,12 +782,12 @@
         </ul>
       </section>
       <section class="guide-card">
-        <h3>직접 입력과 대체 인정</h3>
+        <h3>직접 입력 교과목</h3>
         <ul>
-          <li>계절학기, 교환학생, 타 대학, 과목명 변경·대체 인정 과목을 직접 입력할 수 있습니다.</li>
-          <li>기초필수·기초선택·심화필수·심화선택을 먼저 고른 뒤 해당 구분에서 선택 가능한 인정영역을 지정합니다.</li>
-          <li>선택 과목은 필수영역을 대신하지 않습니다. 지정필수 대체는 필수 구분에서 별도의 ‘대체 인정’을 지정해야 합니다.</li>
-          <li>대체 인정은 실제 승인받은 경우에만 사용하고 근거를 메모에 남겨 주세요.</li>
+          <li>계절학기, 교환학생, 타 대학 및 대체 인정 교과목을 직접 등록할 수 있습니다.</li>
+          <li>필수·선택 구분에 따라 등록 가능한 인정영역이 구분됩니다.</li>
+          <li>선택 교과목은 필수영역을 대체하지 않으며, 지정필수 대체 인정은 필수 구분에서만 적용됩니다.</li>
+          <li>대체 인정은 공식 승인 내역을 기준으로 하며 관련 근거를 메모에 기록할 수 있습니다.</li>
         </ul>
       </section>
       <section class="guide-card wide">
@@ -766,16 +795,16 @@
         <div class="print-plan-table-wrap"><table class="rule-table"><thead><tr><th>트랙</th><th>전공</th><th>부전공</th><th>지정과목 요약</th></tr></thead><tbody>${trackRows}</tbody></table></div>
       </section>
       <section class="guide-card">
-        <h3>개설학기 경고</h3>
-        <p>교육과정표에 표시된 표준 개설학기와 다른 학기에 배정하면 확인 창이 나타납니다. 실제로 특별 개설되거나 대체 인정되는 경우에는 “그래도 추가”를 눌러 계획에 포함할 수 있습니다.</p>
+        <h3>개설학기 확인</h3>
+        <p>교육과정표의 표준 개설학기와 다른 시기에 배정하는 경우 확인 절차를 거쳐 계획에 포함됩니다.</p>
       </section>
       <section class="guide-card">
         <h3>엇학기 설정</h3>
-        <p>각 슬롯의 ‘이 학기부터 엇학기’를 누르면 해당 슬롯부터 뒤의 모든 정규학기가 봄↔가을로 반전됩니다. 뒤쪽 슬롯에서 다시 누르면 그 시점부터 정상 순서로 돌아옵니다. 계절학기는 이 반전의 영향을 받지 않습니다.</p>
+        <p>엇학기 설정 시 선택한 시점 이후의 정규학기 봄·가을 순서가 반전됩니다. 이후 시점에서 다시 설정하면 해당 시점부터 기존 순서가 적용되며 계절학기는 영향을 받지 않습니다.</p>
       </section>
       <section class="guide-card">
-        <h3>판정 범위의 한계</h3>
-        <p>선수과목 이수, 학점 중복의 개별 예외, 폐지·대체교과목의 적용 연도, 학사경고·재수강, 학위연계과정 등 개인별 행정사항은 자동 판정하지 않습니다. 최종 졸업사정 전 학사팀 확인이 필요합니다.</p>
+        <h3>자동 판정 제외 항목</h3>
+        <p>선수과목, 학점 중복의 개별 예외, 폐지·대체교과목의 적용 연도, 재수강 및 학위연계과정 등 개인별 행정사항은 자동 판정에 포함되지 않습니다.</p>
       </section>`;
   }
 
@@ -839,8 +868,8 @@
     const semester = normalizedPlacementSemester(semesterSelect.value, session);
     const actualTerm = selectedPlacementTerm(year, semester, session);
     $("#targetSemesterPreview").textContent = session === "regular"
-      ? `${year}학년 ${semester}학기 슬롯 · 실제 이수 시기: ${termLabel(actualTerm)}`
-      : `${placementLabel(year, semester, session)} 독립 슬롯 · 엇학기 설정 미적용`;
+      ? `${year}학년 ${semester}학기 · 적용 계절: ${termLabel(actualTerm)}`
+      : `${placementLabel(year, semester, session)} · 엇학기 설정 제외`;
   }
 
   async function addCatalogCourse(courseId, year, semester, session = "regular") {
@@ -901,6 +930,16 @@
     saveState();
     renderAll();
     toast(toggles.has(key) ? `${key.replace("-", "학년 ")}학기부터 봄·가을을 반전했습니다.` : `${key.replace("-", "학년 ")}학기 엇학기를 해제했습니다.`);
+  }
+
+  function addExtraYear() {
+    const currentYearCount = plannerYearCount();
+    if (currentYearCount >= 6) return;
+    const addedYear = currentYearCount + 1;
+    state.extraYears = addedYear - 4;
+    saveState();
+    renderAll();
+    toast(`${addedYear}학년 초과학기를 생성했습니다.`);
   }
 
   function removeEntry(instanceId) {
@@ -1024,12 +1063,14 @@
         const parsed = JSON.parse(reader.result);
         const imported = parsed.state || parsed;
         if (!imported || !Array.isArray(imported.entries)) throw new Error("entries missing");
+        const entries = imported.entries.map(migrateEntry);
         state = {
           ...defaultState(),
           ...imported,
-          version: 3,
+          version: 4,
+          extraYears: normalizeExtraYears(imported.extraYears, entries),
           parityToggles: Array.isArray(imported.parityToggles) ? imported.parityToggles : [],
-          entries: imported.entries.map(migrateEntry)
+          entries
         };
         if (state.cohort < 2020 || state.cohort > 2100) throw new Error("invalid cohort");
         saveState();
@@ -1177,6 +1218,7 @@
       draggedInstanceId = "";
     });
 
+    $("#addExtraYearButton").addEventListener("click", addExtraYear);
     $("#exportButton").addEventListener("click", exportPlan);
     $("#importInput").addEventListener("change", (event) => { if (event.target.files[0]) importPlan(event.target.files[0]); });
     $("#printButton").addEventListener("click", printReport);
