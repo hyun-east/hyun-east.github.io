@@ -35,24 +35,24 @@ about:
 
 news:
   - date: "Jul 2026"
-    text: "I received two ICROS 2026 Student Paper Awards."
+    text: "🏆I received two ICROS 2026 Undergraduate Paper Awards."
   - date: "Jun 2026"
-    text: "Two paper has been published in ICROS 2026. The papers are 'Mapless Zero-Shot Autonomous Driving with Vision-Language Models' and 'A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism'."
+    text: "📖Two paper has been published in ICROS 2026. The papers are 'Mapless Zero-Shot Autonomous Driving with Vision-Language Models' and 'A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism'."
   - date: "Jun 2026"
-    text: "I was selected for the National Presidential Science Scholarship."
+    text: "🇰🇷I was selected for the National Presidential Science Scholarship."
   - date: "Mar 2026"
-    text: "One paper has been accepted to CVPR 2026 Findings. The paper is 'EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting'."
+    text: "📖One paper has been accepted to CVPR 2026 Findings. The paper is 'EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting'."
   - date: "Sep 2025"
     text: "I joined the Intelligent Systems and Learning (ISL) Lab as an undergraduate researcher."
   - date: "Jun 2025"
-    text: "I was selected for the DGIST Presidential Fellowship."
+    text: "✨I was selected for the DGIST Presidential Fellowship."
   - date: "Mar 2025"
     text: "I was selected as a board member of the Midam Scholarship Foundation."
   - date: "Sep 2024"
     text: "I was selected as a mentor for the Korea Student Aid Foundation (KOSAF) mentor program and as the president of the MIDAM Volunteering Club (DGIST)."
 
 education:
-  - period: "2024 – Present"
+  - period: "Feb 2024 – Feb 2028(Expected)"
     degree: "B.S. in Computer Science"
     institution: "DGIST, School of Undergraduate Studies"
     description: "Undergraduate student and DGIST Presidential Fellow."
@@ -67,7 +67,7 @@ research:
 
 publications:
   international:
-    - title: "[u1] Scene-aware Human Motion Prediction"
+    - title: "[c2] Scene-aware Human Motion Prediction"
       authors: "Donghyeon Soon*, Ji Il Yoon*, Hyeondong Kim, Daehee Park†"
       venue: "NeurIPS 2026, Under Review(title anonymized)"
       image:
@@ -103,10 +103,9 @@ publications:
         src: "assets/publications/rubiks.png"
         alt: "Wheel-transformable robot thumbnail"
       links:
-        - label: "project page"
+        - label: "🏆Undergraduate Paper Award"
           url: ""
-        - label: "arXiv"
-          url: ""
+    
     - title: "[c1] Mapless Zero-Shot Autonomous Driving with Vision-Language Models"
       authors: "Hyeondong Kim, Jaewon Jang, Jihoo Kim, Sunghoon Yuk, Joon-Hyuk Park, Giseop Kim†"
       venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026"
@@ -114,11 +113,9 @@ publications:
         src: "assets/publications/zeroshot.png"
         alt: "Mapless zero-shot autonomous driving thumbnail"
       links:
-        - label: "project page"
+        - label: "🏆Undergraduate Paper Award"
           url: ""
-        - label: "arXiv"
-          url: ""
-
+        
 experience:
   - period: "Sep 2025 – Present"
     title: "Undergraduate Student Researcher"
@@ -150,10 +147,10 @@ experience:
     description: "Led community volunteering initiatives and coordinated national-level programs."
 
 fellowships:
-  - title: "The National Presidential Science Scholarship"
+  - title: "🇰🇷The National Presidential Science Scholarship"
     period: "Jun 2026 – Present"
     description: "Only 60 students in 3rd grade nationwide are selected for this scholarship, which is awarded to those who have demonstrated exceptional academic performance and research potential in the field of science and technology."
-  - title: "DGIST Presidential Fellowship"
+  - title: "✨DGIST Presidential Fellowship"
     period: "Jun 2025 – Present"
     description: "Top 3 students in sophomore year in DGIST are selected for this fellowship, which is awarded to those who have demonstrated exceptional academic performance and research potential in the field of science and technology."
   - title: "DGIST Peer Counselor Scholarship"
@@ -164,10 +161,10 @@ fellowships:
     description: ""
 
 awards:
-  - title: "ICROS 2026 Undergraduate Student Paper Award"
+  - title: "ICROS 2026 Undergraduate Paper Award"
     period: "Jul 2026"
     description: "Mapless Zero-Shot Autonomous Driving with Vision-Language Models"
-  - title: "ICROS 2026 Undergraduate Student Paper Award"
+  - title: "ICROS 2026 Undergraduate Paper Award"
     period: "Jul 2026"
     description: "A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism"
   - title: "Dean's List"
