@@ -1,1 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+a {
+  color: #1772d0;
+  text-decoration: none;
+}
+
+a:focus,
+a:hover {
+  color: #f09228;
+  text-decoration: none;
+}
+
+body,
+td,
+th,
+tr,
+p,
+a {
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #111111;
+}
+
+strong {
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+h2 {
+  margin: 0;
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 22px;
+  font-weight: normal;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1em;
+  line-height: 1.38;
+}
+
+.page-table {
+  width: 100%;
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+  border: 0;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+.intro-table,
+.section-table,
+.footer-table,
+.list-table,
+.publication-table {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  border: 0;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+.intro-copy {
+  width: 63%;
+  padding: 2.5%;
+  vertical-align: middle;
+}
+
+.intro-photo {
+  width: 37%;
+  max-width: 37%;
+  padding: 2.5%;
+  vertical-align: middle;
+}
+
+.name {
+  padding-top: 20px;
+  margin: 0 0 16px;
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 32px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.role-line {
+  margin-bottom: 14px;
+  color: #666666;
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.links {
+  line-height: 1.8;
+}
+
+.portrait {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #eeeeee;
+}
+
+.portrait-fallback {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eeeeee;
+  color: #777777;
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.section-heading {
+  width: 100%;
+  padding: 16px;
+  vertical-align: middle;
+}
+
+.section-content {
+  width: 100%;
+  padding: 0 16px 10px;
+  vertical-align: middle;
+}
+
+.list-table {
+  border-spacing: 0 8px;
+}
+
+.date-cell {
+  width: 22%;
+  padding: 8px 18px 8px 0;
+  color: #666666;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.item-cell {
+  width: 78%;
+  padding: 8px 0;
+  line-height: 1.38;
+  vertical-align: top;
+}
+
+.compact-cell,
+.paper-cell {
+  width: 100%;
+  padding: 8px 0;
+  line-height: 1.38;
+  vertical-align: top;
+}
+
+.publication-table {
+  border-spacing: 0 14px;
+}
+
+.paper-media {
+  width: 22%;
+  padding: 8px 18px 8px 0;
+  vertical-align: middle;
+}
+
+.paper-cell {
+  width: 78%;
+  padding: 8px 0;
+}
+
+.paper-image-wrap,
+.paper-image,
+.paper-placeholder {
+  width: 160px;
+  height: 110px;
+}
+
+.paper-image-wrap {
+  position: relative;
+}
+
+.paper-image {
+  display: block;
+  object-fit: cover;
+  border-radius: 2px;
+  background: #eeeeee;
+}
+
+.paper-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  background: #eeeeee;
+  color: #777777;
+  font-size: 13px;
+}
+
+.item-title,
+.papertitle {
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.category-heading {
+  padding: 10px 0 2px;
+  color: #666666;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.muted {
+  color: #666666;
+}
+
+.pending-link {
+  color: #777777;
+}
+
+.footer-table td {
+  padding: 30px 16px 42px;
+  color: #666666;
+  text-align: right;
+}
+
+.footer-table p {
+  margin-bottom: 0;
+  color: #666666;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .intro-table,
+  .intro-table tbody,
+  .intro-table tr,
+  .intro-copy,
+  .intro-photo {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .intro-copy {
+    padding: 20px 16px 6px;
+  }
+
+  .intro-photo {
+    width: 70%;
+    max-width: 260px;
+    margin: 0 auto;
+    padding: 10px 16px 20px;
+  }
+
+  .name {
+    padding-top: 0;
+  }
+
+  .date-cell,
+  .item-cell,
+  .paper-media,
+  .paper-cell {
+    display: block;
+    width: 100%;
+    padding: 3px 0;
+    white-space: normal;
+  }
+
+  .date-cell,
+  .paper-media {
+    padding-top: 10px;
+  }
+
+  .paper-image-wrap,
+  .paper-image,
+  .paper-placeholder {
+    width: 100%;
+    max-width: 220px;
+    height: 132px;
+  }
+}

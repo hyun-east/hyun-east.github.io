@@ -1,680 +1,532 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hyeondong Kim</title>
-  <meta name="description" content="Academic homepage of Hyeondong Kim." />
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Hyeondong Kim">
+    <meta name="description" content="Academic homepage of Hyeondong Kim.">
 
-  <style>
-    :root{
-      --bg:#ffffff;
-      --text:#111111;
-      --body:#222222;
-      --muted:#666666;
-      --line:#e8e8e8;
-      --accent:#5a45ff;
-      --max:1080px;
-    }
+    <title>Hyeondong Kim</title>
 
-    *{box-sizing:border-box}
+    <link rel="stylesheet" type="text/css" href="styles.css">
+  </head>
 
-    html{scroll-behavior:smooth;}
+  <body>
+    <main>
+      <table class="page-table">
+        <tbody>
+          <tr>
+            <td>
+              <table class="intro-table">
+                <tbody>
+                  <tr>
+                    <td class="intro-copy">
+                      <p class="name" id="name">Hyeondong Kim</p>
+                      <p class="role-line" id="roleLine"></p>
+                      <p id="bioText"></p>
+                      <p class="center links" id="heroLinks"></p>
+                    </td>
+                    <td class="intro-photo" id="portraitContainer"></td>
+                  </tr>
+                </tbody>
+              </table>
 
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
-        "Inter", "Helvetica Neue", Arial, sans-serif;
-      font-size:16px;
-      line-height:1.55;
-      letter-spacing:-0.025em;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-    }
+              <table class="section-table" id="newsSection">
+                <tbody>
+                  <tr>
+                    <td class="section-heading">
+                      <h2>News</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="section-content">
+                      <table class="list-table" id="newsList"></table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-    a{
-      color:var(--accent);
-      text-decoration:none;
-      font-weight:500;
-    }
+              <table class="section-table" id="educationSection">
+                <tbody>
+                  <tr>
+                    <td class="section-heading">
+                      <h2>Education</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="section-content">
+                      <table class="list-table" id="educationList"></table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-    a:hover{
-      color:#3426d8;
-      text-decoration:none;
-    }
+              <table class="section-table" id="researchSection">
+                <tbody>
+                  <tr>
+                    <td class="section-heading">
+                      <h2>Research</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="section-content">
+                      <table class="list-table" id="researchList"></table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-    .wrap{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:0 32px;
-    }
+              <table class="section-table" id="publicationsSection">
+                <tbody>
+                  <tr>
+                    <td class="section-heading">
+                      <h2>Publications</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="section-content" id="publicationsList"></td>
+                  </tr>
+                </tbody>
+              </table>
 
-    header{
-      position:sticky;
-      top:0;
-      z-index:10;
-      background:rgba(255,255,255,.9);
-      backdrop-filter:blur(16px) saturate(160%);
-      border-bottom:1px solid var(--line);
-    }
+              <table class="section-table" id="experienceSection">
+                <tbody>
+                  <tr>
+                    <td class="section-heading">
+                      <h2>Experience</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="section-content">
+                      <table class="list-table" id="experienceList"></table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-    .nav{
-      min-height:58px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:32px;
-    }
+              <table class="section-table" id="fellowshipsSection">
+                <tbody>
+                  <tr>
+                    <td class="section-heading">
+                      <h2>Fellowships</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="section-content">
+                      <table class="list-table" id="fellowshipsList"></table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-    .brand{
-      font-size:16px;
-      font-weight:700;
-      color:var(--text);
-      white-space:nowrap;
-      letter-spacing:-0.035em;
-    }
+              <table class="section-table" id="awardsSection">
+                <tbody>
+                  <tr>
+                    <td class="section-heading">
+                      <h2>Awards</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="section-content">
+                      <table class="list-table" id="awardsList"></table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-    nav{
-      display:flex;
-      align-items:center;
-      gap:32px;
-      flex-wrap:wrap;
-    }
+              <table class="section-table" id="contactSection">
+                <tbody>
+                  <tr>
+                    <td class="section-heading">
+                      <h2>Contact</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="section-content">
+                      <p id="contactEmail"></p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-    nav a{
-      color:var(--text);
-      font-size:14px;
-      font-weight:500;
-    }
+              <table class="footer-table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <p id="footerText"></p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
 
-    nav a:hover{
-      color:var(--accent);
-    }
-
-    main{
-      padding:54px 0 84px;
-    }
-
-    .hero{
-      display:grid;
-      grid-template-columns:280px minmax(0, 1fr);
-      gap:64px;
-      align-items:center;
-      padding:8px 0 64px;
-    }
-
-    #portraitContainer{
-      grid-column:1;
-    }
-
-    .hero > div:last-child{
-      grid-column:2;
-    }
-
-    .portrait{
-      width:280px;
-      height:280px;
-      object-fit:cover;
-      display:block;
-      border-radius:8px;
-      background:#f2f2f2;
-    }
-
-    .portrait.placeholder{
-      width:280px;
-      height:280px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:8px;
-      background:#f2f2f2;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    h1{
-      font-size:46px;
-      line-height:1.05;
-      margin:0 0 22px;
-      font-weight:800;
-      letter-spacing:-0.06em;
-    }
-
-    .subtitle{
-      font-size:20px;
-      line-height:1.45;
-      color:var(--body);
-      margin:0 0 4px;
-      font-weight:400;
-    }
-
-    .affiliation{
-      font-size:20px;
-      line-height:1.45;
-      color:var(--body);
-      margin:0 0 26px;
-      font-weight:400;
-    }
-
-    .chips{
-      display:none;
-    }
-
-    .links{
-      display:flex;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:0;
-      margin-top:24px;
-    }
-
-    .links a{
-      color:var(--accent);
-      font-size:16px;
-      font-weight:600;
-      white-space:nowrap;
-    }
-
-    .links .sep{
-      color:#999999;
-      margin:0 12px;
-      font-weight:400;
-    }
-
-    section{
-      padding:34px 0;
-    }
-
-    section + section{
-      border-top:1px solid var(--line);
-    }
-
-    section,
-    .hero{
-      scroll-margin-top:82px;
-    }
-    
-    section{
-      padding:34px 0;
-    }
-
-    h2{
-      font-size:28px;
-      line-height:1.15;
-      margin:0 0 16px;
-      font-weight:750;
-      color:var(--text);
-      letter-spacing:-0.055em;
-    }
-
-    h2::before{
-      content:"";
-      display:inline-block;
-      width:7px;
-      height:22px;
-      margin-right:12px;
-      border-radius:4px;
-      background:var(--accent);
-      transform:translateY(3px);
-    }
-
-    h3{
-      font-size:18px;
-      line-height:1.3;
-      margin:0 0 3px;
-      font-weight:700;
-      color:var(--text);
-      letter-spacing:-0.035em;
-    }
-
-    p{
-      margin:0 0 8px;
-      color:var(--body);
-    }
-
-    .lead{
-      max-width:860px;
-      font-size:17px;
-      color:var(--body);
-    }
-
-    .card{
-      background:transparent;
-      border:none;
-      padding:0;
-    }
-
-    .grid-2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:22px 56px;
-    }
-
-    .pub,
-    .item{
-      margin-bottom:28px;
-      max-width:900px;
-    }
-
-    .pub:last-child,
-    .item:last-child{
-      margin-bottom:0;
-    }
-
-    .pub-category{
-      margin-bottom:34px;
-    }
-
-    .pub-category:last-child{
-      margin-bottom:0;
-    }
-
-    .pub-category-title{
-      font-size:19px;
-      margin:0 0 18px;
-      font-weight:750;
-      color:var(--accent);
-      letter-spacing:-0.035em;
-    }
-
-    .meta{
-      color:var(--muted);
-      font-size:15px;
-    }
-
-    .tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:0;
-      margin-top:6px;
-    }
-
-    .tag{
-      font-size:14px;
-      color:var(--muted);
-      background:transparent;
-      padding:0;
-      font-weight:400;
-    }
-
-    .tag + .tag::before{
-      content:", ";
-    }
-
-    .timeline{
-      display:grid;
-      gap:22px;
-    }
-
-    .timeline-item{
-      display:grid;
-      grid-template-columns:150px 1fr;
-      gap:32px;
-      align-items:start;
-    }
-
-    .time{
-      color:var(--muted);
-      font-size:14px;
-      padding-top:2px;
-    }
-
-    footer{
-      color:var(--muted);
-      font-size:13px;
-      padding:28px 0 48px;
-      border-top:1px solid var(--line);
-    }
-
-    .note{
-      margin-top:12px;
-      font-size:13px;
-      color:var(--muted);
-    }
-
-    .hidden{display:none;}
-
-    @media (max-width: 820px){
-      .wrap{
-        padding:0 24px;
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script>
+      function escapeHtml(str = '') {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
       }
 
-      nav{
-        display:none;
+      function setText(id, text) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text || '';
       }
 
-      main{
-        padding-top:36px;
+      function setHtml(id, html) {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = html || '';
       }
 
-      .hero{
-        grid-template-columns:1fr;
-        gap:26px;
-        padding-bottom:44px;
+      function linkAttributes(href = '') {
+        return /^https?:\/\//.test(href) ? ' target="_blank" rel="noopener"' : '';
       }
 
-      #portraitContainer,
-      .hero > div:last-child{
-        grid-column:1;
+      function renderLinks(items = []) {
+        return items
+          .filter(item => item && item.label)
+          .map((item, index) => {
+          const label = escapeHtml(item.label || '');
+          const href = escapeHtml(item.url || '');
+          const attrs = linkAttributes(item.url || '');
+          const sep = index > 0 ? ' &nbsp;/&nbsp; ' : '';
+          const link = href
+            ? `<a href="${href}"${attrs}>${label}</a>`
+            : `<span class="pending-link">${label}</span>`;
+          return `${sep}${link}`;
+        }).join('');
       }
 
-      .portrait,
-      .portrait.placeholder{
-        width:220px;
-        height:220px;
+      function renderItemLinks(items = []) {
+        if (!items.some(item => item && item.label)) return '';
+        return `<br>${renderLinks(items)}`;
       }
 
-      h1{
-        font-size:38px;
-        margin-bottom:18px;
+      function linkifyText(text = '', links = []) {
+        const source = String(text);
+        const ranges = [];
+        const candidates = links
+          .filter(link => link && link.text && link.url)
+          .sort((a, b) => b.text.length - a.text.length);
+
+        function overlaps(start, end) {
+          return ranges.some(range => start < range.end && end > range.start);
+        }
+
+        candidates.forEach(link => {
+          let offset = 0;
+          while (offset < source.length) {
+            const start = source.indexOf(link.text, offset);
+            if (start === -1) break;
+
+            const end = start + link.text.length;
+            if (!overlaps(start, end)) {
+              ranges.push({ start, end, link });
+            }
+            offset = end;
+          }
+        });
+
+        ranges.sort((a, b) => a.start - b.start);
+
+        let html = '';
+        let cursor = 0;
+        ranges.forEach(range => {
+          html += escapeHtml(source.slice(cursor, range.start));
+          html += `<a href="${escapeHtml(range.link.url)}"${linkAttributes(range.link.url)}>${escapeHtml(source.slice(range.start, range.end))}</a>`;
+          cursor = range.end;
+        });
+        html += escapeHtml(source.slice(cursor));
+
+        return html;
       }
 
-      .subtitle,
-      .affiliation{
-        font-size:17px;
+      function renderPortraitFallback(name = '') {
+        const initials = name
+          .split(/\s+/)
+          .filter(Boolean)
+          .slice(0, 2)
+          .map(part => part[0])
+          .join('')
+          .toUpperCase() || 'HK';
+
+        return `<div class="portrait-fallback" aria-label="Portrait placeholder">${escapeHtml(initials)}</div>`;
       }
 
-      .grid-2{
-        grid-template-columns:1fr;
-        gap:20px;
+      function renderPortrait(profile = {}) {
+        const root = document.getElementById('portraitContainer');
+        const src = profile.portrait?.src;
+        const alt = profile.portrait?.alt || `Portrait of ${profile.name || 'Hyeondong Kim'}`;
+
+        if (!src) {
+          root.innerHTML = renderPortraitFallback(profile.name);
+          return;
+        }
+
+        const img = new Image();
+        img.onload = () => {
+          root.innerHTML = `
+            <a href="${escapeHtml(src)}">
+              <img class="portrait" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}">
+            </a>
+          `;
+        };
+        img.onerror = () => {
+          root.innerHTML = renderPortraitFallback(profile.name);
+        };
+        img.src = src;
       }
 
-      .timeline-item{
-        grid-template-columns:1fr;
-        gap:4px;
+      function renderDatedRows(rootId, items = [], renderBody) {
+        const root = document.getElementById(rootId);
+        const rows = items.map(item => `
+          <tr>
+            <td class="date-cell">${escapeHtml(item.date || item.period || '')}</td>
+            <td class="item-cell">${renderBody(item)}</td>
+          </tr>
+        `).join('');
+
+        root.innerHTML = `<tbody>${rows}</tbody>`;
       }
 
-      h2{
-        font-size:25px;
+      function renderNews(items = []) {
+        const section = document.getElementById('newsSection');
+        if (!items.length) {
+          section.classList.add('hidden');
+          return;
+        }
+
+        renderDatedRows('newsList', items, item => {
+          const text = escapeHtml(item.text || '');
+          if (!item.url) return text;
+          return `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${text}</a>`;
+        });
       }
-    }
-  </style>
-</head>
 
-<body>
-  <header>
-    <div class="wrap nav">
-      <div class="brand" id="brandName">Hyeondong Kim</div>
-      <nav aria-label="Primary navigation">
-        <a href="#about">About</a>
-        <a href="#research">Research</a>
-        <a href="#publications">Publications</a>
-        <a href="#projects">Projects</a>
-        <a href="#experience">Experience</a>
-        <a href="#honors">Honors</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+      function renderEducation(items = []) {
+        const section = document.getElementById('educationSection');
+        if (!items.length) {
+          section.classList.add('hidden');
+          return;
+        }
 
-  <main class="wrap">
-    <section class="hero" id="home">
-      <div id="portraitContainer"></div>
-      <div>
-        <h1 id="name"></h1>
-        <p class="subtitle" id="subtitle"></p>
-        <p class="affiliation" id="affiliation"></p>
-        <div class="chips" id="badges"></div>
-        <div class="links" id="heroLinks"></div>
-      </div>
-    </section>
-
-    <section id="about">
-      <h2>About</h2>
-      <div class="card">
-        <p class="lead" id="aboutText"></p>
-      </div>
-    </section>
-
-    <section id="research">
-      <h2>Research Interests</h2>
-      <div class="grid-2" id="researchGrid"></div>
-    </section>
-
-    <section id="publications">
-      <h2>Publications</h2>
-      <div id="publicationsList"></div>
-    </section>
-
-    <section id="projects">
-      <h2>Projects</h2>
-      <div id="projectsList"></div>
-    </section>
-
-    <section id="experience">
-      <h2>Experience</h2>
-      <div class="timeline" id="experienceList"></div>
-    </section>
-
-    <section id="honors">
-      <h2>Honors</h2>
-      <div class="grid-2" id="honorsGrid"></div>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <div class="card">
-        <p id="contactEmail"></p>
-      </div>
-    </section>
-
-    <p class="note" id="yamlNote"></p>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <span id="footerText"></span>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-
-  <script>
-    window.addEventListener('load', () => {
-      if (!window.location.hash) {
-        window.scrollTo(0, 0);
+        renderDatedRows('educationList', items, item => `
+          <span class="item-title">${escapeHtml(item.degree || item.title || '')}</span>
+          ${item.institution ? `<br>${escapeHtml(item.institution)}` : ''}
+          ${item.description ? `<br><span class="muted">${escapeHtml(item.description)}</span>` : ''}
+        `);
       }
-    });
-  </script>
 
-  <script>
-    function escapeHtml(str='') {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
+      function renderResearch(items = []) {
+        const section = document.getElementById('researchSection');
+        if (!items.length) {
+          section.classList.add('hidden');
+          return;
+        }
 
-    function renderLinks(items = []) {
-      return items.map((item, index) => {
-        const label = escapeHtml(item.label || '');
-        const href = escapeHtml(item.url || '#');
-        const external = !href.startsWith('mailto:') && !href.startsWith('#');
-        const extra = external ? ' target="_blank" rel="noopener"' : '';
-        const sep = index > 0 ? `<span class="sep">|</span>` : '';
-        return `${sep}<a href="${href}"${extra}>${label}</a>`;
-      }).join('');
-    }
-
-    function renderTags(items = []) {
-      return items.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
-    }
-
-    function setText(id, text) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = text || '';
-    }
-
-    async function loadData() {
-      const res = await fetch('site.yaml', { cache: 'no-store' });
-      if (!res.ok) throw new Error('Failed to load site.yaml');
-      const yamlText = await res.text();
-      return jsyaml.load(yamlText);
-    }
-
-    function renderPortrait(profile = {}) {
-      const wrap = document.getElementById('portraitContainer');
-
-      if (profile.portrait && profile.portrait.src) {
-        wrap.innerHTML = `
-          <img
-            class="portrait"
-            src="${escapeHtml(profile.portrait.src)}"
-            alt="${escapeHtml(profile.portrait.alt || 'Portrait')}"
-          />
-        `;
-      } else {
-        wrap.innerHTML = `<div class="portrait placeholder">Portrait</div>`;
-      }
-    }
-
-    function renderResearch(items = []) {
-      const root = document.getElementById('researchGrid');
-
-      root.innerHTML = items.map(item => `
-        <div class="card">
-          <h3>${escapeHtml(item.title || '')}</h3>
-          <p>${escapeHtml(item.description || '')}</p>
-        </div>
-      `).join('');
-    }
-
-    const myNames = ['Hyeondong Kim', 'H. Kim'];
-    
-    function highlightName(authors = '') {
-      let result = authors;
-      myNames.forEach(name => {
-        const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`\\b${escaped}\\b`, 'g');
-        result = result.replace(regex, `<strong>${name}</strong>`);
-      });
-      return result;
-    }
-
-    function renderPublicationItem(item = {}) {
-      return `
-        <div class="card pub">
-          <h3>${escapeHtml(item.title || '')}</h3>
-          <p>${highlightName(escapeHtml(item.authors || ''))}</p>
-          <p class="meta"><em>${escapeHtml(item.venue || '')}</em></p>
-          ${item.links && item.links.length ? `<div class="links">${renderLinks(item.links)}</div>` : ''}
-        </div>
-      `;
-    }
-
-    function renderPublicationCategory(title, items = []) {
-      if (!items || !items.length) return '';
-
-      return `
-        <div class="pub-category">
-          <h3 class="pub-category-title">${escapeHtml(title)}</h3>
-          ${items.map(renderPublicationItem).join('')}
-        </div>
-      `;
-    }
-
-    function renderPublications(publications = {}) {
-      const root = document.getElementById('publicationsList');
-
-      if (!Array.isArray(publications)) {
+        const root = document.getElementById('researchList');
         root.innerHTML = `
+          <tbody>
+            ${items.map(item => `
+              <tr>
+                <td class="compact-cell">
+                  <span class="item-title">${escapeHtml(item.title || '')}</span>
+                  ${item.description ? `<br>${escapeHtml(item.description)}` : ''}
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        `;
+      }
+
+      const myNames = ['Hyeondong Kim', 'H. Kim'];
+
+      function highlightName(authors = '') {
+        let result = authors;
+        myNames.forEach(name => {
+          const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          result = result.replace(new RegExp(`\\b${escaped}\\b`, 'g'), `<strong>${name}</strong>`);
+        });
+        return result;
+      }
+
+      function renderPublicationMedia(item = {}) {
+        const image = item.image || {};
+        const placeholder = escapeHtml(image.placeholder || 'Image');
+
+        if (!image.src) {
+          return `<div class="paper-placeholder">${placeholder}</div>`;
+        }
+
+        return `
+          <div class="paper-image-wrap">
+            <img
+              class="paper-image"
+              src="${escapeHtml(image.src)}"
+              alt="${escapeHtml(image.alt || item.title || 'Publication image')}"
+              onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
+            >
+            <div class="paper-placeholder hidden">${placeholder}</div>
+          </div>
+        `;
+      }
+
+      function renderPublicationItem(item = {}) {
+        return `
+          <tr>
+            <td class="paper-media">
+              ${renderPublicationMedia(item)}
+            </td>
+            <td class="paper-cell">
+              <span class="papertitle">${escapeHtml(item.title || '')}</span>
+              <br>
+              ${highlightName(escapeHtml(item.authors || ''))}
+              <br>
+              <em>${escapeHtml(item.venue || '')}</em>
+              ${renderItemLinks(item.links || [])}
+            </td>
+          </tr>
+        `;
+      }
+
+      function renderPublicationCategory(title, items = []) {
+        if (!items.length) return '';
+        return `
+          <table class="list-table publication-table">
+            <tbody>
+              <tr>
+                <td class="category-heading">${escapeHtml(title)}</td>
+              </tr>
+              ${items.map(renderPublicationItem).join('')}
+            </tbody>
+          </table>
+        `;
+      }
+
+      function renderPublications(publications = {}) {
+        const root = document.getElementById('publicationsList');
+        const section = document.getElementById('publicationsSection');
+
+        if (Array.isArray(publications)) {
+          if (!publications.length) section.classList.add('hidden');
+          root.innerHTML = renderPublicationCategory('', publications);
+          return;
+        }
+
+        const html = `
           ${renderPublicationCategory('International', publications.international || [])}
           ${renderPublicationCategory('Domestic', publications.domestic || [])}
         `;
-        return;
+
+        root.innerHTML = html;
+        if (!html.trim()) section.classList.add('hidden');
       }
 
-      root.innerHTML = publications.map(renderPublicationItem).join('');
-    }
-
-    function renderProjects(items = []) {
-      const root = document.getElementById('projectsList');
-
-      root.innerHTML = items.map(item => `
-        <div class="card item">
-          <h3>${escapeHtml(item.title || '')}</h3>
-          <p>${escapeHtml(item.description || '')}</p>
-          ${item.tags && item.tags.length ? `<div class="tags">${renderTags(item.tags)}</div>` : ''}
-          ${item.links && item.links.length ? `<div class="links">${renderLinks(item.links)}</div>` : ''}
-        </div>
-      `).join('');
-    }
-
-    function renderExperience(items = []) {
-      const root = document.getElementById('experienceList');
-
-      root.innerHTML = items.map(item => `
-        <div class="timeline-item">
-          <div class="time">${escapeHtml(item.period || '')}</div>
-          <div class="card">
-            <h3>${escapeHtml(item.title || '')}</h3>
-            ${item.organization ? `<p>${escapeHtml(item.organization)}</p>` : ''}
-            ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ''}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderHonors(items = []) {
-      const root = document.getElementById('honorsGrid');
-
-      root.innerHTML = items.map(item => `
-        <div class="card">
-          <h3>${escapeHtml(item.title || '')}</h3>
-          <p class="meta">${escapeHtml(item.period || '')}</p>
-        </div>
-      `).join('');
-    }
-
-    async function init() {
-      try {
-        const data = await loadData();
-
-        document.title = data.site?.title || 'Hyeondong Kim';
-
-        setText('brandName', data.profile?.name || '');
-        setText('name', data.profile?.name || '');
-        setText('subtitle', data.profile?.subtitle || '');
-        setText('affiliation', data.profile?.affiliation || '');
-        setText('aboutText', data.about?.text || '');
-        setText('contactEmail', data.contact?.email || '');
-        setText('footerText', data.footer?.text || '');
-
-        renderPortrait(data.profile || {});
-
-        const badges = document.getElementById('badges');
-        badges.innerHTML = (data.profile?.badges || [])
-          .map(x => `<span class="chip">${escapeHtml(x)}</span>`)
-          .join('');
-
-        document.getElementById('heroLinks').innerHTML =
-          renderLinks(data.profile?.links || []);
-
-        renderResearch(data.research || []);
-        renderPublications(data.publications || {});
-        renderProjects(data.projects || []);
-        renderExperience(data.experience || []);
-        renderHonors(data.honors || []);
-
-      } catch (err) {
-        console.error(err);
-        document.body.innerHTML = `
-          <main class="wrap" style="padding:48px 24px;">
-            <h1>Failed to load site.yaml</h1>
-            <p>
-              Make sure <code>site.yaml</code> exists in the same folder as
-              <code>index.html</code>.
-            </p>
-          </main>
-        `;
+      function renderTags(tags = []) {
+        if (!tags.length) return '';
+        return `<br><span class="muted">${tags.map(escapeHtml).join(' / ')}</span>`;
       }
-    }
 
-    init();
-  </script>
-</body>
+      function renderExperience(items = []) {
+        const section = document.getElementById('experienceSection');
+        if (!items.length) {
+          section.classList.add('hidden');
+          return;
+        }
+
+        renderDatedRows('experienceList', items, item => `
+          <span class="item-title">${escapeHtml(item.title || '')}</span>
+          ${item.organization ? `<br>${escapeHtml(item.organization)}` : ''}
+          ${item.description ? `<br><span class="muted">${escapeHtml(item.description)}</span>` : ''}
+        `);
+      }
+
+      function renderFellowships(items = []) {
+        const section = document.getElementById('fellowshipsSection');
+        if (!items.length) {
+          section.classList.add('hidden');
+          return;
+        }
+
+        renderDatedRows('fellowshipsList', items, item => `
+          <span class="item-title">${escapeHtml(item.title || '')}</span>
+          ${item.description ? `<br><span class="muted">${escapeHtml(item.description)}</span>` : ''}
+        `);
+      }
+
+      function renderAwards(items = []) {
+        const section = document.getElementById('awardsSection');
+        if (!items.length) {
+          section.classList.add('hidden');
+          return;
+        }
+
+        renderDatedRows('awardsList', items, item => `
+          <span class="item-title">${escapeHtml(item.title || '')}</span>
+          ${item.description ? `<br><span class="muted">${escapeHtml(item.description)}</span>` : ''}
+        `);
+      }
+
+      async function loadData() {
+        const res = await fetch('site.yaml', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to load site.yaml');
+        const yamlText = await res.text();
+        return jsyaml.load(yamlText);
+      }
+
+      async function init() {
+        try {
+          const data = await loadData();
+          const profile = data.profile || {};
+
+          document.title = data.site?.title || profile.name || 'Hyeondong Kim';
+
+          setText('name', profile.name || '');
+          setHtml(
+            'roleLine',
+            [profile.subtitle, profile.affiliation].filter(Boolean).map(escapeHtml).join('<br>')
+          );
+          setHtml('bioText', linkifyText(data.about?.text || '', data.about?.links || []));
+          setText('contactEmail', data.contact?.email || '');
+          setText('footerText', data.footer?.text || '');
+
+          document.getElementById('heroLinks').innerHTML = renderLinks(profile.links || []);
+
+          renderPortrait(profile);
+          renderNews(data.news || []);
+          renderEducation(data.education || []);
+          renderResearch(data.research || []);
+          renderPublications(data.publications || {});
+          renderExperience(data.experience || []);
+          renderFellowships(data.fellowships || []);
+          renderAwards(data.awards || []);
+        } catch (err) {
+          console.error(err);
+          document.body.innerHTML = `
+            <main>
+              <table class="page-table">
+                <tbody>
+                  <tr>
+                    <td class="section-content">
+                      <p class="name">Failed to load site.yaml</p>
+                      <p>Serve this folder over a local web server so the page can read <code>site.yaml</code>.</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </main>
+          `;
+        }
+      }
+
+      init();
+    </script>
+  </body>
 </html>

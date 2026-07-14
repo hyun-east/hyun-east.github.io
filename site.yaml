@@ -15,6 +15,8 @@ profile:
       url: "CV.pdf"
     - label: "Email"
       url: "mailto:hdkim@dgist.ac.kr"
+    - label: "Scholar"
+      url: "https://scholar.google.com/citations?user=F6odIZAAAAAJ"
     - label: "LinkedIn"
       url: "https://www.linkedin.com/in/hdkim2005"
     - label: "GitHub"
@@ -24,12 +26,40 @@ profile:
 
 about:
   text: >
-    I am an undergraduate student in the Interdisciplinary Studies Program, majoring in Artificial Intelligence at DGIST, and an undergraduate researcher at the Intelligent Systems and Learning (ISL) Lab under the supervision of Prof. Daehee Park. My research lies at the intersection of physical AI and human motion, spanning human motion modeling, egocentric perception of hand–object interaction, and human-inspired robot policy learning. I am a recipient of the DGIST Presidential Fellowship and the National Presidential Science Scholarship. Alongside research, I serve as a teaching assistant and contribute to student leadership at DGIST.
+    I am an undergraduate student at DGIST and an undergraduate researcher at the Intelligent Systems and Learning (ISL) Lab, advised by Prof. Daehee Park. I am honored to be a recipient of the DGIST Presidential Fellowship and the National Presidential Science Scholarship. My research interests lie in physical AI, egocentric perception, hand–object interaction, and human-inspired robot policy learning.
+  links:
+    - text: "Intelligent Systems and Learning (ISL) Lab"
+      url: "https://isldgist.github.io"
+    - text: "Prof. Daehee Park"
+      url: "https://sites.google.com/view/dhpark/"
 
+news:
+  - date: "Jul 2026"
+    text: "I received two ICROS 2026 Student Paper Awards."
+  - date: "Jun 2026"
+    text: "Two paper has been published in ICROS 2026. The papers are 'Mapless Zero-Shot Autonomous Driving with Vision-Language Models' and 'A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism'."
+  - date: "Jun 2026"
+    text: "I was selected for the National Presidential Science Scholarship."
+  - date: "Mar 2026"
+    text: "One paper has been accepted to CVPR 2026 Findings. The paper is 'EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting'."
+  - date: "Sep 2025"
+    text: "I joined the Intelligent Systems and Learning (ISL) Lab as an undergraduate researcher."
+  - date: "Jun 2025"
+    text: "I was selected for the DGIST Presidential Fellowship."
+  - date: "Mar 2025"
+    text: "I was selected as a board member of the Midam Scholarship Foundation."
+  - date: "Sep 2024"
+    text: "I was selected as a mentor for the Korea Student Aid Foundation (KOSAF) mentor program and as the president of the MIDAM Volunteering Club (DGIST)."
+
+education:
+  - period: "2024 – Present"
+    degree: "B.S. in Computer Science"
+    institution: "DGIST, School of Undergraduate Studies"
+    description: "Undergraduate student and DGIST Presidential Fellow."
 
 research:
-  - title: "Trajectory Planning / Prediction"
-    description: "Prediction and planning for vehicles, human motion, and interaction-aware trajectories."
+  - title: "Human Motion Prediction & Planning"
+    description: "Prediction and planning for human motion, and interaction-aware motion generation."
   - title: "Computer Vision"
     description: "Egocentric vision, depth prediction, super-resolution, and visual representation learning."
   - title: "Robotics & Embodied AI"
@@ -40,36 +70,50 @@ publications:
     - title: "[u1] Scene-aware Human Motion Prediction"
       authors: "Donghyeon Soon*, Ji Il Yoon*, Hyeondong Kim, Daehee Park†"
       venue: "NeurIPS 2026, Under Review(title anonymized)"
-      links: []
+      image:
+        src: "assets/publications/scene.png"
+        alt: "Scene-aware Human Motion Prediction thumbnail"
+      links:
+        - label: "project page"
+          url: ""
+        - label: "arXiv"
+          url: ""
     - title: "[c1] EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting"
       authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park†"
       venue: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings, 2026"
-      links: []
+      image:
+        src: "assets/publications/egghand.png"
+        alt: "EggHand thumbnail"
+      links:
+        - label: "project page"
+          url: "https://jyoun9.github.io/EggHand/"
+        - label: "arXiv"
+          url: "https://arxiv.org/abs/2605.07642"
     
 
   domestic:
     - title: "[c2] A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism"
       authors: "Sunghoon Yuk, Jihoo Kim, Jaewon Jang, Hyeondong Kim, Giseop Kim, Joon-Hyuk Park†"
       venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026)"
-      links: []
+      image:
+        src: "assets/publications/rubiks.png"
+        alt: "Wheel-transformable robot thumbnail"
+      links:
+        - label: "project page"
+          url: ""
+        - label: "arXiv"
+          url: ""
     - title: "[c1] Mapless Zero-Shot Autonomous Driving with Vision-Language Models"
       authors: "Hyeondong Kim, Jaewon Jang, Jihoo Kim, Sunghoon Yuk, Joon-Hyuk Park, Giseop Kim†"
       venue: "The 41st Institute of Control, Robotics and Systems Annual Conference (ICROS), 2026"
-      links: []
-
-projects:
-  - title: "Student Record Standardization Tool"
-    description: "Built an automated toolkit and visualization dashboard that normalizes and analyzes student record data using complex natural-language rules. It is utilized at Poongsan High School, an autonomous private high school."
-    tags: ["nlp", "Unstructured data processing", "Automation"]
-    links: []
-  - title: "AI-based Interview Question Extraction"
-    description: "Developed an API-based NLP pipeline that extracts and organizes domain-specific interview questions from large text corpora."
-    tags: ["ai", "Automation"]
-    links: []
-  - title: "Data Structure & Data Science Study (YouTube)"
-    description: "Created a structured learning curriculum that bridges concepts, hands-on coding, and concise summaries for self-learners."
-    tags: ["study", "education"]
-    links: []
+      image:
+        src: "assets/publications/zeroshot.png"
+        alt: "Mapless zero-shot autonomous driving thumbnail"
+      links:
+        - label: "project page"
+          url: ""
+        - label: "arXiv"
+          url: ""
 
 experience:
   - period: "Sep 2025 – Present"
@@ -101,25 +145,36 @@ experience:
     organization: ""
     description: "Led community volunteering initiatives and coordinated national-level programs."
 
-honors:
-  - title: "👑 The National Presidential Science Scholarship"
+fellowships:
+  - title: "The National Presidential Science Scholarship"
     period: "Jun 2026 – Present"
-  - title: "👑 DGIST Presidential Fellowship"
+    description: "Only 60 students in 3rd grade nationwide are selected for this scholarship, which is awarded to those who have demonstrated exceptional academic performance and research potential in the field of science and technology."
+  - title: "DGIST Presidential Fellowship"
     period: "Jun 2025 – Present"
-  - title: "ICROS 2026 Student Paper Award (Mapless Zero-Shot Autonomous Driving with Vision-Language Models)"
-    period: "Jul 2026"
-  - title: "ICROS 2026 Student Paper Award (Mapless Zero-Shot Autonomous Driving with Vision-Language Models)"
-    period: "Jul 2026"
+    description: "Top 3 students in sophomore year in DGIST are selected for this fellowship, which is awarded to those who have demonstrated exceptional academic performance and research potential in the field of science and technology."
   - title: "DGIST Peer Counselor Scholarship"
     period: "Feb 2025 – Feb 2026"
+    description: ""
   - title: "KOSAF Scholarship (Mentors)"
     period: "Sep 2024 – Feb 2026"
+    description: ""
+
+awards:
+  - title: "ICROS 2026 Undergraduate Student Paper Award"
+    period: "Jul 2026"
+    description: "Mapless Zero-Shot Autonomous Driving with Vision-Language Models"
+  - title: "ICROS 2026 Undergraduate Student Paper Award"
+    period: "Jul 2026"
+    description: "A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism"
   - title: "Dean's List"
     period: "Fall 2025"
+    description: "4.01/4.30 GPA"
   - title: "Dean's List"
     period: "Fall 2024"
+    description: "4.10/4.30 GPA"
   - title: "Dean's List"
     period: "Spring 2024"
+    description: "4.30/4.30 GPA"
 
 contact:
   email: "Email: hdkim [AT] dgist.ac.kr"
