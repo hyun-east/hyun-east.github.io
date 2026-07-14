@@ -37,14 +37,15 @@ research:
 
 publications:
   international:
+    - title: "[u1] Scene-aware Human Motion Prediction"
+      authors: "Donghyeon Soon*, Ji Il Yoon*, Hyeondong Kim, Daehee Park†"
+      venue: "NeurIPS 2026, Under Review(title anonymized)"
+      links: []
     - title: "[c1] EggHand: A Multimodal Foundation Model for Egocentric Hand Pose Forecasting"
       authors: "Jaeyoung Choi*, Hyeondong Kim*, Yujin Kim, Daehee Park†"
       venue: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings, 2026"
       links: []
-    - title: "[u1] Intent-Based Human Motion Prediction"
-      authors: "Anonymous"
-      venue: "NeurIPS 2027, Under Review"
-      links: []
+    
 
   domestic:
     - title: "[c2] A Wheel-Transformable Mobile Robot Based on a Rubik’s Cube Mechanism"
