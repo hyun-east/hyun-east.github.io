@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f8fafc" />
+    <meta name="description" content="전체 지도에서 강조된 시·군 또는 시·군·구 이름을 맞히는 60초 타이핑 게임" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a40a1'/%3E%3Cpath d='M32 12c-9 0-16 7-16 16 0 12 16 24 16 24s16-12 16-24c0-9-7-16-16-16Zm0 9a7 7 0 1 1 0 14 7 7 0 0 1 0-14Z' fill='white'/%3E%3C/svg%3E" />
+    <title>어디게? — 대한민국 백지도 스피드런</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="site-header">
+        <a class="brand" href="./" aria-label="어디게? 처음 화면">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 44 44"><path d="M22 3C13.2 3 6 10 6 18.7c0 11.9 16 22.3 16 22.3s16-10.4 16-22.3C38 10 30.8 3 22 3Zm0 9.2a6.5 6.5 0 1 1 0 13 6.5 6.5 0 0 1 0-13Z" /></svg>
+          </span>
+          <span>어디게?</span>
+        </a>
+      </header>
+
+      <main class="container">
+        <section id="setupScreen" class="screen setup-screen" aria-labelledby="heroTitle">
+          <header class="hero">
+            <h1 id="heroTitle">보고, 떠올리고,<br />60초 안에 입력하세요.</h1>
+            <p class="subtitle">파란색 지역의 이름을 입력하세요.</p>
+          </header>
+
+          <div class="setup-grid">
+            <form id="setupForm" class="card setup-card">
+              <div class="card-heading">
+                <h2>게임 설정</h2>
+                <div class="best-badge" aria-label="현재 설정 최고 기록">
+                  <span>최고 기록</span>
+                  <strong id="setupBest">—</strong>
+                </div>
+              </div>
+
+              <fieldset>
+                <legend>문제 단위</legend>
+                <div class="segment-control">
+                  <label>
+                    <input type="radio" name="level" value="citycounty" checked />
+                    <span><b>시·군</b></span>
+                  </label>
+                  <label>
+                    <input type="radio" name="level" value="municipal" />
+                    <span><b>시·군·구</b></span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset id="scopeFieldset">
+                <legend><label for="scopeSelect">출제 범위</label></legend>
+                <div class="select-wrap">
+                  <select id="scopeSelect">
+                    <option value="all">전국 전체</option>
+                  </select>
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5" /></svg>
+                </div>
+              </fieldset>
+
+              <div class="toggle-list">
+                <label class="toggle-row">
+                  <span class="toggle-copy"><b>북한 지역 포함</b></span>
+                  <input id="northToggle" type="checkbox" role="switch" />
+                  <span class="toggle-ui" aria-hidden="true"></span>
+                </label>
+                <label class="toggle-row">
+                  <span class="toggle-copy"><b>효과음</b></span>
+                  <input id="soundToggle" type="checkbox" role="switch" checked />
+                  <span class="toggle-ui" aria-hidden="true"></span>
+                </label>
+              </div>
+
+              <button id="startButton" class="primary-button" type="submit">
+                <span>60초 게임 시작</span>
+                <kbd>Ctrl + Enter</kbd>
+              </button>
+              <p id="poolSummary" class="pool-summary">남한 시·군 160곳이 출제됩니다.</p>
+            </form>
+
+            <section class="card preview-card" aria-labelledby="previewTitle">
+              <div class="preview-heading">
+                <div>
+                  <h2 id="previewTitle">게임 방법</h2>
+                </div>
+                <span class="time-badge">60초</span>
+              </div>
+              <div class="preview-map-wrap" aria-hidden="true">
+                <svg id="previewMap" preserveAspectRatio="xMidYMid meet"></svg>
+              </div>
+              <ol class="rules">
+                <li><span>1</span><p><b>파란 지역 확인</b></p></li>
+                <li><span>2</span><p><b>이름 입력</b></p></li>
+                <li><span>3</span><p><b>모르면 Enter로 패스</b></p></li>
+              </ol>
+            </section>
+          </div>
+        </section>
+
+        <section id="gameScreen" class="screen game-screen" hidden aria-label="게임 진행">
+          <div class="game-topbar">
+            <button id="quitButton" class="back-button" type="button" aria-label="게임을 종료하고 설정 화면으로 돌아가기">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7" /></svg>
+              <span>나가기</span>
+            </button>
+            <div class="mode-copy"><small>현재 모드</small><strong id="modeLabel">전국 · 시·군</strong></div>
+            <div class="hud" aria-label="게임 현황">
+              <div class="hud-item"><small>정답</small><strong id="correctCount">0</strong></div>
+              <div class="hud-item"><small>연속</small><strong><span id="streakCount">0</span><i>×</i></strong></div>
+              <div id="timerBox" class="timer-box"><small>남은 시간</small><strong id="timerText">01:00</strong></div>
+            </div>
+          </div>
+
+          <div class="timer-track" aria-hidden="true"><span id="timerFill"></span></div>
+
+          <div class="game-layout">
+            <section id="mapPanel" class="card map-panel" aria-labelledby="mapHint">
+              <div class="map-panel-heading">
+                <div>
+                  <span id="questionNumber">QUESTION 01</span>
+                  <h2 id="mapHint">진한 파란색 지역은 어디일까요?</h2>
+                </div>
+              </div>
+              <div class="map-canvas">
+                <svg id="gameMap" class="game-map" role="img" aria-label="정답 지역이 파란색과 위치 링으로 강조된 지도" preserveAspectRatio="xMidYMid meet">
+                  <g id="baseLayer"></g>
+                  <g id="regionLayer"></g>
+                  <circle id="targetRing" class="target-ring" aria-hidden="true"></circle>
+                </svg>
+                <div class="map-tools" aria-label="지도 확대 및 이동 도구">
+                  <button id="zoomInButton" type="button" aria-label="지도 확대">+</button>
+                  <button id="zoomOutButton" type="button" aria-label="지도 축소">−</button>
+                  <button id="resetZoomButton" type="button" aria-label="현재 시·도에 맞추기">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+                  </button>
+                  <button id="fullMapButton" type="button" aria-label="전체 지도 보기">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20V6.5Zm5.5-2.5v13.5m7-11V20" /></svg>
+                  </button>
+                </div>
+                <span class="map-gesture-hint" aria-hidden="true">휠 확대 · 드래그 이동</span>
+              </div>
+              <div id="countdown" class="countdown" hidden aria-live="assertive"><span>3</span></div>
+            </section>
+
+            <aside class="card answer-panel">
+              <label id="answerBox" class="answer-box" for="answerInput">
+                <span class="visually-hidden">지도에서 파란색으로 표시된 지역명</span>
+                <input id="answerInput" type="text" inputmode="text" enterkeyhint="next" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="예: 수원, 수원시" aria-describedby="answerHelp feedback" disabled />
+                <span class="enter-key" aria-hidden="true">Enter</span>
+              </label>
+              <p id="answerHelp" class="answer-help">정답은 바로 처리됩니다. 모르면 Enter로 패스하세요.</p>
+              <div id="feedback" class="feedback" aria-live="polite"><span></span></div>
+              <button id="skipButton" class="secondary-button skip-button" type="button" disabled>
+                <span>패스</span><kbd>Enter / Esc</kbd>
+              </button>
+              <p class="skip-note">정답 공개 후 1.5초가 차감됩니다.</p>
+            </aside>
+          </div>
+        </section>
+
+        <section id="resultScreen" class="screen result-screen" hidden aria-labelledby="resultTitle">
+          <div class="card result-card">
+            <div id="recordRibbon" class="record-ribbon" hidden>새 최고 기록</div>
+            <h1 id="resultTitle"><span id="resultCorrect">0</span>곳을 찾았습니다.</h1>
+            <div class="result-stats">
+              <div><small>최고 연속</small><strong id="resultStreak">0</strong></div>
+              <div><small>정확도</small><strong id="resultAccuracy">100%</strong></div>
+              <div><small>평균 응답</small><strong id="resultSpeed">—</strong></div>
+            </div>
+            <div id="missedSection" class="missed-section" hidden>
+              <span>이번에 지나친 곳</span>
+              <div id="missedList"></div>
+            </div>
+            <div class="result-actions">
+              <button id="retryButton" class="primary-button" type="button">같은 설정으로 다시</button>
+              <button id="shareButton" class="secondary-button" type="button">결과 공유</button>
+              <button id="settingsButton" class="text-button" type="button">설정 바꾸기</button>
+            </div>
+          </div>
+          <section class="card result-map-card" aria-label="이번에 맞힌 지역">
+            <div class="preview-heading"><div><h2>이번 게임 지도</h2></div></div>
+            <svg id="resultMap" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+          </section>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>행정경계: <a href="https://github.com/vuski/admdongkor" target="_blank" rel="noreferrer">SGIS / admdongkor</a> · <a href="https://www.geoboundaries.org/" target="_blank" rel="noreferrer">geoBoundaries</a></span>
+        <a href="ATTRIBUTION.md">데이터 기준과 출처</a>
+      </footer>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="confetti" class="confetti" aria-hidden="true"></div>
+    <script src="data/regions.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
