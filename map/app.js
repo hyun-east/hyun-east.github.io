@@ -67,6 +67,20 @@
   const northProvinces = provinceRegions.filter((region) => region.country === "north");
   const northMunicipalRegions = municipalRegions.filter((region) => region.country === "north");
   const northCityCountyRegions = northMunicipalRegions.filter((region) => !/(구|구역|지구)$/u.test(region.name));
+  const wholeCityNames = new Set([
+    "서울특별시",
+    "부산광역시",
+    "대구광역시",
+    "인천광역시",
+    "광주광역시",
+    "대전광역시",
+    "울산광역시",
+    "세종특별자치시",
+  ]);
+  const southCityCountyRegions = [
+    ...cityCountyRegions.filter((region) => region.country === "south" && !wholeCityNames.has(region.province)),
+    ...southProvinces.filter((region) => wholeCityNames.has(region.name)),
+  ];
 
   let settings = loadSettings();
   let bestScores = loadJSON(BEST_KEY, {});
@@ -165,7 +179,7 @@
 
   function getPool(candidateSettings = currentFormSettings()) {
     const southSource = candidateSettings.level === "citycounty"
-      ? cityCountyRegions
+      ? southCityCountyRegions
       : municipalRegions.filter((region) => region.country === "south");
     const northSource = candidateSettings.level === "citycounty" ? northCityCountyRegions : northMunicipalRegions;
     const source = candidateSettings.north ? [...southSource, ...northSource] : southSource;
