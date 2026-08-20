@@ -60,13 +60,19 @@ education:
 research:
   - title: "Human Motion Prediction & Planning"
     description: "Prediction and planning for human motion, and interaction-aware motion generation."
-  - title: "Computer Vision"
-    description: "Egocentric vision, depth prediction, super-resolution, and visual representation learning."
+  - title: "Egocentric Vision"
+    description: "Human-egocentric vision for action modeling and prediction"
   - title: "Robotics & Embodied AI"
     description: "Perception-driven systems for real-world robotic intelligence."
 
 publications:
   international:
+    - title: "[c3] Graph-based Medical Phenotype Prediction"
+      authors: "Youngjin Park*,Donghyeon Soon*, Hyeondong Kim, Kyung-Wook Jee†, Daehee Park†"
+      venue: "AAAI 2027, Under Review(title anonymized)"
+      image:
+        src: ""
+        alt: "Graph-based Medical Phenotype Prediction thumbnail"
     - title: "[c2] Scene-aware Human Motion Prediction"
       authors: "Donghyeon Soon*, Ji Il Yoon*, Hyeondong Kim, Daehee Park†"
       venue: "NeurIPS 2026, Under Review(title anonymized)"
